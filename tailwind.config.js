@@ -13,6 +13,7 @@ module.exports = {
         mathing_count: "#F35757",
         main: "#2EEF4D",
         sub: "#EFFFF0",
+        "main-icon-section": "#D9D9D9",
       },
       borderRadius: {
         half: "50%",
