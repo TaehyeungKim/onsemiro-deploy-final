@@ -5,7 +5,7 @@ import IconImage from "../IconImage";
 
 export default function HomeHeader() {
   return (
-    <header className="w-main-frame h-header-height flex flex-row items-center justify-between px-4 py-3 box-border border-b bg-white fixed top-0">
+    <header className="w-main-frame h-header-height flex flex-row items-center justify-between px-4 py-3 box-border border-b bg-white fixed top-0 z-10">
       <button className="w-8">
         <IconImage src={menu} />
       </button>

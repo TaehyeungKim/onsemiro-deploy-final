@@ -2,10 +2,7 @@ $height: 20px;
 $width: 60px;
 
 .frame {
-  border-bottom-left-radius: calc($height/2);
-  border-top-left-radius: calc($height/2);
-  border-bottom-right-radius: calc($height/2);
-  border-top-right-radius: calc($height/2);
+  border-radius: calc($height/2);
   width: $width;
   height: $height;
   box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.3);

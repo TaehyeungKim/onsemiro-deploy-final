@@ -12,6 +12,7 @@ module.exports = {
         background: "#f5f5f5",
         mathing_count: "#F35757",
         main: "#2EEF4D",
+        sub: "#EFFFF0",
       },
       borderRadius: {
         half: "50%",
