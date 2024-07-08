@@ -18,6 +18,7 @@ module.exports = {
         auth: "#ECA496",
         "main-icon-section": "#D9D9D9",
         mask: "rgba(0,0,0,0.54)",
+        "mask-deeper": "rgba(0,0,0,0.33)",
         profile: "#EAEAEA",
       },
       borderRadius: {

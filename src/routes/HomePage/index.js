@@ -2,7 +2,7 @@ import HomeHeader from "../../components/HomeHeader";
 import MatchingStatus from "../../components/MatchingStatus";
 import ActiveMode from "../../components/ActiveMode";
 import Recommend from "../../components/MainIconSection/recommend";
-import RequestAccepted from "../../components/MainIconSection/request";
+import Request from "../../components/MainIconSection/request";
 
 export default function HomePage() {
   return (
@@ -15,7 +15,7 @@ export default function HomePage() {
         </div>
         <section className="mt-28 px-6">
           <Recommend></Recommend>
-          <RequestAccepted></RequestAccepted>
+          <Request></Request>
         </section>
       </main>
     </div>
