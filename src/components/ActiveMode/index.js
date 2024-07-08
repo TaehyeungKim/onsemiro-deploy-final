@@ -12,7 +12,7 @@ export default function ActiveMode() {
       onClick={toggleMode}
     >
       <div
-        className={`bg-slate-300 ${styles.frame} flex items-center overflow-clip relative`}
+        className={`bg-slate-300 ${styles.frame} flex items-center overflow-clip relative mb-1`}
       >
         <p className="absolute right-2 text-sm">OFF</p>
         <div
