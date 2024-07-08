@@ -1,16 +1,8 @@
 import HomeHeader from "../../components/HomeHeader";
 import MatchingStatus from "../../components/MatchingStatus";
 import ActiveMode from "../../components/ActiveMode";
-import MainIconSection from "../../components/MainIconSection";
-import Sun from "../../assets/sun.png";
-import Love from "../../assets/love 1.png";
-
-import {
-  LetterArrive,
-  LetterChecked,
-  LetterClosed,
-  RequestHold,
-} from "../../components/MainIconSection/cases";
+import RecommendLetter from "../../components/MainIconSection/recommend";
+import RequestAccepted from "../../components/MainIconSection/request";
 
 export default function HomePage() {
   return (
@@ -22,12 +14,8 @@ export default function HomePage() {
           <ActiveMode />
         </div>
         <section className="mt-28 px-6">
-          <MainIconSection icon={Sun} caption={"7/8 아침 쪽지 (08:00)"}>
-            <LetterArrive></LetterArrive>
-          </MainIconSection>
-          <MainIconSection icon={Love} caption={"받은 요청"}>
-            <RequestHold count={1}></RequestHold>
-          </MainIconSection>
+          <RecommendLetter></RecommendLetter>
+          <RequestAccepted></RequestAccepted>
         </section>
       </main>
     </div>
