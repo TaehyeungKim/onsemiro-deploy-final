@@ -1,7 +1,7 @@
 import HomeHeader from "../../components/HomeHeader";
 import MatchingStatus from "../../components/MatchingStatus";
 import ActiveMode from "../../components/ActiveMode";
-import RecommendLetter from "../../components/MainIconSection/recommend";
+import Recommend from "../../components/MainIconSection/recommend";
 import RequestAccepted from "../../components/MainIconSection/request";
 
 export default function HomePage() {
@@ -14,7 +14,7 @@ export default function HomePage() {
           <ActiveMode />
         </div>
         <section className="mt-28 px-6">
-          <RecommendLetter></RecommendLetter>
+          <Recommend></Recommend>
           <RequestAccepted></RequestAccepted>
         </section>
       </main>
