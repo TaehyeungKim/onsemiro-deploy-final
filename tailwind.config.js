@@ -27,6 +27,9 @@ module.exports = {
       backgroundImage: {
         letter: "url('/src/assets/letterpaper.png')",
       },
+      transitionProperty: {
+        width: "width",
+      },
     },
   },
   plugins: [],
