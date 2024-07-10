@@ -13,6 +13,8 @@ p {
 }
 input {
   all: unset;
+  border: none;
+  outline: none;
 }
 * {
   -ms-overflow-style: none;
