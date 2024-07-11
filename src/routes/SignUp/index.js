@@ -1,14 +1,52 @@
 import ProgressBar from "../../components/ProgressBar";
-import { useState } from "react";
+import { useState, useMemo, createContext, useCallback } from "react";
 import IconImage from "../../components/IconImage";
 import ArorwLeft from "../../assets/arrow_left.png";
 import closeButton from "../../assets/ph_x.png";
 import SignUpSub from "./sub";
+import { MainCustomButton } from "../../components/CustomButton";
+
+export const DataContext = createContext({
+  data: {},
+  setter: undefined,
+});
 
 export default function SignUpPage() {
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(0);
+  const [curLevel, setCurLevel] = useState(1);
+
+  const [signUpData, setSignUpData] = useState({});
+
+  const changeLevel = useCallback(
+    (level) => {
+      switch (level) {
+        case 0:
+          if (signUpData.auth_self && signUpData.auth_school)
+            setCurLevel(level + 1);
+        case 1:
+          if (signUpData.kakao_id) setCurLevel(level + 1);
+        case 2:
+          if (signUpData.gender_identity) {
+            setCurLevel(level + 1);
+          }
+        case 3:
+          if (signUpData.sexual_tendency && signUpData.sexual_orientation)
+            setCurLevel(level + 1);
+      }
+    },
+    [signUpData]
+  );
+
+  const buttonActionPerLevel = useCallback(() => {
+    switch (curLevel) {
+      case 0:
+        return { message: "인증 완료하기" };
+      default:
+        return { message: "다음으로" };
+    }
+  }, [curLevel]);
+
   return (
     <>
       <header className="p-2">
@@ -25,7 +63,17 @@ export default function SignUpPage() {
           {curLevel}/{TOTAL_LEVEL_COUNT}
         </h5>
       </header>
-      <SignUpSub></SignUpSub>
+      <DataContext.Provider
+        value={{
+          data: signUpData,
+          setter: setSignUpData,
+        }}
+      >
+        <SignUpSub level={curLevel}></SignUpSub>
+      </DataContext.Provider>
+      <MainCustomButton event={{ onClick: () => changeLevel(curLevel) }}>
+        {buttonActionPerLevel().message}
+      </MainCustomButton>
     </>
   );
 }
