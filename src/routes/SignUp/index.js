@@ -14,7 +14,7 @@ export const DataContext = createContext({
 export default function SignUpPage() {
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(1);
+  const [curLevel, setCurLevel] = useState(5);
 
   const [signUpData, setSignUpData] = useState({});
 
@@ -32,6 +32,9 @@ export default function SignUpPage() {
           }
         case 3:
           if (signUpData.sexual_tendency && signUpData.sexual_orientation)
+            setCurLevel(level + 1);
+        case 4:
+          if (signUpData.appearance && signUpData.height && signUpData.eyelid)
             setCurLevel(level + 1);
       }
     },
@@ -58,9 +61,9 @@ export default function SignUpPage() {
             <IconImage src={closeButton} />
           </div>
         </nav>
-        <ProgressBar total={TOTAL_LEVEL_COUNT} cur={curLevel} />
+        <ProgressBar total={TOTAL_LEVEL_COUNT} cur={curLevel + 1} />
         <h5 className="text-right text-xs mt-2">
-          {curLevel}/{TOTAL_LEVEL_COUNT}
+          {curLevel + 1}/{TOTAL_LEVEL_COUNT}
         </h5>
       </header>
       <DataContext.Provider

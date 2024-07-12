@@ -3,7 +3,7 @@ import search from "../../assets/search.png";
 import howToKakao from "../../assets/howto_kakao_id.png";
 import IconImage from "../../components/IconImage";
 import { MainCustomButton } from "../../components/CustomButton";
-import { useContext, useMemo, useState, useEffect } from "react";
+import { useContext, useMemo, useState, useEffect, useRef } from "react";
 import { DataContext } from ".";
 
 function FloatingSection({ children, addedStyle = "" }) {
@@ -12,6 +12,144 @@ function FloatingSection({ children, addedStyle = "" }) {
 
 function SectionTitle({ children }) {
   return <h2 className="text-2xl font-bold">{children}</h2>;
+}
+
+function RangeBar({ max, min, step, defaultValue, setter, captions }) {
+  return (
+    <div className="w-full h-4 mx-auto relative flex items-center mt-14">
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        className="w-full block  absolute top-0 left-0 h-full z-10"
+        defaultValue={defaultValue}
+        onChange={(e) => setter(e.target.value)}
+      ></input>
+      <div className="h-1 w-full bg-main">
+        <div className="flex justify-between w-full h-full absolute top-0 items-center">
+          {captions.map((caption, i) => (
+            <div className="bg-main rounded-full w-3 aspect-square">
+              <p className="w-0 h-0 overflow-visible -translate-y-7 -translate-x-1">
+                {caption}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExtendedRangeBar({ max, min, step, defaultValue, setter, captions }) {
+  const [innerValue, setInnerValue] = useState(defaultValue);
+
+  const progress = useRef(null);
+  const range = useRef(null);
+
+  useEffect(() => {
+    progress.current?.setAttribute(
+      "style",
+      `width: ${
+        ((innerValue - range.current.min) * 100) /
+        (range.current.max - range.current.min)
+      }%`
+    );
+  }, [innerValue]);
+
+  return (
+    <div className="w-full h-4 mx-auto relative flex items-center mt-14">
+      <input
+        ref={range}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        className={`w-full block  absolute top-0 left-0 h-full z-10`}
+        defaultValue={defaultValue}
+        onChange={(e) => {
+          setter(e.target.value);
+          setInnerValue(e.target.value);
+        }}
+      ></input>
+      <div className="h-1 w-full border-main border-[1px] relative box-border">
+        <div
+          className="absolute left-0 right-0 h-full bg-main"
+          ref={progress}
+        ></div>
+        <div className="flex justify-between w-full h-full absolute top-0 items-center">
+          <div className="rounded-full w-3 aspect-square invisible"></div>
+          {captions.map((caption, i) => (
+            <div className="bg-main rounded-full w-3 aspect-square">
+              <p className="w-0 h-0 text-xs overflow-visible -translate-y-7 -translate-x-1">
+                {caption}
+              </p>
+            </div>
+          ))}
+          <div className=" rounded-full w-3 aspect-square invisible"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SelectionRadioGrid({ collection, name, dataContext }) {
+  return (
+    <div className="grid grid-cols-2 gap-5 w-3/4 mx-auto mt-10">
+      {collection.map((value, i) => {
+        return (
+          <div
+            key={i}
+            className="relative mx-auto w-full rounded-lg overflow-hidden shadow-xl"
+          >
+            <input
+              type="radio"
+              hidden
+              value={value.main}
+              id={value.main}
+              className="peer"
+              name={name}
+              onChange={(e) =>
+                dataContext.setter({
+                  ...dataContext.data,
+                  [name]: e.target.value,
+                })
+              }
+            />
+            <label
+              htmlFor={value.main}
+              className="block bg-background py-2 peer-checked:bg-main"
+            >
+              <div className="text-center">
+                <h6>{value.main}</h6>
+                {value.sub ? <p>{value.sub}</p> : null}
+              </div>
+            </label>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function MBTILetterRow({ order, item, counter }) {
+  return (
+    <div className="flex flex-row">
+      <button>
+        <input type="radio" hidden name={order} id={item} value={item} />
+        <label className="px-4 py-2 bg-sub" htmlFor={item}>
+          {item}
+        </label>
+      </button>
+      <div className="h-2 grow bg-sub"></div>
+      <button>
+        <input type="radio" hidden name={order} id={counter} value={counter} />
+        <label className="px-4 py-2 bg-sub" htmlFor={counter}>
+          {counter}
+        </label>
+      </button>
+    </div>
+  );
 }
 
 function SubPage0() {
@@ -62,7 +200,7 @@ function SubPage0() {
               placeholder="학교 이메일"
             ></input>
             <MainCustomButton
-              addedStyle={"h-full py-0 ml-6"}
+              addedStyle={"h-full py-0 ml-6 flex items-center"}
               event={{
                 onClick: () => {
                   console.log("auth_school");
@@ -158,65 +296,22 @@ function SubPage2() {
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>성 정체성</SectionTitle>
-        <div className="grid grid-cols-2 gap-5 w-3/4 mx-auto mt-10">
-          {genderIdentityChoice.map((value, i) => {
-            return (
-              <div
-                key={i}
-                className="relative mx-auto w-full rounded-lg overflow-hidden shadow-xl"
-              >
-                <input
-                  type="radio"
-                  hidden
-                  value={value.main}
-                  id={value.main}
-                  className="peer"
-                  name="gender_identity"
-                  onChange={(e) =>
-                    dataContext.setter({
-                      ...dataContext.data,
-                      gender_identity: e.target.value,
-                    })
-                  }
-                />
-                <label
-                  htmlFor={value.main}
-                  className="block bg-background py-2 peer-checked:bg-main"
-                >
-                  <div className="text-center">
-                    <h6>{value.main}</h6>
-                    <p>{value.sub}</p>
-                  </div>
-                </label>
-              </div>
-            );
-          })}
-        </div>
+        <SelectionRadioGrid
+          collection={genderIdentityChoice}
+          name="gender_identity"
+          dataContext={dataContext}
+        />
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>나이</SectionTitle>
-        <div className="w-3/4 h-4 mx-auto relative flex items-center mt-14">
-          <input
-            type="range"
-            min={20}
-            max={30}
-            step={1}
-            className="w-full block  absolute top-0 left-0 h-full z-10"
-            defaultValue={DEFAULT_AGE}
-            onChange={(e) => setAge(e.target.value)}
-          ></input>
-          <div className="h-1 w-full bg-main"></div>
-          <div className="bg-main rounded-full w-3 aspect-square absolute right-0">
-            <p className="w-0 h-0 overflow-visible -translate-y-7 -translate-x-1">
-              30
-            </p>
-          </div>
-          <div className="bg-main rounded-full w-3 aspect-square absolute left-0">
-            <p className="w-0 h-0 overflow-visible -translate-y-7 -translate-x-1">
-              20
-            </p>
-          </div>
-        </div>
+        <RangeBar
+          max={30}
+          min={20}
+          defaultValue={DEFAULT_AGE}
+          step={1}
+          setter={(age) => setAge(parseInt(age))}
+          captions={[20, 25, 30]}
+        />
         <h5 className="text-center font-semibold my-8">{age}</h5>
       </FloatingSection>
     </>
@@ -254,7 +349,14 @@ function SubPage3() {
   }, []);
 
   const sexualTendency = useMemo(
-    () => ["비성향자", "DOM", "SUB", "SW", "SADI", "MASO"],
+    () => [
+      { main: "비성향자" },
+      { main: "DOM" },
+      { main: "SUB" },
+      { main: "SW" },
+      { main: "SADI" },
+      { main: "MASO" },
+    ],
     []
   );
 
@@ -265,80 +367,137 @@ function SubPage3() {
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>성적 지향</SectionTitle>
-        <div className="grid grid-cols-2 gap-5 w-3/4 mx-auto mt-10">
-          {sexualOrientation.map((value, i) => {
-            return (
-              <div
-                key={i}
-                className="relative mx-auto w-full rounded-lg overflow-hidden shadow-xl"
-              >
-                <input
-                  type="radio"
-                  hidden
-                  value={value.main}
-                  id={value.main}
-                  className="peer"
-                  name="sexual_orientation"
-                  onChange={(e) =>
-                    dataContext.setter({
-                      ...dataContext.data,
-                      sexual_orientation: e.target.value,
-                    })
-                  }
-                />
-                <label
-                  htmlFor={value.main}
-                  className="block bg-background py-2 peer-checked:bg-main"
-                >
-                  <div className="text-center">
-                    <h6>{value.main}</h6>
-                    <p>{value.sub}</p>
-                  </div>
-                </label>
-              </div>
-            );
-          })}
-        </div>
+        <SelectionRadioGrid
+          collection={sexualOrientation}
+          name="sexual_orientation"
+          dataContext={dataContext}
+        />
       </FloatingSection>
       <FloatingSection addedStyle="mb-5">
         <SectionTitle>성적 성향</SectionTitle>
-        <div className="grid grid-cols-2 gap-5 w-3/4 mx-auto mt-10">
-          {sexualTendency.map((value, i) => {
-            return (
-              <div
-                key={i}
-                className="relative mx-auto w-full rounded-lg overflow-hidden shadow-xl"
-              >
-                <input
-                  type="radio"
-                  hidden
-                  value={value}
-                  id={value}
-                  className="peer"
-                  name="sexual_tendency"
-                  onChange={(e) =>
-                    dataContext.setter({
-                      ...dataContext.data,
-                      sexual_tendency: e.target.value,
-                    })
-                  }
-                />
-                <label
-                  htmlFor={value}
-                  className="block bg-background py-2 peer-checked:bg-main"
-                >
-                  <div className="text-center">
-                    <h6>{value}</h6>
-                  </div>
-                </label>
-              </div>
-            );
-          })}
-        </div>
+        <SelectionRadioGrid
+          collection={sexualTendency}
+          name="sexual_tendency"
+          dataContext={dataContext}
+        />
       </FloatingSection>
     </>
   );
 }
+
+function SubPage4() {
+  const dataContext = useContext(DataContext);
+
+  const [MIN, MAX] = [145, 190];
+
+  const [height, setHeight] = useState(MIN + 5);
+
+  const shape = useMemo(
+    () => [
+      { main: "마른" },
+      { main: "보통" },
+      { main: "통통" },
+      { main: "근육" },
+    ],
+    []
+  );
+  const appearance = useMemo(
+    () => [
+      {
+        main: "뚜렷",
+      },
+      {
+        main: "두부",
+      },
+    ],
+    []
+  );
+  const eyelid = useMemo(
+    () => [
+      {
+        main: "유쌍",
+      },
+      {
+        main: "무쌍",
+      },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    dataContext.setter({ ...dataContext.data, height: height });
+  }, [height]);
+  return (
+    <>
+      <FloatingSection>
+        <h3>당신의 키와 생김새, 체형을 알려주세요.</h3>
+      </FloatingSection>
+      <FloatingSection>
+        <SectionTitle>키</SectionTitle>
+        <ExtendedRangeBar
+          max={MAX}
+          min={MIN}
+          defaultValue={MIN + 5}
+          step={5}
+          setter={(height) => setHeight(parseInt(height))}
+          captions={[150, 155, 160, 165, 170, 175, 180, 185]}
+        />
+        <h5 className="text-center font-semibold my-8">
+          {height === MIN ? "150 미만" : height === MAX ? "185 초과" : height}
+        </h5>
+      </FloatingSection>
+      <FloatingSection>
+        <SectionTitle>체형</SectionTitle>
+        <SelectionRadioGrid
+          collection={shape}
+          name="shape"
+          dataContext={dataContext}
+        />
+      </FloatingSection>
+      <FloatingSection>
+        <SectionTitle>생김새</SectionTitle>
+        <SelectionRadioGrid
+          collection={appearance}
+          name="appearance"
+          dataContext={dataContext}
+        />
+      </FloatingSection>
+      <FloatingSection addedStyle="mb-7">
+        <SectionTitle>쌍커풀 유무</SectionTitle>
+        <SelectionRadioGrid
+          collection={eyelid}
+          name="eyelid"
+          dataContext={dataContext}
+        ></SelectionRadioGrid>
+      </FloatingSection>
+    </>
+  );
+}
+
+function SubPage5() {
+  const [mbti, setMBTI] = useState({
+    first: "",
+    second: "",
+    third: "",
+    fourth: "",
+  });
+
+  return (
+    <>
+      <FloatingSection>
+        <h3>당신의 MBTI와 성격을 알려주세요.</h3>
+      </FloatingSection>
+      <FloatingSection>
+        <SectionTitle>MBTI</SectionTitle>
+        <MBTILetterRow order={"first"} item={"E"} counter={"I"} />
+        <MBTILetterRow order={"second"} item={"S"} counter={"N"} />
+        <MBTILetterRow order={"third"} item={"T"} counter={"F"} />
+        <MBTILetterRow order={"fourth"} item={"J"} counter={"P"} />
+      </FloatingSection>
+    </>
+  );
+}
+
 export default function SignUpSub({ level }) {
   return (
     <main className="px-2 flex flex-col w-full h-fit">
@@ -352,6 +511,10 @@ export default function SignUpSub({ level }) {
             return <SubPage2></SubPage2>;
           case 3:
             return <SubPage3></SubPage3>;
+          case 4:
+            return <SubPage4></SubPage4>;
+          case 5:
+            return <SubPage5></SubPage5>;
         }
       })()}
     </main>
