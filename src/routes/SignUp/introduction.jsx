@@ -5,7 +5,9 @@ import { DataContext } from ".";
 export default function Introduction() {
   const dataContext = useContext(DataContext);
 
-  const [introduction, setIntroduction] = useState("");
+  const [introduction, setIntroduction] = useState(
+    dataContext.data.introduction ?? ""
+  );
 
   useEffect(() => {
     dataContext.setter({ ...dataContext.data, introduction: introduction });
@@ -26,6 +28,7 @@ export default function Introduction() {
             className="block w-full h-full resize-none outline-none p-4 bg-transparent"
             placeholder="자기소개를 적어주세요."
             onChange={(e) => setIntroduction(e.target.value)}
+            defaultValue={introduction}
           ></textarea>
         </div>
       </FloatingSection>

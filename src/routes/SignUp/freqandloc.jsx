@@ -3,11 +3,14 @@ import { DataContext } from ".";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
 
 function SelectRegionRow({ label, regions, setter, sup = undefined }) {
+  const dataContext = useContext(DataContext);
+
   const ref = useRef(null);
 
+  const LABELMAP = { 도시: "city", 행정구역: "subRegion" };
+
   useEffect(() => {
-    ref.current?.setAttribute("selected", true);
-    return () => setter("");
+    if (!dataContext.data[label]) ref.current?.setAttribute("selected", true);
   }, [sup]);
 
   return (
@@ -18,6 +21,7 @@ function SelectRegionRow({ label, regions, setter, sup = undefined }) {
       <select
         className="block grow ml-16 bg-background box-border px-3 py-2 rounded-md"
         onChange={(e) => setter(e.target.value)}
+        value={dataContext.data[LABELMAP[label]]}
       >
         <option hidden ref={ref}>
           선택하기
@@ -33,12 +37,14 @@ function SelectRegionRow({ label, regions, setter, sup = undefined }) {
 }
 
 export default function FrequencyAndLocation() {
-  const [meetNum, setMeetNum] = useState(1);
-
-  const [city, setCity] = useState("");
-  const [sub, setSub] = useState("");
-
   const dataContext = useContext(DataContext);
+
+  const [meetNum, setMeetNum] = useState(
+    dataContext.data.meeting_frequency ?? 1
+  );
+
+  const [city, setCity] = useState(dataContext.data.city ?? "");
+  const [sub, setSub] = useState(dataContext.data.subRegion ?? "");
 
   useEffect(() => {
     dataContext.setter({ ...dataContext.data, city: city, subRegion: sub });
@@ -82,7 +88,7 @@ export default function FrequencyAndLocation() {
           max={4}
           min={1}
           step={1}
-          defaultValue={1}
+          defaultValue={meetNum}
           setter={(num) => setMeetNum(parseInt(num))}
           captions={["1번", "2번", "3번", "4번"]}
         ></RangeBar>

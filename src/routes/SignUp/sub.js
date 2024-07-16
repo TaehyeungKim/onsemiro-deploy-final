@@ -9,6 +9,8 @@ import FrequencyAndLocation from "./freqandloc";
 import SameUniv from "./sameuniv";
 import Photos from "./photos";
 import Introduction from "./introduction";
+import PreferIdentity from "./preferIdentity";
+import Ideal from "./ideal";
 
 export default function SignUpSub({ level }) {
   return (
@@ -32,11 +34,15 @@ export default function SignUpSub({ level }) {
           case 7:
             return <FrequencyAndLocation />;
           case 8:
-            return <SameUniv />;
-          case 9:
             return <Photos />;
-          case 10:
+          case 9:
             return <Introduction />;
+          case 10:
+            return <PreferIdentity />;
+          case 11:
+            return <SameUniv />;
+          case 12:
+            return <Ideal />;
         }
       })()}
     </main>
