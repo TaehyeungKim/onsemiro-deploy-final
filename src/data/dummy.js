@@ -259,7 +259,7 @@ export const dummyDirectSuccessReponseData = {
 
 export const dummyFinalSuccessResponseData = {
   meta: {
-    type: "request",
+    type: "response",
     status: "finalSuccess",
   },
   date: "7/9",

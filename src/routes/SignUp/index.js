@@ -1,5 +1,5 @@
 import ProgressBar from "../../components/ProgressBar";
-import { useState, useMemo, createContext, useCallback } from "react";
+import { useState, createContext, useCallback } from "react";
 import IconImage from "../../components/IconImage";
 import ArorwLeft from "../../assets/arrow_left.png";
 import closeButton from "../../assets/ph_x.png";
@@ -12,9 +12,9 @@ export const DataContext = createContext({
 });
 
 export default function SignUpPage() {
-  const TOTAL_LEVEL_COUNT = 14;
+  const TOTAL_LEVEL_COUNT = 13;
 
-  const [curLevel, setCurLevel] = useState(5);
+  const [curLevel, setCurLevel] = useState(9);
 
   const [signUpData, setSignUpData] = useState({});
 
@@ -22,20 +22,49 @@ export default function SignUpPage() {
     (level) => {
       switch (level) {
         case 0:
+          console.log(signUpData.auth_self && signUpData.auth_school);
           if (signUpData.auth_self && signUpData.auth_school)
             setCurLevel(level + 1);
+          break;
         case 1:
           if (signUpData.kakao_id) setCurLevel(level + 1);
+          break;
         case 2:
           if (signUpData.gender_identity) {
             setCurLevel(level + 1);
           }
+          break;
         case 3:
           if (signUpData.sexual_tendency && signUpData.sexual_orientation)
             setCurLevel(level + 1);
+          break;
         case 4:
           if (signUpData.appearance && signUpData.height && signUpData.eyelid)
             setCurLevel(level + 1);
+          break;
+        case 5:
+          if (signUpData.mbti && signUpData.character) setCurLevel(level + 1);
+          break;
+        case 6:
+          if (signUpData.interest && signUpData.interest.length > 0)
+            setCurLevel(level + 1);
+          break;
+        case 7:
+          if (
+            signUpData.meeting_frequency &&
+            signUpData.city &&
+            signUpData.subRegion
+          )
+            setCurLevel(level + 1);
+          break;
+        case 8:
+          setCurLevel(level + 1);
+          break;
+        case 9:
+          if (signUpData.std && signUpData.photo) setCurLevel(level + 1);
+          break;
+        case 10:
+          if (signUpData.introduction) setCurLevel(level + 1);
       }
     },
     [signUpData]
@@ -74,7 +103,13 @@ export default function SignUpPage() {
       >
         <SignUpSub level={curLevel}></SignUpSub>
       </DataContext.Provider>
-      <MainCustomButton event={{ onClick: () => changeLevel(curLevel) }}>
+      <MainCustomButton
+        event={{
+          onClick: () => {
+            changeLevel(curLevel);
+          },
+        }}
+      >
         {buttonActionPerLevel().message}
       </MainCustomButton>
     </>

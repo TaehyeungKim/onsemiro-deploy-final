@@ -13,13 +13,14 @@ module.exports = {
       colors: {
         background: "#f5f5f5",
         mathing_count: "#F35757",
-        main: "#2EEF4D",
-        sub: "#EFFFF0",
+        main: "#BEAEE2",
+        sub: "#F7DBF0",
         auth: "#ECA496",
         "main-icon-section": "#D9D9D9",
         mask: "rgba(0,0,0,0.54)",
         "mask-deeper": "rgba(0,0,0,0.33)",
         profile: "#EAEAEA",
+        pale: "#f5f5f5",
       },
       borderRadius: {
         half: "50%",
