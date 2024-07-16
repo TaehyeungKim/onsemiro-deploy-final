@@ -5,18 +5,47 @@ import ArorwLeft from "../../assets/arrow_left.png";
 import closeButton from "../../assets/ph_x.png";
 import SignUpSub from "./sub";
 import { MainCustomButton } from "../../components/CustomButton";
+import { IdealChoiceSub } from "./ideal";
 
 export const DataContext = createContext({
   data: {},
   setter: undefined,
 });
 
+export const IdealChoiceToggleContext = createContext({
+  toggle: undefined,
+});
+
 export default function SignUpPage() {
+  const [signUpData, setSignUpData] = useState({});
+
+  const [idealChoiceVisible, setIdealChoiceVisible] = useState(false);
+  return (
+    <DataContext.Provider
+      value={{
+        data: signUpData,
+        setter: setSignUpData,
+      }}
+    >
+      <IdealChoiceToggleContext.Provider
+        value={{
+          toggle: setIdealChoiceVisible,
+        }}
+      >
+        {!idealChoiceVisible ? (
+          <SignUpMain signUpData={signUpData}></SignUpMain>
+        ) : (
+          <IdealChoiceSub />
+        )}
+      </IdealChoiceToggleContext.Provider>
+    </DataContext.Provider>
+  );
+}
+
+function SignUpMain({ signUpData }) {
   const TOTAL_LEVEL_COUNT = 13;
 
-  const [curLevel, setCurLevel] = useState(6);
-
-  const [signUpData, setSignUpData] = useState({});
+  const [curLevel, setCurLevel] = useState(12);
 
   const changeLevel = useCallback(
     (level) => {
@@ -58,13 +87,17 @@ export default function SignUpPage() {
             setCurLevel(level + 1);
           break;
         case 8:
-          setCurLevel(level + 1);
-          break;
-        case 9:
           if (signUpData.std && signUpData.photo) setCurLevel(level + 1);
           break;
-        case 10:
+        case 9:
           if (signUpData.introduction) setCurLevel(level + 1);
+          break;
+        case 10:
+          if (signUpData.prefer_gender_identity) setCurLevel(level + 1);
+          break;
+        case 11:
+          setCurLevel(level + 1);
+          break;
       }
     },
     [signUpData]
@@ -98,23 +131,26 @@ export default function SignUpPage() {
           {curLevel + 1}/{TOTAL_LEVEL_COUNT}
         </h5>
       </header>
-      <DataContext.Provider
-        value={{
-          data: signUpData,
-          setter: setSignUpData,
-        }}
-      >
-        <SignUpSub level={curLevel}></SignUpSub>
-      </DataContext.Provider>
-      <MainCustomButton
-        event={{
-          onClick: () => {
-            changeLevel(curLevel);
-          },
-        }}
-      >
-        {buttonActionPerLevel().message}
-      </MainCustomButton>
+
+      <SignUpSub level={curLevel}></SignUpSub>
+
+      <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
+        {curLevel === 12 ? (
+          <MainCustomButton addedStyle="!bg-background !text-black !mx-0 grow">
+            SKIP
+          </MainCustomButton>
+        ) : null}
+        <MainCustomButton
+          event={{
+            onClick: () => {
+              changeLevel(curLevel);
+            },
+          }}
+          addedStyle={curLevel === 12 ? "!mx-0 grow" : null}
+        >
+          {buttonActionPerLevel().message}
+        </MainCustomButton>
+      </div>
     </>
   );
 }

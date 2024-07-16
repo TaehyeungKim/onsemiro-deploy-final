@@ -1,7 +1,10 @@
 import letter from "../../assets/landing-letter.png";
 import HomeHeader from "../../components/HomeHeader";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
   return (
     <>
       <HomeHeader />
@@ -27,8 +30,11 @@ export default function LandingPage() {
           <br />
           온새미로는 세상의 모든 성적 지향과 성향을 존중합니다.
         </p>
-        <button className="bg-main text-white w-80 box-border py-4 rounded-lg text-xl mb-5 shadow-lg">
-          설문하고 프로필 받기
+        <button
+          className="bg-main text-white w-80 box-border py-4 rounded-lg text-xl mb-5 shadow-lg"
+          onClick={() => navigate("/signup")}
+        >
+          설문하고 회원가입하기
         </button>
         <button className="bg-sub text-black w-80 px-16 py-4 rounded-lg text-xl mb-11 shadow-lg">
           로그인하기

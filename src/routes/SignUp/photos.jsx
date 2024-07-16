@@ -10,8 +10,8 @@ export default function Photos() {
 
   const dataContext = useContext(DataContext);
 
-  const [photo, setPhoto] = useState(null);
-  const [std, setStd] = useState(null);
+  const [photo, setPhoto] = useState(dataContext.data.photo ?? null);
+  const [std, setStd] = useState(dataContext.data.std ?? null);
 
   const openFileInput = useCallback(
     (fileRef) => {

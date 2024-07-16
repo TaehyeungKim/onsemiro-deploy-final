@@ -1,11 +1,12 @@
 import { DataContext } from ".";
-import { useContext, useMemo, useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   FloatingSection,
   SectionTitle,
   SelectionRadioGrid,
   RangeBar,
 } from "./components";
+import { GenderIdentity } from "../../assets/asset";
 export default function AgeAndGender() {
   const dataContext = useContext(DataContext);
 
@@ -17,28 +18,7 @@ export default function AgeAndGender() {
     dataContext.setter({ ...dataContext.data, age: age });
   }, [age]);
 
-  const genderIdentityChoice = useMemo(() => {
-    return [
-      {
-        main: "남성",
-        sub: "Male",
-      },
-      {
-        main: "여성",
-        sub: "Female",
-      },
-      {
-        main: "MTF",
-        sub: "Transgender",
-      },
-      {
-        main: "TMF",
-        sub: "Transgender",
-      },
-      { main: "에이젠더", sub: "Agender" },
-      { main: "논바이너리", sub: "Non-binary" },
-    ];
-  }, []);
+  const genderIdentityChoice = GenderIdentity;
 
   return (
     <>

@@ -8,7 +8,9 @@ import No from "../../assets/no.png";
 export default function SameUniv() {
   const dataContext = useContext(DataContext);
 
-  const [sameUniv, setSameUniv] = useState(true);
+  const [sameUniv, setSameUniv] = useState(
+    dataContext.data.same_univ === false ? false : true
+  );
 
   useEffect(() => {
     dataContext.setter({ ...dataContext.data, same_univ: sameUniv });
@@ -29,7 +31,7 @@ export default function SameUniv() {
               id="ok"
               className="peer"
               value={true}
-              defaultChecked
+              defaultChecked={sameUniv === true ?? false}
               onChange={(e) => setSameUniv(e.target.value === "true")}
             />
             <label
@@ -50,6 +52,7 @@ export default function SameUniv() {
               id="no"
               className="peer"
               value={false}
+              defaultChecked={sameUniv === false ?? false}
               onChange={(e) => setSameUniv(e.target.value === "true")}
             />
             <label

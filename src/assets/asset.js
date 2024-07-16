@@ -40,6 +40,17 @@ import tatoo from "../assets/interest/tatoo.png";
 import pilates from "../assets/interest/tatoo.png";
 import foreign from "../assets/interest/foreign.png";
 
+import age from "../assets/conditions/age.png";
+import appearance from "../assets/conditions/appearance.png";
+import character from "../assets/conditions/character.png";
+import eyelid from "../assets/conditions/eyelid.png";
+import frequency from "../assets/conditions/frequency.png";
+import height from "../assets/conditions/height.png";
+import location from "../assets/conditions/location.png";
+import mbti from "../assets/conditions/mbti.png";
+import sexual from "../assets/conditions/sexual.png";
+import shape from "../assets/conditions/shape.png";
+
 export const interestValueSet = [
   {
     icon: date,
@@ -100,4 +111,78 @@ export const interestValueSet = [
   { icon: tatoo, value: "문신" },
   { icon: pilates, value: "필라테스" },
   { icon: foreign, value: "외국어" },
+];
+
+export const GenderIdentity = [
+  {
+    main: "남성",
+    sub: "Male",
+  },
+  {
+    main: "여성",
+    sub: "Female",
+  },
+  {
+    main: "MTF",
+    sub: "Transgender",
+  },
+  {
+    main: "TMF",
+    sub: "Transgender",
+  },
+  { main: "에이젠더", sub: "Agender" },
+  { main: "논바이너리", sub: "Non-binary" },
+];
+
+export const Conditions = [
+  {
+    condition: "age",
+    icon: age,
+    label: "나이",
+  },
+  {
+    condition: "sexual",
+    icon: sexual,
+    label: "성적 성향",
+  },
+  {
+    condition: "height",
+    icon: height,
+    label: "키",
+  },
+  {
+    condition: "shape",
+    icon: shape,
+    label: "체형",
+  },
+  {
+    condition: "appearance",
+    icon: appearance,
+    label: "생김새",
+  },
+  {
+    condition: "eyelid",
+    icon: eyelid,
+    label: "쌍커풀 유무",
+  },
+  {
+    condition: "mbti",
+    icon: mbti,
+    label: "MBTI",
+  },
+  {
+    condition: "character",
+    icon: character,
+    label: "성격",
+  },
+  {
+    condition: "frequency",
+    label: "원하는 만남 주기",
+    icon: frequency,
+  },
+  {
+    condition: "location",
+    label: "거주 지역",
+    icon: location,
+  },
 ];
