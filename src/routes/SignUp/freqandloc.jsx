@@ -84,14 +84,16 @@ export default function FrequencyAndLocation() {
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>일주일에 원하는 만남 횟수</SectionTitle>
-        <RangeBar
-          max={4}
-          min={1}
-          step={1}
-          defaultValue={meetNum}
-          setter={(num) => setMeetNum(parseInt(num))}
-          captions={["1번", "2번", "3번", "4번"]}
-        ></RangeBar>
+        <div className="mt-14">
+          <RangeBar
+            max={4}
+            min={1}
+            step={1}
+            defaultValue={meetNum}
+            setter={(num) => setMeetNum(parseInt(num))}
+            captions={["1번", "2번", "3번", "4번"]}
+          ></RangeBar>
+        </div>
         <h5 className="text-center mt-4">{`일주일에 ${meetNum}번`}</h5>
       </FloatingSection>
       <FloatingSection>

@@ -144,7 +144,7 @@ export default function Character() {
       <FloatingSection>
         <SectionTitle>성격</SectionTitle>
         <div className="flex justify-center">
-          <div className="w-11/12">
+          <div className="w-11/12 mt-14">
             <RangeBar
               max={4}
               min={0}

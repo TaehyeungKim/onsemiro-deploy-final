@@ -6,6 +6,7 @@ import {
   SelectionRadioGrid,
   ExtendedRangeBar,
 } from "./components";
+import { ShapeCollection } from "../../assets/asset";
 
 export default function Appearance() {
   const dataContext = useContext(DataContext);
@@ -14,15 +15,6 @@ export default function Appearance() {
 
   const [height, setHeight] = useState(dataContext.data.height ?? MIN + 5);
 
-  const shape = useMemo(
-    () => [
-      { main: "마른" },
-      { main: "보통" },
-      { main: "통통" },
-      { main: "근육" },
-    ],
-    []
-  );
   const appearance = useMemo(
     () => [
       {
@@ -71,7 +63,7 @@ export default function Appearance() {
       <FloatingSection>
         <SectionTitle>체형</SectionTitle>
         <SelectionRadioGrid
-          collection={shape}
+          collection={ShapeCollection}
           name="shape"
           dataContext={dataContext}
         />

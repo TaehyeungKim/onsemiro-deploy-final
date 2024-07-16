@@ -12,6 +12,7 @@ module.exports = {
       },
       colors: {
         background: "#f5f5f5",
+        "background-darker": "#EAEAEA",
         mathing_count: "#F35757",
         main: "#BEAEE2",
         sub: "#F7DBF0",

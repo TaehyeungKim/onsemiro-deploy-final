@@ -1,23 +1,57 @@
 import { FloatingSection } from "./components";
 import { DataContext, IdealChoiceToggleContext } from ".";
-import { useContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import IconImage from "../../components/IconImage";
 import ArrowLeft from "../../assets/arrow_left.png";
 import { Conditions } from "../../assets/asset";
 import { MainCustomButton } from "../../components/CustomButton";
+import {
+  IdealAgeSet,
+  IdealHeightSet,
+  IdealSexualSet,
+  IdealShapeSet,
+} from "./conditionSet";
 
-function ConditionSelect({ label }) {
+function ConditionSelect({ label, reqType }) {
   const idealToggleContext = useContext(IdealChoiceToggleContext);
+  const dataContext = useContext(DataContext);
+
+  // useEffect(() => {
+  //   console.log(dataContext.data);
+  // }, []);
 
   return (
     <div className="bg-background flex flex-col items-center w-full rounded-lg">
       <h3 className="py-10 text-2xl font-bold">{label}</h3>
-      <button
-        className=" mb-10 block w-fit after:content-[''] after:w-full after:block after:border-b-2 after:border-main text-main"
-        onClick={() => idealToggleContext.toggle(true)}
-      >
-        고르기
-      </button>
+      {!dataContext.data.preference || !dataContext.data.preference[reqType] ? (
+        <button
+          className=" mb-10 block w-fit after:content-[''] after:w-full after:block after:border-b-2 after:border-main text-main"
+          onClick={() => idealToggleContext.toggle(true, reqType)}
+        >
+          고르기
+        </button>
+      ) : (
+        <div className="bg-background-darker w-4/5 py-3 flex justify-center items-center rounded-lg my-3">
+          <div className="w-5 mr-2">
+            <IconImage
+              src={
+                Conditions.find(
+                  (condition) =>
+                    condition.condition ===
+                    Object.keys(dataContext.data.preference[reqType])[0]
+                ).icon
+              }
+            />
+          </div>
+          {
+            Conditions.find(
+              (condition) =>
+                condition.condition ===
+                Object.keys(dataContext.data.preference[reqType])[0]
+            ).label
+          }
+        </div>
+      )}
     </div>
   );
 }
@@ -35,11 +69,11 @@ export default function Ideal() {
       <FloatingSection>
         <div className="flex flex-col w-11/12 mx-auto gap-y-3">
           <div className="flex w-full">
-            <ConditionSelect label={"필수 조건"} />
+            <ConditionSelect label={"필수 조건"} reqType={"required"} />
           </div>
           <div className="flex w-full gap-x-3">
-            <ConditionSelect label={"선택 조건 1순위"} />
-            <ConditionSelect label={"선택 조건 2순위"} />
+            <ConditionSelect label={"선택 조건 1순위"} reqType={"optional_1"} />
+            <ConditionSelect label={"선택 조건 2순위"} reqType={"optional_2"} />
           </div>
         </div>
       </FloatingSection>
@@ -47,8 +81,88 @@ export default function Ideal() {
   );
 }
 
-export function IdealChoiceSub() {
+export const TempConditionSelectContext = createContext({
+  data: {},
+  setter: undefined,
+});
+
+function ConditionSet({ type, close, reqType }) {
+  const [conditionSetData, setConditionSetData] = useState({});
+
+  const dataContext = useContext(DataContext);
+  const idealChoiceContext = useContext(IdealChoiceToggleContext);
+
+  // useEffect(() => {
+  //   setConditionSetData({ ...conditionSetData, type: reqType });
+  // }, []);
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <header className="p-3">
+        <button className="w-5 block" onClick={close}>
+          <IconImage src={ArrowLeft} />
+        </button>
+      </header>
+      <TempConditionSelectContext.Provider
+        value={{
+          data: conditionSetData,
+          setter: setConditionSetData,
+        }}
+      >
+        {(() => {
+          switch (type.condition) {
+            case "age":
+              return <IdealAgeSet reqType={reqType} />;
+            case "sexual":
+              return <IdealSexualSet reqType={reqType} />;
+            case "shape":
+              return <IdealShapeSet reqType={reqType} />;
+            case "height":
+              return <IdealHeightSet reqType={reqType} />;
+          }
+        })()}
+      </TempConditionSelectContext.Provider>
+      <div className="mb-10">
+        <MainCustomButton
+          event={{
+            onClick: () => {
+              dataContext.setter({
+                ...dataContext.data,
+                preference: {
+                  ...dataContext.data.preference,
+                  [reqType]: { ...conditionSetData },
+                },
+              });
+              // close();
+              idealChoiceContext.toggle(false);
+            },
+          }}
+        >{`'${type.label}' 선택하기`}</MainCustomButton>
+      </div>
+    </div>
+  );
+}
+
+export function IdealChoiceSub({ reqType }) {
   const idealToggleContext = useContext(IdealChoiceToggleContext);
+
+  const dataContext = useContext(DataContext);
+
+  const [isConditionSetVisible, setIsConditionSetVisible] = useState(false);
+  const [type, setType] = useState(undefined);
+
+  // useEffect(() => {
+  //   console.log(dataContext.data);
+  // }, []);
+
+  if (isConditionSetVisible)
+    return (
+      <ConditionSet
+        type={type}
+        reqType={reqType}
+        close={() => setIsConditionSetVisible(false)}
+      />
+    );
 
   return (
     <>
@@ -69,7 +183,37 @@ export function IdealChoiceSub() {
             {Conditions.map((condition) => (
               <button
                 key={condition.label}
-                className="bg-background w-full py-3 flex justify-center items-center rounded-lg my-3 cursor-pointer"
+                className={`bg-background w-full py-3 flex justify-center items-center rounded-lg my-3 cursor-pointer ${
+                  dataContext.data.preference?.required?.hasOwnProperty(
+                    condition.condition
+                  ) ||
+                  dataContext.data.preference?.optional_1?.hasOwnProperty(
+                    condition.condition
+                  ) ||
+                  dataContext.data.preference?.optional_2?.hasOwnProperty(
+                    condition.condition
+                  )
+                    ? "opacity-20"
+                    : null
+                }`}
+                onClick={() => {
+                  if (
+                    !(
+                      dataContext.data.preference?.required?.hasOwnProperty(
+                        condition.condition
+                      ) ||
+                      dataContext.data.preference?.optional_1?.hasOwnProperty(
+                        condition.condition
+                      ) ||
+                      dataContext.data.preference?.optional_2?.hasOwnProperty(
+                        condition.condition
+                      )
+                    )
+                  ) {
+                    setIsConditionSetVisible(true);
+                    setType(condition);
+                  }
+                }}
               >
                 <div className="w-5 mr-4">
                   <IconImage src={condition.icon} />

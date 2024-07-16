@@ -5,6 +5,7 @@ import {
   SectionTitle,
   SelectionRadioGrid,
 } from "./components";
+import { sexualTendency } from "../../assets/asset";
 
 export default function Sexual() {
   const dataContext = useContext(DataContext);
@@ -35,18 +36,6 @@ export default function Sexual() {
       { main: "기타", sub: "Other" },
     ];
   }, []);
-
-  const sexualTendency = useMemo(
-    () => [
-      { main: "비성향자" },
-      { main: "DOM" },
-      { main: "SUB" },
-      { main: "SW" },
-      { main: "SADI" },
-      { main: "MASO" },
-    ],
-    []
-  );
 
   return (
     <>

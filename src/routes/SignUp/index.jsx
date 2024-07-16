@@ -1,5 +1,5 @@
 import ProgressBar from "../../components/ProgressBar";
-import { useState, createContext, useCallback } from "react";
+import { useState, createContext, useCallback, useEffect } from "react";
 import IconImage from "../../components/IconImage";
 import ArorwLeft from "../../assets/arrow_left.png";
 import closeButton from "../../assets/ph_x.png";
@@ -19,7 +19,14 @@ export const IdealChoiceToggleContext = createContext({
 export default function SignUpPage() {
   const [signUpData, setSignUpData] = useState({});
 
-  const [idealChoiceVisible, setIdealChoiceVisible] = useState(false);
+  const [idealChoice, setIdealChoice] = useState({
+    visible: false,
+    type: "",
+  });
+
+  // useEffect(() => {
+  //   console.log(idealChoice);
+  // }, [idealChoice]);
   return (
     <DataContext.Provider
       value={{
@@ -29,13 +36,27 @@ export default function SignUpPage() {
     >
       <IdealChoiceToggleContext.Provider
         value={{
-          toggle: setIdealChoiceVisible,
+          toggle: (open, type, data = undefined) => {
+            if (open) setIdealChoice({ visible: open, type });
+            else {
+              // if (type && data) {
+              //   data.type = type;
+              //   setSignUpData({
+              //     ...signUpData,
+              //     preference: {
+              //       ...data,
+              //     },
+              //   });
+              // }
+              setIdealChoice({ visible: open });
+            }
+          },
         }}
       >
-        {!idealChoiceVisible ? (
+        {!idealChoice.visible ? (
           <SignUpMain signUpData={signUpData}></SignUpMain>
         ) : (
-          <IdealChoiceSub />
+          <IdealChoiceSub reqType={idealChoice.type} />
         )}
       </IdealChoiceToggleContext.Provider>
     </DataContext.Provider>

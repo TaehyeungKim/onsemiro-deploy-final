@@ -8,9 +8,17 @@ export function SectionTitle({ children }) {
   return <h2 className="text-2xl font-bold">{children}</h2>;
 }
 
-export function RangeBar({ max, min, step, defaultValue, setter, captions }) {
+export function RangeBar({
+  max,
+  min,
+  step,
+  defaultValue,
+  setter,
+  captions,
+  options = null,
+}) {
   return (
-    <div className="w-full h-4 mx-auto relative flex items-center mt-14">
+    <div className="w-full h-4 mx-auto relative flex items-center">
       <input
         type="range"
         min={min}
@@ -20,12 +28,18 @@ export function RangeBar({ max, min, step, defaultValue, setter, captions }) {
         defaultValue={defaultValue}
         onChange={(e) => setter(e.target.value)}
       ></input>
-      <div className="h-1 w-full bg-main">
+      <div
+        className={`h-1 w-full bg-main ${options?.bgStyle?.reduce(
+          (prev, cur) => `${prev} ` + cur
+        )}`}
+      >
         <div className="flex justify-between w-full h-full absolute top-0 items-center">
           {captions.map((caption, i) => (
             <div
               key={i}
-              className="bg-main rounded-full w-3 aspect-square flex justify-center"
+              className={`bg-main rounded-full w-3 aspect-square flex justify-center ${options?.captionCircleStyle?.reduce(
+                (prev, cur) => `${prev} ` + `${cur}`
+              )}`}
             >
               <p className="h-0 overflow-visible -translate-y-7 text-center whitespace-nowrap w-fit">
                 {caption}
@@ -33,6 +47,97 @@ export function RangeBar({ max, min, step, defaultValue, setter, captions }) {
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function DoubleThumbRangeBar({ former, latter }) {
+  const [formerValue, setFormerValue] = useState(former.default);
+  const [latterValue, setLatterValue] = useState(latter.default);
+
+  const progress = useRef(null);
+
+  useEffect(() => {
+    console.log(formerValue, latterValue);
+  }, []);
+
+  useEffect(() => {
+    progress.current?.setAttribute(
+      "style",
+      `left: ${
+        (((formerValue - former.range[0]) /
+          (former.range[former.range.length - 1] - former.range[0])) *
+          100 *
+          (former.range.length - 1)) /
+        (former.range.length + latter.range.length - 1)
+      }%; right: ${
+        (((latter.range[latter.range.length - 1] - latterValue) /
+          (latter.range[latter.range.length - 1] - latter.range[0])) *
+          100 *
+          (latter.range.length - 1)) /
+        (former.range.length + latter.range.length - 1)
+      }%`
+    );
+  }, [formerValue, latterValue]);
+
+  return (
+    <div className="flex items-center w-full relative">
+      <div
+        className="absolute h-1 bg-main w-auto z-10 shadow-md"
+        ref={progress}
+      ></div>
+      <div className="grow">
+        <RangeBar
+          min={former.range[0]}
+          max={former.range[former.range.length - 1]}
+          step={former.step}
+          defaultValue={former.default}
+          setter={(age) => {
+            setFormerValue(parseInt(age));
+            former.setter(age);
+          }}
+          captions={former.captions}
+          options={{
+            captionCircleStyle: [
+              "!bg-white",
+              // "!shadow-md",
+              // "!border-main",
+              // "!shadow-main",
+              // "!border-[0.5px]",
+            ],
+            bgStyle: ["!bg-background"],
+          }}
+        />
+      </div>
+      <div
+        className={`h-1 bg-white box-border border-main border-[0.3px]`}
+        style={{
+          width: `${100 / (former.range.length + latter.range.length - 1)}%`,
+        }}
+      ></div>
+      <div className="grow">
+        <RangeBar
+          min={latter.range[0]}
+          max={latter.range[latter.range.length - 1]}
+          step={latter.step}
+          defaultValue={latter.default}
+          setter={(age) => {
+            setLatterValue(parseInt(age));
+            latter.setter(age);
+          }}
+          captions={latter.captions}
+          options={{
+            captionCircleStyle: [
+              "!bg-white",
+              // "!shadow-md",
+              // "!border-main",
+              // "!shadow-main",
+              // "!border-[0.5px]",
+            ],
+            bgStyle: ["!bg-background", ""],
+          }}
+        />
       </div>
     </div>
   );
