@@ -186,3 +186,19 @@ export const Conditions = [
     icon: location,
   },
 ];
+
+export const sexualTendency = [
+  { main: "비성향자" },
+  { main: "DOM" },
+  { main: "SUB" },
+  { main: "SW" },
+  { main: "SADI" },
+  { main: "MASO" },
+];
+
+export const ShapeCollection = [
+  { main: "마른" },
+  { main: "보통" },
+  { main: "통통" },
+  { main: "근육" },
+];

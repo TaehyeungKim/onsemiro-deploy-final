@@ -35,14 +35,16 @@ export default function AgeAndGender() {
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>나이</SectionTitle>
-        <RangeBar
-          max={30}
-          min={20}
-          defaultValue={dataContext.data.age ?? DEFAULT_AGE}
-          step={1}
-          setter={(age) => setAge(parseInt(age))}
-          captions={[20, 25, 30]}
-        />
+        <div className="mt-14">
+          <RangeBar
+            max={30}
+            min={20}
+            defaultValue={dataContext.data.age ?? DEFAULT_AGE}
+            step={1}
+            setter={(age) => setAge(parseInt(age))}
+            captions={[20, 25, 30]}
+          />
+        </div>
         <h5 className="text-center font-semibold my-8">{age}</h5>
       </FloatingSection>
     </>
