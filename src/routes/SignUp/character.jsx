@@ -3,9 +3,6 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
 
 function MBTILetterRow({ order, item, counter, data, setter }) {
-  useEffect(() => {
-    setter({ ...data, [order]: item });
-  }, []);
   return (
     <div className="flex flex-row items-center mb-4">
       <button>
@@ -17,7 +14,7 @@ function MBTILetterRow({ order, item, counter, data, setter }) {
           value={item}
           className="peer"
           onChange={(e) => setter({ ...data, [order]: e.target.value })}
-          defaultChecked
+          defaultChecked={data[order] === item ? true : false}
         />
         <label
           className="px-4 py-3 bg-pale flex justify-center w-16 box-border rounded-md shadow-lg peer-checked:bg-main"
@@ -36,6 +33,7 @@ function MBTILetterRow({ order, item, counter, data, setter }) {
           value={counter}
           className="peer"
           onChange={(e) => setter({ ...data, [order]: e.target.value })}
+          defaultChecked={data[order] === counter ? true : false}
         />
         <label
           className="px-4 py-3 bg-pale flex justify-center w-16 box-border rounded-md shadow-lg peer-checked:bg-main"
@@ -61,22 +59,48 @@ export default function Character() {
     };
   }, []);
 
-  const [mbti, setMBTI] = useState({
-    first: "E",
-    second: "S",
-    third: "T",
-    fourth: "J",
-  });
+  const [mbti, setMBTI] = useState(
+    dataContext.data.mbti
+      ? {
+          first: dataContext.data.mbti[0],
+          second: dataContext.data.mbti[1],
+          third: dataContext.data.mbti[2],
+          fourth: dataContext.data.mbti[3],
+        }
+      : {
+          first: "E",
+          second: "S",
+          third: "T",
+          fourth: "J",
+        }
+  );
 
-  const [character, setCharacter] = useState("조용한");
+  const [characterSym, setCharacterSym] = useState(
+    dataContext.data.character
+      ? Object.keys(characterKeyMap).filter(
+          (key) => characterKeyMap[key] === dataContext.data.character
+        )[0]
+      : 0
+  );
 
   useEffect(() => {
     dataContext.setter({
       ...dataContext.data,
       mbti: `${mbti["first"]}${mbti["second"]}${mbti["third"]}${mbti["fourth"]}`,
-      character: character,
+      character: characterKeyMap[characterSym],
     });
-  }, [mbti, character]);
+  }, [mbti, characterSym]);
+
+  useEffect(() => {
+    if (dataContext.data.mbti) {
+      setMBTI({
+        first: dataContext.data.mbti[0],
+        second: dataContext.data.mbti[1],
+        third: dataContext.data.mbti[2],
+        fourth: dataContext.data.mbti[3],
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -125,8 +149,8 @@ export default function Character() {
               max={4}
               min={0}
               step={1}
-              defaultValue={0}
-              setter={(num) => setCharacter(characterKeyMap[num])}
+              defaultValue={characterSym}
+              setter={(num) => setCharacterSym(parseInt(num))}
               captions={Object.keys(characterKeyMap).map((key, i, arr) => {
                 if (i === 0 || i === arr.length - 1)
                   return characterKeyMap[key];
@@ -135,7 +159,9 @@ export default function Character() {
             ></RangeBar>
           </div>
         </div>
-        <h5 className="text-center text-lg mt-5">{character}</h5>
+        <h5 className="text-center text-lg mt-5">
+          {characterKeyMap[characterSym]}
+        </h5>
       </FloatingSection>
     </>
   );

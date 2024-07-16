@@ -119,6 +119,9 @@ export function SelectionRadioGrid({ collection, name, dataContext }) {
                   [name]: e.target.value,
                 })
               }
+              defaultChecked={
+                dataContext.data[name] === value.main ? true : false
+              }
             />
             <label
               htmlFor={value.main}

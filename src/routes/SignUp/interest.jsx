@@ -8,16 +8,36 @@ import { interestValueSet } from "../../assets/asset";
 export default function Interest() {
   const dataContext = useContext(DataContext);
 
-  const [interest, setInterest] = useState([]);
-
   const valueSet = useMemo(() => interestValueSet, []);
+
+  const [interest, setInterest] = useState(dataContext.data.interest ?? []);
+
+  const [icons, setIcons] = useState(
+    dataContext.data.interest
+      ? [
+          ...dataContext.data.interest.map(
+            (interest) => valueSet.find((set) => set === interest).icon
+          ),
+        ]
+      : []
+  );
 
   useEffect(() => {
     dataContext.setter({
       ...dataContext.data,
-      interest: [...interest.map((v) => v.value)],
+      interest: [...interest],
     });
+
+    setIcons([
+      ...interest.map(
+        (interest) => valueSet.find((set) => set === interest).icon
+      ),
+    ]);
   }, [interest]);
+
+  useEffect(() => {
+    console.log(interest);
+  }, []);
 
   return (
     <>
@@ -41,6 +61,7 @@ export default function Interest() {
                     if (e.target.checked) setInterest([...interest, set]);
                     else setInterest([...interest.filter((v) => v !== set)]);
                   }}
+                  defaultChecked={interest.find((v) => v === set) ?? false}
                 />
                 <label
                   className="flex px-2 py-1 bg-sub peer-checked:bg-main items-center"
@@ -57,7 +78,7 @@ export default function Interest() {
 
         {interest.length > 0 && (
           <div className="flex justify-center mt-9">
-            <InterestSelected interest={interest}></InterestSelected>
+            <InterestSelected icons={icons}></InterestSelected>
           </div>
         )}
       </FloatingSection>

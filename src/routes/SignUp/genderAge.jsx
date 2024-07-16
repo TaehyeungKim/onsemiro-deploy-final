@@ -11,7 +11,7 @@ export default function AgeAndGender() {
 
   const DEFAULT_AGE = 25;
 
-  const [age, setAge] = useState(DEFAULT_AGE);
+  const [age, setAge] = useState(dataContext.data.age ?? DEFAULT_AGE);
 
   useEffect(() => {
     dataContext.setter({ ...dataContext.data, age: age });
@@ -58,7 +58,7 @@ export default function AgeAndGender() {
         <RangeBar
           max={30}
           min={20}
-          defaultValue={DEFAULT_AGE}
+          defaultValue={dataContext.data.age ?? DEFAULT_AGE}
           step={1}
           setter={(age) => setAge(parseInt(age))}
           captions={[20, 25, 30]}

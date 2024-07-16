@@ -14,7 +14,7 @@ export const DataContext = createContext({
 export default function SignUpPage() {
   const TOTAL_LEVEL_COUNT = 13;
 
-  const [curLevel, setCurLevel] = useState(9);
+  const [curLevel, setCurLevel] = useState(6);
 
   const [signUpData, setSignUpData] = useState({});
 
@@ -83,12 +83,15 @@ export default function SignUpPage() {
     <>
       <header className="p-2">
         <nav className="flex flex-row justify-between mb-3">
-          <div className="w-3">
+          <button
+            className="w-3 block"
+            onClick={() => setCurLevel((l) => l - 1)}
+          >
             <IconImage src={ArorwLeft} />
-          </div>
-          <div className="w-4">
+          </button>
+          <button className="w-4 block">
             <IconImage src={closeButton} />
-          </div>
+          </button>
         </nav>
         <ProgressBar total={TOTAL_LEVEL_COUNT} cur={curLevel + 1} />
         <h5 className="text-right text-xs mt-2">

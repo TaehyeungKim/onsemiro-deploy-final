@@ -12,7 +12,7 @@ export default function Appearance() {
 
   const [MIN, MAX] = [145, 190];
 
-  const [height, setHeight] = useState(MIN + 5);
+  const [height, setHeight] = useState(dataContext.data.height ?? MIN + 5);
 
   const shape = useMemo(
     () => [
@@ -59,7 +59,7 @@ export default function Appearance() {
         <ExtendedRangeBar
           max={MAX}
           min={MIN}
-          defaultValue={MIN + 5}
+          defaultValue={dataContext.data.height ?? MIN + 5}
           step={5}
           setter={(height) => setHeight(parseInt(height))}
           captions={[150, 155, 160, 165, 170, 175, 180, 185]}

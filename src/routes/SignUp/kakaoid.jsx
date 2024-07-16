@@ -25,6 +25,7 @@ export default function KakaoAuth() {
               kakao_id: e.target.value,
             })
           }
+          defaultValue={dataContext.data.kakao_id ?? null}
         ></input>
       </div>
       <div className="w-3/4 m-auto mt-20">

@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import IconImage from "../IconImage";
 
-export default function InterestSelected({ interest }) {
+export default function InterestSelected({ icons }) {
   return (
     <div>
       <div
@@ -10,9 +10,9 @@ export default function InterestSelected({ interest }) {
       <div
         className={`bg-background flex justify-center items-center ${styles.frame} w-fit px-10`}
       >
-        {interest.map((v, i) => (
+        {icons.map((v, i) => (
           <div key={i} className="w-4 mx-1">
-            <IconImage src={v.icon}></IconImage>
+            <IconImage src={v}></IconImage>
           </div>
         ))}
       </div>
