@@ -1,13 +1,18 @@
 import { DoubleThumbRangeBar } from "./components";
-import {
-  FloatingSection,
-  SelectionRadioGrid,
-  ExtendedRangeBar,
-} from "./components";
+import { FloatingSection, SelectionRadioGrid } from "./components";
 import { useState, useContext, useEffect } from "react";
 import { DataContext } from ".";
 import { TempConditionSelectContext } from "./ideal";
-import { sexualTendency, ShapeCollection } from "../../assets/asset";
+import {
+  sexualTendency,
+  ShapeCollection,
+  EyelidCollection,
+  AppearanceCollection,
+  characterKeyMap,
+  CITYSET,
+} from "../../assets/asset";
+import { CharacterSettingSection, MBTISettingSection } from "./character";
+import { FrequencySetSection, LocationSetSection } from "./freqandloc";
 
 function IdealSetCaption({ children }) {
   return <h5 className="mt-10 text-2xl">{children}</h5>;
@@ -190,6 +195,173 @@ export function IdealHeightSet({ reqType }) {
             ? ""
             : `${heightMax}이하`}
         </h5>
+      </IdealSetChoice>
+    </>
+  );
+}
+
+export function IdealAppearanceSet({ reqType }) {
+  const conditionCtx = useContext(TempConditionSelectContext);
+
+  return (
+    <>
+      <FloatingSection>
+        <IdealSetCaption>이상형의 생김새는?</IdealSetCaption>
+      </FloatingSection>
+      <IdealSetChoice>
+        <SelectionRadioGrid
+          collection={AppearanceCollection}
+          name="appearance"
+          dataContext={conditionCtx}
+        ></SelectionRadioGrid>
+      </IdealSetChoice>
+    </>
+  );
+}
+
+export function IdealEyelidSet({ reqType }) {
+  const conditionCtx = useContext(TempConditionSelectContext);
+
+  return (
+    <>
+      <FloatingSection>
+        <IdealSetCaption>이상형의 쌍커풀 유무는?</IdealSetCaption>
+      </FloatingSection>
+      <IdealSetChoice>
+        <SelectionRadioGrid
+          collection={EyelidCollection}
+          name="eyelid"
+          dataContext={conditionCtx}
+        ></SelectionRadioGrid>
+      </IdealSetChoice>
+    </>
+  );
+}
+
+export function IdealMBTISet({ reqType }) {
+  const conditionCtx = useContext(TempConditionSelectContext);
+
+  const [mbti, setMBTI] = useState(
+    conditionCtx.data.mbti
+      ? {
+          first: conditionCtx.data.mbti[0],
+          second: conditionCtx.data.mbti[1],
+          third: conditionCtx.data.mbti[2],
+          fourth: conditionCtx.data.mbti[3],
+        }
+      : {
+          first: "E",
+          second: "S",
+          third: "T",
+          fourth: "J",
+        }
+  );
+
+  useEffect(() => {
+    conditionCtx.setter({ ...conditionCtx.data, mbti: mbti });
+  }, [mbti]);
+
+  return (
+    <>
+      <FloatingSection>
+        <IdealSetCaption>이상형의 MBTI는?</IdealSetCaption>
+      </FloatingSection>
+      <IdealSetChoice>
+        <MBTISettingSection mbti={mbti} setter={setMBTI} />
+      </IdealSetChoice>
+    </>
+  );
+}
+
+export function IdealCharacterSet({ reqType }) {
+  const conditionCtx = useContext(TempConditionSelectContext);
+
+  const [characterSym, setCharacterSym] = useState(
+    conditionCtx.data.character
+      ? Object.keys(characterKeyMap).filter(
+          (key) => characterKeyMap[key] === conditionCtx.data.character
+        )[0]
+      : 0
+  );
+
+  useEffect(() => {
+    conditionCtx.setter({
+      ...conditionCtx.data,
+      character: characterKeyMap[characterSym],
+    });
+  }, [characterSym]);
+
+  return (
+    <>
+      <FloatingSection>
+        <IdealSetCaption>이상형의 성격은?</IdealSetCaption>
+      </FloatingSection>
+      <IdealSetChoice>
+        <CharacterSettingSection
+          characterSym={characterSym}
+          setter={(sym) => setCharacterSym(parseInt(sym))}
+          keyMap={characterKeyMap}
+        />
+      </IdealSetChoice>
+    </>
+  );
+}
+
+export function IdealFrequencySet({ reqType }) {
+  const conditionCtx = useContext(TempConditionSelectContext);
+
+  const [meetNum, setMeetNum] = useState(conditionCtx.data.freqeuncy ?? 1);
+
+  useEffect(() => {
+    conditionCtx.setter({ ...conditionCtx.data, frequency: meetNum });
+  }, [meetNum]);
+
+  return (
+    <>
+      <FloatingSection>
+        <IdealSetCaption>
+          이상형이 일주일에 몇 번 만남을 원했으면 좋겠나요?
+        </IdealSetCaption>
+      </FloatingSection>
+      <IdealSetChoice>
+        <FrequencySetSection
+          meetNum={meetNum}
+          setter={(num) => setMeetNum(parseInt(num))}
+        ></FrequencySetSection>
+      </IdealSetChoice>
+    </>
+  );
+}
+
+export function IdealLocationSet({ reqType }) {
+  const conditionCtx = useContext(TempConditionSelectContext);
+
+  const [city, setCity] = useState(conditionCtx.data.city ?? "");
+  const [sub, setSub] = useState(conditionCtx.data.subRegion ?? "");
+
+  useEffect(() => {
+    conditionCtx.setter({
+      ...conditionCtx.data,
+      location: {
+        city,
+        subRegion: sub,
+      },
+    });
+  }, [city, sub]);
+  return (
+    <>
+      <FloatingSection>
+        <IdealSetCaption>이상형이 어디에 살았으면 좋겠나요?</IdealSetCaption>
+      </FloatingSection>
+      <IdealSetChoice>
+        <LocationSetSection
+          set={CITYSET}
+          city={city}
+          setter={{
+            city: setCity,
+            sub: setSub,
+          }}
+        ></LocationSetSection>
       </IdealSetChoice>
     </>
   );

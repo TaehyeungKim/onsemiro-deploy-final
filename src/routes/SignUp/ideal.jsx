@@ -7,7 +7,13 @@ import { Conditions } from "../../assets/asset";
 import { MainCustomButton } from "../../components/CustomButton";
 import {
   IdealAgeSet,
+  IdealAppearanceSet,
+  IdealCharacterSet,
+  IdealEyelidSet,
+  IdealFrequencySet,
   IdealHeightSet,
+  IdealLocationSet,
+  IdealMBTISet,
   IdealSexualSet,
   IdealShapeSet,
 } from "./conditionSet";
@@ -119,6 +125,18 @@ function ConditionSet({ type, close, reqType }) {
               return <IdealShapeSet reqType={reqType} />;
             case "height":
               return <IdealHeightSet reqType={reqType} />;
+            case "appearance":
+              return <IdealAppearanceSet reqType={reqType} />;
+            case "eyelid":
+              return <IdealEyelidSet reqType={reqType} />;
+            case "mbti":
+              return <IdealMBTISet reqType={reqType} />;
+            case "character":
+              return <IdealCharacterSet reqType={reqType} />;
+            case "frequency":
+              return <IdealFrequencySet reqType={reqType} />;
+            case "location":
+              return <IdealLocationSet reqType={reqType} />;
           }
         })()}
       </TempConditionSelectContext.Provider>

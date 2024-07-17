@@ -1,6 +1,7 @@
 import { DataContext } from ".";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
+import { characterKeyMap } from "../../assets/asset";
 
 function MBTILetterRow({ order, item, counter, data, setter }) {
   return (
@@ -46,18 +47,69 @@ function MBTILetterRow({ order, item, counter, data, setter }) {
   );
 }
 
+export function MBTISettingSection({ mbti, setter }) {
+  return (
+    <>
+      <div className="px-10">
+        <MBTILetterRow
+          order={"first"}
+          item={"E"}
+          counter={"I"}
+          data={mbti}
+          setter={setter}
+        />
+        <MBTILetterRow
+          order={"second"}
+          item={"S"}
+          counter={"N"}
+          data={mbti}
+          setter={setter}
+        />
+        <MBTILetterRow
+          order={"third"}
+          item={"T"}
+          counter={"F"}
+          data={mbti}
+          setter={setter}
+        />
+        <MBTILetterRow
+          order={"fourth"}
+          item={"J"}
+          counter={"P"}
+          data={mbti}
+          setter={setter}
+        />
+      </div>
+      <h5 className="text-center text-lg">{`${mbti.first}${mbti.second}${mbti.third}${mbti.fourth}`}</h5>
+    </>
+  );
+}
+
+export function CharacterSettingSection({ characterSym, setter, keyMap }) {
+  return (
+    <>
+      <div className="flex justify-center">
+        <div className="w-11/12 mt-14">
+          <RangeBar
+            max={4}
+            min={0}
+            step={1}
+            defaultValue={characterSym}
+            setter={setter}
+            captions={Object.keys(keyMap).map((key, i, arr) => {
+              if (i === 0 || i === arr.length - 1) return keyMap[key];
+              else return "";
+            })}
+          ></RangeBar>
+        </div>
+      </div>
+      <h5 className="text-center text-lg mt-5">{keyMap[characterSym]}</h5>
+    </>
+  );
+}
+
 export default function Character() {
   const dataContext = useContext(DataContext);
-
-  const characterKeyMap = useMemo(() => {
-    return {
-      0: "조용한",
-      1: "조금 조용한",
-      2: "보통",
-      3: "조금 활발한",
-      4: "활발한",
-    };
-  }, []);
 
   const [mbti, setMBTI] = useState(
     dataContext.data.mbti
@@ -109,59 +161,17 @@ export default function Character() {
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>MBTI</SectionTitle>
-        <div className="px-10">
-          <MBTILetterRow
-            order={"first"}
-            item={"E"}
-            counter={"I"}
-            data={mbti}
-            setter={setMBTI}
-          />
-          <MBTILetterRow
-            order={"second"}
-            item={"S"}
-            counter={"N"}
-            data={mbti}
-            setter={setMBTI}
-          />
-          <MBTILetterRow
-            order={"third"}
-            item={"T"}
-            counter={"F"}
-            data={mbti}
-            setter={setMBTI}
-          />
-          <MBTILetterRow
-            order={"fourth"}
-            item={"J"}
-            counter={"P"}
-            data={mbti}
-            setter={setMBTI}
-          />
+        <div className="mt-8">
+          <MBTISettingSection mbti={mbti} setter={setMBTI} />
         </div>
-        <h5 className="text-center text-lg">{`${mbti.first}${mbti.second}${mbti.third}${mbti.fourth}`}</h5>
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>성격</SectionTitle>
-        <div className="flex justify-center">
-          <div className="w-11/12 mt-14">
-            <RangeBar
-              max={4}
-              min={0}
-              step={1}
-              defaultValue={characterSym}
-              setter={(num) => setCharacterSym(parseInt(num))}
-              captions={Object.keys(characterKeyMap).map((key, i, arr) => {
-                if (i === 0 || i === arr.length - 1)
-                  return characterKeyMap[key];
-                else return "";
-              })}
-            ></RangeBar>
-          </div>
-        </div>
-        <h5 className="text-center text-lg mt-5">
-          {characterKeyMap[characterSym]}
-        </h5>
+        <CharacterSettingSection
+          characterSym={characterSym}
+          setter={(num) => setCharacterSym(parseInt(num))}
+          keyMap={characterKeyMap}
+        />
       </FloatingSection>
     </>
   );
