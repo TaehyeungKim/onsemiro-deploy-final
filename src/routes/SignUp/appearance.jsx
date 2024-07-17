@@ -6,7 +6,11 @@ import {
   SelectionRadioGrid,
   ExtendedRangeBar,
 } from "./components";
-import { ShapeCollection } from "../../assets/asset";
+import {
+  ShapeCollection,
+  AppearanceCollection,
+  EyelidCollection,
+} from "../../assets/asset";
 
 export default function Appearance() {
   const dataContext = useContext(DataContext);
@@ -14,29 +18,6 @@ export default function Appearance() {
   const [MIN, MAX] = [145, 190];
 
   const [height, setHeight] = useState(dataContext.data.height ?? MIN + 5);
-
-  const appearance = useMemo(
-    () => [
-      {
-        main: "뚜렷",
-      },
-      {
-        main: "두부",
-      },
-    ],
-    []
-  );
-  const eyelid = useMemo(
-    () => [
-      {
-        main: "유쌍",
-      },
-      {
-        main: "무쌍",
-      },
-    ],
-    []
-  );
 
   useEffect(() => {
     dataContext.setter({ ...dataContext.data, height: height });
@@ -71,7 +52,7 @@ export default function Appearance() {
       <FloatingSection>
         <SectionTitle>생김새</SectionTitle>
         <SelectionRadioGrid
-          collection={appearance}
+          collection={AppearanceCollection}
           name="appearance"
           dataContext={dataContext}
         />
@@ -79,7 +60,7 @@ export default function Appearance() {
       <FloatingSection addedStyle="mb-7">
         <SectionTitle>쌍커풀 유무</SectionTitle>
         <SelectionRadioGrid
-          collection={eyelid}
+          collection={EyelidCollection}
           name="eyelid"
           dataContext={dataContext}
         ></SelectionRadioGrid>

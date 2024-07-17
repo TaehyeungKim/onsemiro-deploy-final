@@ -1,6 +1,7 @@
 import { useRef, useEffect, useContext, useState } from "react";
 import { DataContext } from ".";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
+import { CITYSET } from "../../assets/asset";
 
 function SelectRegionRow({ label, regions, setter, sup = undefined }) {
   const dataContext = useContext(DataContext);
@@ -36,6 +37,47 @@ function SelectRegionRow({ label, regions, setter, sup = undefined }) {
   );
 }
 
+export function FrequencySetSection({ meetNum, setter }) {
+  return (
+    <>
+      <RangeBar
+        max={4}
+        min={1}
+        step={1}
+        defaultValue={meetNum}
+        setter={setter}
+        captions={["1번", "2번", "3번", "4번"]}
+      ></RangeBar>
+      <h5 className="text-center mt-4">{`일주일에 ${meetNum}번`}</h5>
+    </>
+  );
+}
+
+export function LocationSetSection({ set, city, setter }) {
+  return (
+    <>
+      <div className="mb-3">
+        <SelectRegionRow
+          label="도시"
+          regions={set.map((set) => set.city)}
+          setter={setter.city}
+        ></SelectRegionRow>
+      </div>
+
+      {city && (
+        <div>
+          <SelectRegionRow
+            label="행정구역"
+            regions={set.find((s) => s.city === city).sub}
+            setter={setter.sub}
+            sup={city}
+          ></SelectRegionRow>
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function FrequencyAndLocation() {
   const dataContext = useContext(DataContext);
 
@@ -54,29 +96,6 @@ export default function FrequencyAndLocation() {
     dataContext.setter({ ...dataContext.data, meeting_frequency: meetNum });
   }, [meetNum]);
 
-  const CITYSET = [
-    {
-      city: "서울",
-      sub: ["종로", "구로", "관악", "강서", "강남", "서초"],
-    },
-    {
-      city: "경기",
-      sub: ["고양", "파주", "수원"],
-    },
-    {
-      city: "부산",
-      sub: ["서래포", "동구", "서구"],
-    },
-    {
-      city: "울산",
-      sub: ["ㅇㄹㅇㄹ", "ㄴㄹㄴㄹㄹ"],
-    },
-    {
-      city: "제주",
-      sub: ["제주시", "서귀포시"],
-    },
-  ];
-
   return (
     <>
       <FloatingSection>
@@ -85,21 +104,24 @@ export default function FrequencyAndLocation() {
       <FloatingSection>
         <SectionTitle>일주일에 원하는 만남 횟수</SectionTitle>
         <div className="mt-14">
-          <RangeBar
-            max={4}
-            min={1}
-            step={1}
-            defaultValue={meetNum}
+          <FrequencySetSection
+            meetNum={meetNum}
             setter={(num) => setMeetNum(parseInt(num))}
-            captions={["1번", "2번", "3번", "4번"]}
-          ></RangeBar>
+          />
         </div>
-        <h5 className="text-center mt-4">{`일주일에 ${meetNum}번`}</h5>
       </FloatingSection>
       <FloatingSection>
         <SectionTitle>거주 지역</SectionTitle>
         <section className="mt-5">
-          <div className="mb-3">
+          <LocationSetSection
+            set={CITYSET}
+            setter={{
+              city: setCity,
+              sub: setSub,
+            }}
+            city={city}
+          />
+          {/* <div className="mb-3">
             <SelectRegionRow
               label="도시"
               regions={CITYSET.map((set) => set.city)}
@@ -116,7 +138,7 @@ export default function FrequencyAndLocation() {
                 sup={city}
               ></SelectRegionRow>
             </div>
-          )}
+          )} */}
         </section>
       </FloatingSection>
     </>
