@@ -3,8 +3,31 @@ import { LetterArrive, LetterChecked, LetterClosed } from "./cases";
 import { timeMatch } from "./utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { dummyRecommendData } from "../../data/dummy";
+// import { dummyRecommendData } from "../../data/dummy";
 import LetterLayout from "../../layouts/LetterLayout";
+import { getRecommend, getRestrictedProfile } from "../../apis/api";
+
+const MESSAGE_MAP = (type) => {
+  if (type === 1)
+    return (
+      <>
+        사진이 등록되지 않은 사용자에요!
+        <br />
+        매칭 수락 여부를 다음 쪽지 시간(17:00)
+        <br />
+        전까지 결정해주세요.
+      </>
+    );
+  return (
+    <>
+      사진이 등록된 사용자에요!
+      <br />
+      사진 요청 여부를 다음 쪽지 시간(17:00)
+      <br />
+      전까지 결정해주세요.
+    </>
+  );
+};
 
 export default function Recommend() {
   const [recommendInfo, setRecommendInfo] = useState([]);
@@ -14,9 +37,20 @@ export default function Recommend() {
     setLetterVisible(false);
   }, []);
 
+  const getRecommendedProfile = async () => {
+    const recommended = await getRecommend();
+    console.log("data", recommended.data.recommended_user_id);
+
+    const profile = await getRestrictedProfile({
+      user_id: recommended.data.recommended_user_id,
+    });
+    setRecommendInfo([
+      { ...profile.data, message: MESSAGE_MAP(recommended.data.matching_type) },
+    ]);
+  };
+
   useEffect(() => {
-    //dummy data
-    setRecommendInfo([dummyRecommendData]);
+    getRecommendedProfile();
   }, []);
 
   const timeInfo = useMemo(

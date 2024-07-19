@@ -5,13 +5,18 @@ import IconImage from "../../components/IconImage";
 import check from "../../assets/check_black.png";
 import search from "../../assets/search.png";
 import { MainCustomButton } from "../../components/CustomButton";
-import { signUp } from "../../apis/api";
+import { signUp, authSchool } from "../../apis/api";
 
 export default function AuthenticateSelf() {
   const dataContext = useContext(DataContext);
 
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
+
+  const [authSchoolInput, setAuthSchoolInput] = useState({
+    school_name: "",
+    school_email: "",
+  });
 
   return (
     <>
@@ -61,6 +66,10 @@ export default function AuthenticateSelf() {
             <CustomTextInput
               id="auth_school_search"
               placeholder={"학교를 검색해주세요."}
+              event={{
+                onChange: (v) =>
+                  setAuthSchoolInput({ ...authSchoolInput, school_name: v }),
+              }}
             />
             <button className="h-full absolute right-1">
               <IconImage src={search} />
@@ -70,16 +79,25 @@ export default function AuthenticateSelf() {
             <CustomTextInput
               id="auth_schoolEmail"
               placeholder={"학교 이메일"}
+              event={{
+                onChange: (v) =>
+                  setAuthSchoolInput({ ...authSchoolInput, school_email: v }),
+              }}
             />
             <MainCustomButton
               addedStyle={"h-full py-0 ml-6 flex items-center"}
               event={{
                 onClick: () => {
-                  console.log("auth_school");
-                  dataContext?.setter({
-                    ...dataContext.data,
-                    auth_school: true,
-                  });
+                  authSchool({ email: authSchoolInput.school_email }).then(
+                    (res) => {
+                      if (res.status === 200) {
+                        dataContext?.setter({
+                          ...dataContext.data,
+                          univ: authSchoolInput.school_name,
+                        });
+                      }
+                    }
+                  );
                 },
               }}
             >

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 
 export function FloatingSection({ children, addedStyle = "" }) {
   return <section className={`p-3 ${addedStyle}`}>{children}</section>;
@@ -156,15 +156,24 @@ export function ExtendedRangeBar({
   const progress = useRef(null);
   const range = useRef(null);
 
+  const UNIT_NUM = (max - min) / step;
+
+  const progressLeftTransform = useMemo(() => {
+    return (((innerValue - min) / step) * 100) / UNIT_NUM;
+  }, [innerValue]);
+
+  //   ((innerValue - range.current.min) * 100) / // `width: ${
+  //   (range.current.max - range.current.min)
+  // }%`
+
   useEffect(() => {
     progress.current?.setAttribute(
       "style",
-      `width: ${
-        ((innerValue - range.current.min) * 100) /
-        (range.current.max - range.current.min)
-      }%`
+      `left: ${progressLeftTransform}%; width: ${100 / UNIT_NUM}%`
     );
   }, [innerValue]);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="w-full h-4 mx-auto relative flex items-center mt-14">
@@ -182,10 +191,7 @@ export function ExtendedRangeBar({
         }}
       ></input>
       <div className="h-1 w-full border-main border-[1px] relative box-border">
-        <div
-          className="absolute left-0 right-0 h-full bg-main"
-          ref={progress}
-        ></div>
+        <div className="absolute h-full bg-main" ref={progress}></div>
         <div className="flex justify-between w-full h-full absolute top-0 items-center">
           <div className="rounded-full w-3 aspect-square invisible"></div>
           {captions.map((caption, i) => (
@@ -258,7 +264,7 @@ export function CustomTextInput({ id, placeholder, label = "", event = null }) {
           className="h-full w-full block text-xs pl-3 box-border"
           placeholder={placeholder}
           id={id}
-          onChange={(e) => event.onChange(e.target.value)}
+          onChange={(e) => event?.onChange(e.target.value)}
         ></input>
       </div>
     </div>

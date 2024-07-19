@@ -400,3 +400,8 @@ export const CITYSET = [
     sub: [],
   },
 ];
+
+export const heightRange = (thumb) => {
+  const point = thumb - 145;
+  return parseInt(point / 5) + 1;
+};

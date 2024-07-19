@@ -1,9 +1,15 @@
 import letter from "../../assets/landing-letter.png";
 import HomeHeader from "../../components/HomeHeader";
 import { useNavigate } from "react-router-dom";
+import { signIn } from "../../apis/api";
+import { useEffect } from "react";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    signIn({ phone_num: "dkdkdkdkdkdk" });
+  }, []);
 
   return (
     <>

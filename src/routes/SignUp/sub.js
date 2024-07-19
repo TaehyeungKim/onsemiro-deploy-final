@@ -11,6 +11,7 @@ import Photos from "./photos";
 import Introduction from "./introduction";
 import PreferIdentity from "./preferIdentity";
 import Ideal from "./ideal";
+import NickNameInput from "./nickname";
 
 export default function SignUpSub({ level }) {
   return (
@@ -22,26 +23,28 @@ export default function SignUpSub({ level }) {
           case 1:
             return <KakaoAuth />;
           case 2:
-            return <AgeAndGender />;
+            return <NickNameInput />;
           case 3:
-            return <Sexual />;
+            return <AgeAndGender />;
           case 4:
-            return <Appearance />;
+            return <Sexual />;
           case 5:
-            return <Character />;
+            return <Appearance />;
           case 6:
-            return <Interest />;
+            return <Character />;
           case 7:
-            return <FrequencyAndLocation />;
+            return <Interest />;
           case 8:
-            return <Photos />;
+            return <FrequencyAndLocation />;
           case 9:
-            return <Introduction />;
+            return <Photos />;
           case 10:
-            return <PreferIdentity />;
+            return <Introduction />;
           case 11:
-            return <SameUniv />;
+            return <PreferIdentity />;
           case 12:
+            return <SameUniv />;
+          case 13:
             return <Ideal />;
         }
       })()}
