@@ -20,6 +20,7 @@ input {
 input[type="range"] {
   -webkit-appearance: none;
   background: transparent;
+  pointer-events: none;
 }
 
 input[type="range"]:focus {
@@ -35,6 +36,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 13px;
   aspect-ratio: 1;
   border-radius: 50%;
+  pointer-events: auto;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {

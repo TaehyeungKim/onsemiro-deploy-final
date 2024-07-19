@@ -1,4 +1,13 @@
-import { useRef, useEffect, useState, useMemo } from "react";
+import {
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  Fragment,
+  useCallback,
+  useDeferredValue,
+} from "react";
+import styles from "./components.module.scss";
 
 export function FloatingSection({ children, addedStyle = "" }) {
   return <section className={`p-3 ${addedStyle}`}>{children}</section>;
@@ -18,13 +27,13 @@ export function RangeBar({
   options = null,
 }) {
   return (
-    <div className="w-full h-4 mx-auto relative flex items-center">
+    <div className={`w-full h-4 mx-auto relative flex items-center `}>
       <input
         type="range"
         min={min}
         max={max}
         step={step}
-        className="w-full block  absolute top-0 left-0 h-full z-10"
+        className={`w-full block absolute top-0 left-0 h-full z-10`}
         defaultValue={defaultValue}
         onChange={(e) => setter(e.target.value)}
       ></input>
@@ -34,7 +43,7 @@ export function RangeBar({
         )}`}
       >
         <div className="flex justify-between w-full h-full absolute top-0 items-center">
-          {captions.map((caption, i) => (
+          {captions?.map((caption, i) => (
             <div
               key={i}
               className={`bg-main rounded-full w-3 aspect-square flex justify-center ${options?.captionCircleStyle?.reduce(
@@ -52,92 +61,83 @@ export function RangeBar({
   );
 }
 
-export function DoubleThumbRangeBar({ former, latter }) {
-  const [formerValue, setFormerValue] = useState(former.default);
-  const [latterValue, setLatterValue] = useState(latter.default);
+export function DoubleThumbRangeBar({
+  min,
+  max,
+  step,
+  captions,
+  defaultValue,
+  setter,
+}) {
+  const [smaller, setSmaller] = useState(min);
+  const [bigger, setBigger] = useState(max);
+
+  const deferredBiggerValue = useDeferredValue(bigger);
+  const deferredSmallerValue = useDeferredValue(smaller);
 
   const progress = useRef(null);
 
   useEffect(() => {
-    console.log(formerValue, latterValue);
-  }, []);
+    setter.setBigger(bigger);
+    setter.setSmaller(smaller);
+  }, [smaller, bigger]);
+
+  const controlBiggerValue = useCallback(
+    (e) => {
+      if (parseInt(e.target.value) <= smaller) {
+        setBigger(deferredBiggerValue);
+      } else setBigger(parseInt(e.target.value));
+    },
+    [smaller, deferredBiggerValue]
+  );
+  const controlSmallerValue = useCallback(
+    (e) => {
+      if (parseInt(e.target.value) >= bigger) setSmaller(deferredSmallerValue);
+      else setSmaller(parseInt(e.target.value));
+    },
+    [bigger, deferredSmallerValue]
+  );
 
   useEffect(() => {
+    const unitLength = 100 / ((max - min) / step);
+
     progress.current?.setAttribute(
       "style",
-      `left: ${
-        (((formerValue - former.range[0]) /
-          (former.range[former.range.length - 1] - former.range[0])) *
-          100 *
-          (former.range.length - 1)) /
-        (former.range.length + latter.range.length - 1)
-      }%; right: ${
-        (((latter.range[latter.range.length - 1] - latterValue) /
-          (latter.range[latter.range.length - 1] - latter.range[0])) *
-          100 *
-          (latter.range.length - 1)) /
-        (former.range.length + latter.range.length - 1)
+      `left: ${((smaller - min) * unitLength) / step}%; right: ${
+        ((max - bigger) * unitLength) / step
       }%`
     );
-  }, [formerValue, latterValue]);
+  }, [smaller, bigger]);
 
   return (
-    <div className="flex items-center w-full relative">
-      <div
-        className="absolute h-1 bg-main w-auto z-10 shadow-md"
-        ref={progress}
-      ></div>
-      <div className="grow">
-        <RangeBar
-          min={former.range[0]}
-          max={former.range[former.range.length - 1]}
-          step={former.step}
-          defaultValue={former.default}
-          setter={(age) => {
-            setFormerValue(parseInt(age));
-            former.setter(age);
-          }}
-          captions={former.captions}
-          options={{
-            captionCircleStyle: [
-              "!bg-white",
-              // "!shadow-md",
-              // "!border-main",
-              // "!shadow-main",
-              // "!border-[0.5px]",
-            ],
-            bgStyle: ["!bg-background"],
-          }}
-        />
-      </div>
-      <div
-        className={`h-1 bg-white box-border border-main border-[0.3px]`}
-        style={{
-          width: `${100 / (former.range.length + latter.range.length - 1)}%`,
-        }}
-      ></div>
-      <div className="grow">
-        <RangeBar
-          min={latter.range[0]}
-          max={latter.range[latter.range.length - 1]}
-          step={latter.step}
-          defaultValue={latter.default}
-          setter={(age) => {
-            setLatterValue(parseInt(age));
-            latter.setter(age);
-          }}
-          captions={latter.captions}
-          options={{
-            captionCircleStyle: [
-              "!bg-white",
-              // "!shadow-md",
-              // "!border-main",
-              // "!shadow-main",
-              // "!border-[0.5px]",
-            ],
-            bgStyle: ["!bg-background", ""],
-          }}
-        />
+    <div className="flex h-3 items-center w-full relative">
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        className={`w-full block absolute top-0 left-0 h-full z-10`}
+        defaultValue={min}
+        value={smaller}
+        onChange={controlSmallerValue}
+      ></input>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        className={`w-full block absolute top-0 left-0 h-full z-10`}
+        defaultValue={max}
+        value={bigger}
+        onChange={controlBiggerValue}
+      ></input>
+      <div className="w-full h-1 bg-white flex justify-between items-center absolute shadow-md">
+        <div ref={progress} className="absolute bg-main shadow-md h-1"></div>
+        {captions.map((c) => (
+          <div className="rounded-full aspect-square h-3 bg-white shadow-md flex justify-center">
+            <span className="block text-center translate-y-5 text-xs">{c}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -151,33 +151,46 @@ export function ExtendedRangeBar({
   setter,
   captions,
 }) {
-  const [innerValue, setInnerValue] = useState(defaultValue);
-
-  const progress = useRef(null);
-  const range = useRef(null);
-
-  const UNIT_NUM = (max - min) / step;
-
-  const progressLeftTransform = useMemo(() => {
-    return (((innerValue - min) / step) * 100) / UNIT_NUM;
-  }, [innerValue]);
-
-  //   ((innerValue - range.current.min) * 100) / // `width: ${
-  //   (range.current.max - range.current.min)
-  // }%`
-
-  useEffect(() => {
-    progress.current?.setAttribute(
-      "style",
-      `left: ${progressLeftTransform}%; width: ${100 / UNIT_NUM}%`
-    );
-  }, [innerValue]);
-
-  useEffect(() => {}, []);
+  // const [innerValue, setInnerValue] = useState(defaultValue);
 
   return (
-    <div className="w-full h-4 mx-auto relative flex items-center mt-14">
-      <input
+    <>
+      <div className="w-full h-4 mx-auto relative flex items-center mt-14 ">
+        <div className="w-full h-1 flex justify-between shadow-md">
+          {(() => {
+            const arr = [];
+            for (let i = min; i <= max; i += step) {
+              console.log(i, min, max, step);
+              arr.push(
+                <div key={i} className="grow h-full has-[:checked]:z-30 group">
+                  <input
+                    type="radio"
+                    className="peer"
+                    hidden
+                    name="ex-range"
+                    id={`ex-range-${i}`}
+                    value={i}
+                    onChange={(e) => setter(e.target.value)}
+                  />
+                  <label
+                    htmlFor={`ex-range-${i}`}
+                    className="flex items-center h-full peer-checked:*:after:range-point-selected peer-checked:bg-main bg-white justify-between"
+                  >
+                    <div
+                      className={`flex items-center justify-center group-first:bg-white shadow-md bg-main ${styles["range-point"]} ${styles["range-point-left"]}`}
+                    ></div>
+                    <div
+                      className={`flex items-center justify-center group-last:bg-white shadow-md bg-main ${styles["range-point"]} ${styles["range-point-right"]}`}
+                    ></div>
+                  </label>
+                </div>
+              );
+            }
+            return arr;
+          })()}
+        </div>
+
+        {/* <input
         ref={range}
         type="range"
         min={min}
@@ -203,8 +216,20 @@ export function ExtendedRangeBar({
           ))}
           <div className=" rounded-full w-3 aspect-square invisible"></div>
         </div>
+      </div> */}
       </div>
-    </div>
+      <div className="w-full h-1 flex justify-between">
+        <div className=" h-full aspect-square invisible"></div>
+        {captions.map((c) => (
+          <span
+            className={`h-full flex justify-center aspect-square text-center text-xs`}
+          >
+            {c}
+          </span>
+        ))}
+        <div className="h-full aspect-square invisible"></div>
+      </div>
+    </>
   );
 }
 

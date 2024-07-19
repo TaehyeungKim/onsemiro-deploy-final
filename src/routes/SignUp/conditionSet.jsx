@@ -30,19 +30,25 @@ export function IdealAgeSet({ reqType }) {
   const dataContext = useContext(DataContext);
   const conditionCtx = useContext(TempConditionSelectContext);
 
-  const FORMER_RANGE = [20, 23];
-  const LATTER_RANGE = [26, 30];
+  // const FORMER_RANGE = [20, 23];
+  // const LATTER_RANGE = [26, 30];
+
+  const [MIN, MAX] = [20, 29];
 
   const [ageMin, setAgeMin] = useState(
     (dataContext.data.preference &&
       dataContext.data.preference[reqType]?.age?.age_min) ??
-      FORMER_RANGE[0]
+      MIN
   );
   const [ageMax, setAgeMax] = useState(
     (dataContext.data.preference &&
       dataContext.data.preference[reqType]?.age?.age_max) ??
-      LATTER_RANGE[LATTER_RANGE.length - 1]
+      MAX + 1
   );
+
+  useEffect(() => {
+    if (ageMax === 29) setAgeMax(30);
+  }, [ageMax]);
 
   useEffect(() => {
     conditionCtx.setter({
@@ -61,20 +67,16 @@ export function IdealAgeSet({ reqType }) {
       </FloatingSection>
       <IdealSetChoice>
         <DoubleThumbRangeBar
-          former={{
-            range: FORMER_RANGE,
-            captions: FORMER_RANGE,
-            step: 3,
-            setter: (age) => setAgeMin(parseInt(age)),
-            default: ageMin,
-          }}
-          latter={{
-            range: LATTER_RANGE,
-            captions: LATTER_RANGE,
-            step: 4,
-            setter: (age) => setAgeMax(parseInt(age)),
-            default: ageMax,
-          }}
+          min={MIN}
+          max={MAX}
+          step={3}
+          captions={(() => {
+            const arr = [];
+            for (let i = MIN; i < MAX; i += 3) arr.push(i);
+            arr.push(30);
+            return arr;
+          })()}
+          setter={{ setSmaller: setAgeMin, setBigger: setAgeMax }}
         ></DoubleThumbRangeBar>
         <h5 className="text-center text-lg mt-10">
           {ageMin}세 이상 {ageMax}세 이하
@@ -122,8 +124,10 @@ export function IdealShapeSet({ reqType }) {
 }
 
 export function IdealHeightSet({ reqType }) {
-  const FORMER_RANGE = [145, 150, 155, 160, 165];
-  const LATTER_RANGE = [170, 175, 180, 185, 190];
+  // const FORMER_RANGE = [145, 150, 155, 160, 165];
+  // const LATTER_RANGE = [170, 175, 180, 185, 190];
+
+  const [MIN, MAX] = [145, 190];
 
   const conditionCtx = useContext(TempConditionSelectContext);
   const dataContext = useContext(DataContext);
@@ -131,12 +135,12 @@ export function IdealHeightSet({ reqType }) {
   const [heightMin, setHeightMin] = useState(
     (dataContext.data.preference &&
       dataContext.data.preference[reqType]?.height?.height_min) ??
-      FORMER_RANGE[0]
+      MIN
   );
   const [heightMax, setHeightMax] = useState(
     (dataContext.data.preference &&
       dataContext.data.preference[reqType]?.height?.height_max) ??
-      LATTER_RANGE[LATTER_RANGE.length - 1]
+      MAX
   );
 
   useEffect(() => {
@@ -149,21 +153,6 @@ export function IdealHeightSet({ reqType }) {
     });
   }, [heightMin, heightMax]);
 
-  // former={{
-  //   range: FORMER_RANGE,
-  //   captions: FORMER_RANGE,
-  //   step: 3,
-  //   setter: (age) => setAgeMin(parseInt(age)),
-  //   default: ageMin,
-  // }}
-  // latter={{
-  //   range: LATTER_RANGE,
-  //   captions: LATTER_RANGE,
-  //   step: 4,
-  //   setter: (age) => setAgeMax(parseInt(age)),
-  //   default: ageMax,
-  // }}
-
   return (
     <>
       <FloatingSection>
@@ -171,29 +160,23 @@ export function IdealHeightSet({ reqType }) {
       </FloatingSection>
       <IdealSetChoice>
         <DoubleThumbRangeBar
-          former={{
-            range: FORMER_RANGE,
-            captions: ["", ...FORMER_RANGE.filter((e, i) => i !== 0)],
-            step: 5,
-            setter: (height) => setHeightMin(parseInt(height)),
-            default: heightMin,
-          }}
-          latter={{
-            range: LATTER_RANGE,
-            captions: [
-              ...LATTER_RANGE.filter((e, i, arr) => i !== arr.length - 1),
-              "",
-            ],
-            step: 5,
-            setter: (height) => setHeightMax(parseInt(height)),
-            default: heightMax,
-          }}
+          min={145}
+          max={190}
+          step={5}
+          captions={[
+            "",
+            ...(() => {
+              const arr = [];
+              for (let i = MIN + 5; i < MAX; i += 5) arr.push(i);
+              return arr;
+            })(),
+            "",
+          ]}
+          setter={{ setSmaller: setHeightMin, setBigger: setHeightMax }}
         ></DoubleThumbRangeBar>
-        <h5 className="text-center mt-9 text-xl">
-          {heightMin === FORMER_RANGE[0] ? "" : `${heightMin}이상 `}
-          {heightMax === LATTER_RANGE[LATTER_RANGE.length - 1]
-            ? ""
-            : `${heightMax}이하`}
+        <h5 className="text-center mt-9 text-lg">
+          {heightMin === MIN ? "" : `${heightMin}이상 `}
+          {heightMax === MAX ? "" : `${heightMax}이하`}
         </h5>
       </IdealSetChoice>
     </>

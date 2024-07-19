@@ -15,7 +15,7 @@ import {
 export default function Appearance() {
   const dataContext = useContext(DataContext);
 
-  const [MIN, MAX] = [145, 190];
+  const [MIN, MAX] = [145, 185];
 
   const [height, setHeight] = useState(dataContext.data.height ?? MIN + 5);
 
@@ -37,8 +37,17 @@ export default function Appearance() {
           setter={(height) => setHeight(parseInt(height))}
           captions={[150, 155, 160, 165, 170, 175, 180, 185]}
         />
-        <h5 className="text-center font-semibold my-8">
-          {height === MIN ? "150 미만" : height === MAX ? "185 초과" : height}
+        <h5 className="text-center font-semibold my-8 ">
+          {height === MIN ? (
+            "150 미만"
+          ) : height === MAX ? (
+            "185 초과"
+          ) : (
+            <>
+              <span className="inline-block mr-[0.5px]">{height}이상</span>{" "}
+              <span className="inline-block ml-[0.5px]">{height + 5}미만</span>
+            </>
+          )}
         </h5>
       </FloatingSection>
       <FloatingSection>
