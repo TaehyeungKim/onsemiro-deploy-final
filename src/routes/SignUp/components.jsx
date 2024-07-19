@@ -244,7 +244,7 @@ export function SelectionRadioGrid({ collection, name, dataContext }) {
   );
 }
 
-export function CustomTextInput({ id, placeholder, label = "" }) {
+export function CustomTextInput({ id, placeholder, label = "", event = null }) {
   return (
     <div className="relative h-10 flex items-center rounded-lg grow">
       {label && (
@@ -258,6 +258,7 @@ export function CustomTextInput({ id, placeholder, label = "" }) {
           className="h-full w-full block text-xs pl-3 box-border"
           placeholder={placeholder}
           id={id}
+          onChange={(e) => event.onChange(e.target.value)}
         ></input>
       </div>
     </div>

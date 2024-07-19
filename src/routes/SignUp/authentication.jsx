@@ -1,13 +1,18 @@
 import { DataContext } from ".";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FloatingSection, SectionTitle, CustomTextInput } from "./components";
 import IconImage from "../../components/IconImage";
 import check from "../../assets/check_black.png";
 import search from "../../assets/search.png";
 import { MainCustomButton } from "../../components/CustomButton";
+import { signUp } from "../../apis/api";
 
 export default function AuthenticateSelf() {
   const dataContext = useContext(DataContext);
+
+  const [nameInput, setNameInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+
   return (
     <>
       <FloatingSection addedStyle="mt-3">
@@ -27,19 +32,20 @@ export default function AuthenticateSelf() {
               placeholder={"이름을 입력하세요."}
               id={"auth_name"}
               label={"이름"}
+              event={{ onChange: setNameInput }}
             />
           </div>
           <div className="mb-2 flex">
-            <CustomTextInput id="auth_phone" placeholder={"전화번호"} />
+            <CustomTextInput
+              id="auth_phone"
+              placeholder={"전화번호"}
+              event={{ onChange: setPhoneInput }}
+            />
             <MainCustomButton
               addedStyle={"h-full py-0 ml-6 flex items-center"}
               event={{
                 onClick: () => {
-                  // console.log("auth_school");
-                  // dataContext?.setter({
-                  //   ...dataContext.data,
-                  //   auth_school: true,
-                  // });
+                  signUp({ phone_num: phoneInput });
                 },
               }}
             >
