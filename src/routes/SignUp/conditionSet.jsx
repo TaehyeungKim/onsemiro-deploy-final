@@ -336,17 +336,23 @@ export function IdealFrequencySet({ reqType }) {
 export function IdealLocationSet({ reqType }) {
   const conditionCtx = useContext(TempConditionSelectContext);
 
-  const [city, setCity] = useState(conditionCtx.data.city ?? "");
-  const [sub, setSub] = useState(conditionCtx.data.subRegion ?? "");
+  const [city, setCity] = useState(conditionCtx.data.location?.city ?? "");
+  const [sub, setSub] = useState(conditionCtx.data.location?.subRegion ?? "");
 
   useEffect(() => {
     conditionCtx.setter({
       ...conditionCtx.data,
       location: {
-        city,
+        city: city,
         subRegion: sub,
       },
     });
+    console.log(conditionCtx.data);
+    return () =>
+      conditionCtx.setter({
+        ...conditionCtx.data,
+        location: undefined,
+      });
   }, [city, sub]);
   return (
     <>
@@ -361,6 +367,7 @@ export function IdealLocationSet({ reqType }) {
             city: setCity,
             sub: setSub,
           }}
+          context={conditionCtx}
         ></LocationSetSection>
       </IdealSetChoice>
     </>

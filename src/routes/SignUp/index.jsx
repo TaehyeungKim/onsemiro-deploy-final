@@ -1,5 +1,5 @@
 import ProgressBar from "../../components/ProgressBar";
-import { useState, createContext, useCallback, useEffect } from "react";
+import { useState, createContext, useCallback, useContext } from "react";
 import IconImage from "../../components/IconImage";
 import ArorwLeft from "../../assets/arrow_left.png";
 import closeButton from "../../assets/ph_x.png";
@@ -18,6 +18,10 @@ export const IdealChoiceToggleContext = createContext({
 
 export default function SignUpPage() {
   const [signUpData, setSignUpData] = useState({});
+
+  const TOTAL_LEVEL_COUNT = 13;
+
+  const [curLevel, setCurLevel] = useState(0);
 
   const [idealChoice, setIdealChoice] = useState({
     visible: false,
@@ -54,7 +58,12 @@ export default function SignUpPage() {
         }}
       >
         {!idealChoice.visible ? (
-          <SignUpMain signUpData={signUpData}></SignUpMain>
+          <SignUpMain
+            signUpData={signUpData}
+            curLevel={curLevel}
+            levelSetter={setCurLevel}
+            total={TOTAL_LEVEL_COUNT}
+          ></SignUpMain>
         ) : (
           <IdealChoiceSub reqType={idealChoice.type} />
         )}
@@ -63,10 +72,8 @@ export default function SignUpPage() {
   );
 }
 
-function SignUpMain({ signUpData }) {
-  const TOTAL_LEVEL_COUNT = 13;
-
-  const [curLevel, setCurLevel] = useState(12);
+function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
+  const dataContext = useContext(DataContext);
 
   const changeLevel = useCallback(
     (level) => {
@@ -74,30 +81,30 @@ function SignUpMain({ signUpData }) {
         case 0:
           console.log(signUpData.auth_self && signUpData.auth_school);
           if (signUpData.auth_self && signUpData.auth_school)
-            setCurLevel(level + 1);
+            levelSetter(level + 1);
           break;
         case 1:
-          if (signUpData.kakao_id) setCurLevel(level + 1);
+          if (signUpData.kakao_id) levelSetter(level + 1);
           break;
         case 2:
           if (signUpData.gender_identity) {
-            setCurLevel(level + 1);
+            levelSetter(level + 1);
           }
           break;
         case 3:
           if (signUpData.sexual_tendency && signUpData.sexual_orientation)
-            setCurLevel(level + 1);
+            levelSetter(level + 1);
           break;
         case 4:
           if (signUpData.appearance && signUpData.height && signUpData.eyelid)
-            setCurLevel(level + 1);
+            levelSetter(level + 1);
           break;
         case 5:
-          if (signUpData.mbti && signUpData.character) setCurLevel(level + 1);
+          if (signUpData.mbti && signUpData.character) levelSetter(level + 1);
           break;
         case 6:
           if (signUpData.interest && signUpData.interest.length > 0)
-            setCurLevel(level + 1);
+            levelSetter(level + 1);
           break;
         case 7:
           if (
@@ -105,23 +112,26 @@ function SignUpMain({ signUpData }) {
             signUpData.city &&
             signUpData.subRegion
           )
-            setCurLevel(level + 1);
+            levelSetter(level + 1);
           break;
         case 8:
-          if (signUpData.std && signUpData.photo) setCurLevel(level + 1);
+          if (signUpData.std && signUpData.photo) levelSetter(level + 1);
           break;
         case 9:
-          if (signUpData.introduction) setCurLevel(level + 1);
+          if (signUpData.introduction) levelSetter(level + 1);
           break;
         case 10:
-          if (signUpData.prefer_gender_identity) setCurLevel(level + 1);
+          if (signUpData.prefer_gender_identity) levelSetter(level + 1);
           break;
         case 11:
-          setCurLevel(level + 1);
+          levelSetter(level + 1);
+          break;
+        case 12:
+          console.log(dataContext.data);
           break;
       }
     },
-    [signUpData]
+    [signUpData, curLevel]
   );
 
   const buttonActionPerLevel = useCallback(() => {
@@ -139,7 +149,7 @@ function SignUpMain({ signUpData }) {
         <nav className="flex flex-row justify-between mb-3">
           <button
             className="w-3 block"
-            onClick={() => setCurLevel((l) => l - 1)}
+            onClick={() => levelSetter((l) => l - 1)}
           >
             <IconImage src={ArorwLeft} />
           </button>
@@ -147,9 +157,9 @@ function SignUpMain({ signUpData }) {
             <IconImage src={closeButton} />
           </button>
         </nav>
-        <ProgressBar total={TOTAL_LEVEL_COUNT} cur={curLevel + 1} />
+        <ProgressBar total={total} cur={curLevel + 1} />
         <h5 className="text-right text-xs mt-2">
-          {curLevel + 1}/{TOTAL_LEVEL_COUNT}
+          {curLevel + 1}/{total}
         </h5>
       </header>
 
@@ -157,7 +167,18 @@ function SignUpMain({ signUpData }) {
 
       <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
         {curLevel === 12 ? (
-          <MainCustomButton addedStyle="!bg-background !text-black !mx-0 grow">
+          <MainCustomButton
+            addedStyle="!bg-background !text-black !mx-0 grow"
+            event={{
+              onClick: () => {
+                dataContext.setter({
+                  ...dataContext.data,
+                  preference: undefined,
+                });
+                console.log(dataContext.data);
+              },
+            }}
+          >
             SKIP
           </MainCustomButton>
         ) : null}
