@@ -20,7 +20,7 @@ function SelectRegionRow({ label, regions, setter, context, sup = undefined }) {
         {label}
       </label>
       <select
-        className="block grow ml-16 bg-background box-border px-3 py-2 rounded-md"
+        className="block grow ml-16 bg-input box-border px-3 py-2 rounded-md"
         onChange={(e) => setter(e.target.value)}
         value={context.data[LABELMAP[label]]}
       >

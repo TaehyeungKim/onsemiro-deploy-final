@@ -1,5 +1,11 @@
 import ProgressBar from "../../components/ProgressBar";
-import { useState, createContext, useCallback, useContext } from "react";
+import {
+  useState,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+} from "react";
 import IconImage from "../../components/IconImage";
 import ArorwLeft from "../../assets/arrow_left.png";
 import closeButton from "../../assets/ph_x.png";
@@ -25,12 +31,16 @@ export default function SignUpPage() {
 
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(0);
+  const [curLevel, setCurLevel] = useState(1);
 
   const [idealChoice, setIdealChoice] = useState({
     visible: false,
     type: "",
   });
+
+  useEffect(() => {
+    console.log(signUpData);
+  }, [curLevel]);
 
   return (
     <DataContext.Provider
@@ -89,7 +99,7 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
           }
           break;
         case 4:
-          if (signUpData.bdsm && signUpData.sexual_orientation)
+          if (signUpData.bdsm && signUpData.sexual_tendency)
             levelSetter(level + 1);
           break;
         case 5:
@@ -156,7 +166,7 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
             nickname: dataContext.data.nickname,
             univ: dataContext.data.univ,
             gender: dataContext.data.gender_identity,
-            gender_prefernece: dataContext.data.prefer_gender_identity,
+            gender_prefernece: dataContext.data.sexual_tendency,
             age: dataContext.data.age,
             bdsm: dataContext.data.bdsm,
             height: heightRange(dataContext.data.height),

@@ -20,7 +20,7 @@ input {
 input[type="range"] {
   -webkit-appearance: none;
   background: transparent;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 input[type="range"]:focus {

@@ -36,7 +36,7 @@ export default function Request() {
       <>
         <div
           className="cursor-pointer w-full mx-auto"
-          onClick={() => setLetterVisible(true)}
+          // onClick={() => setLetterVisible(true)}
         >
           <MainIconSection icon={Love} caption={"나에게 온 요청"}>
             <RequestHold count={requestInfo.length}></RequestHold>

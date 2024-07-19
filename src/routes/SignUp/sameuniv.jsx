@@ -36,7 +36,7 @@ export default function SameUniv() {
             />
             <label
               htmlFor="ok"
-              className="w-full h-full flex peer-checked:bg-main bg-background justify-center items-center"
+              className="w-full h-full flex peer-checked:bg-main bg-input justify-center items-center"
             >
               <div className="w-3">
                 <IconImage src={Ok} />
@@ -57,7 +57,7 @@ export default function SameUniv() {
             />
             <label
               htmlFor="no"
-              className="w-full h-full flex peer-checked:bg-main bg-background justify-center items-center"
+              className="w-full h-full flex peer-checked:bg-main bg-input justify-center items-center"
             >
               <div className="w-3">
                 <IconImage src={No} />

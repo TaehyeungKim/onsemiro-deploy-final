@@ -40,7 +40,7 @@ function ConditionSelect({ label, reqType }) {
   }, [reqType]);
 
   return (
-    <div className="bg-background flex flex-col items-center w-full rounded-lg">
+    <div className="bg-input flex flex-col items-center w-full rounded-lg">
       <h3 className="py-10 text-2xl font-bold">{label}</h3>
       {!dataContext.data.preference || !dataContext.data.preference[reqType] ? (
         <button
@@ -51,7 +51,7 @@ function ConditionSelect({ label, reqType }) {
         </button>
       ) : (
         <button
-          className="bg-background-darker w-4/5 py-3 flex justify-center items-center rounded-lg my-3"
+          className="bg-input-darker w-4/5 py-3 flex justify-center items-center rounded-lg my-3"
           onClick={initializeAndToggle}
         >
           <div className="w-5 mr-2">
@@ -209,7 +209,7 @@ export function IdealChoiceSub({ reqType }) {
             {Conditions.map((condition) => (
               <button
                 key={condition.label}
-                className={`bg-background w-full py-3 flex justify-center items-center rounded-lg my-3 cursor-pointer ${
+                className={`bg-input w-full py-3 flex justify-center items-center rounded-lg my-3 cursor-pointer ${
                   dataContext.data.preference?.required?.hasOwnProperty(
                     condition.condition
                   ) ||

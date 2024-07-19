@@ -426,6 +426,7 @@ export const keyMapWithKorean = {
   height: "키",
   weight: "체형",
   appearance: "생김새",
+  eyelid: "쌍꺼풀 유무",
   mbti: "MBTI",
   character: "성격",
   hobby: "관심사",

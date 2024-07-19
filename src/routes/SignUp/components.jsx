@@ -2,8 +2,6 @@ import {
   useRef,
   useEffect,
   useState,
-  useMemo,
-  Fragment,
   useCallback,
   useDeferredValue,
 } from "react";
@@ -116,7 +114,7 @@ export function DoubleThumbRangeBar({
         min={min}
         max={max}
         step={step}
-        className={`w-full block absolute top-0 left-0 h-full z-10`}
+        className={`w-full block absolute top-0 left-0 h-full z-10 pointer-events-none`}
         defaultValue={min}
         value={smaller}
         onChange={controlSmallerValue}
@@ -126,7 +124,7 @@ export function DoubleThumbRangeBar({
         min={min}
         max={max}
         step={step}
-        className={`w-full block absolute top-0 left-0 h-full z-10`}
+        className={`w-full block absolute top-0 left-0 h-full z-10 pointer-events-none`}
         defaultValue={max}
         value={bigger}
         onChange={controlBiggerValue}
@@ -160,7 +158,6 @@ export function ExtendedRangeBar({
           {(() => {
             const arr = [];
             for (let i = min; i <= max; i += step) {
-              console.log(i, min, max, step);
               arr.push(
                 <div key={i} className="grow h-full has-[:checked]:z-30 group">
                   <input
@@ -189,34 +186,6 @@ export function ExtendedRangeBar({
             return arr;
           })()}
         </div>
-
-        {/* <input
-        ref={range}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        className={`w-full block  absolute top-0 left-0 h-full z-10`}
-        defaultValue={defaultValue}
-        onChange={(e) => {
-          setter(e.target.value);
-          setInnerValue(e.target.value);
-        }}
-      ></input>
-      <div className="h-1 w-full border-main border-[1px] relative box-border">
-        <div className="absolute h-full bg-main" ref={progress}></div>
-        <div className="flex justify-between w-full h-full absolute top-0 items-center">
-          <div className="rounded-full w-3 aspect-square invisible"></div>
-          {captions.map((caption, i) => (
-            <div key={i} className="bg-main rounded-full w-3 aspect-square">
-              <p className="w-0 h-0 text-xs overflow-visible -translate-y-7 -translate-x-1">
-                {caption}
-              </p>
-            </div>
-          ))}
-          <div className=" rounded-full w-3 aspect-square invisible"></div>
-        </div>
-      </div> */}
       </div>
       <div className="w-full h-1 flex justify-between">
         <div className=" h-full aspect-square invisible"></div>
@@ -261,7 +230,7 @@ export function SelectionRadioGrid({ collection, name, dataContext }) {
             />
             <label
               htmlFor={value.main}
-              className="block bg-background py-2 peer-checked:bg-main"
+              className="block bg-input py-2 peer-checked:bg-main"
             >
               <div className="text-center">
                 <h6>{value.main}</h6>
@@ -275,7 +244,13 @@ export function SelectionRadioGrid({ collection, name, dataContext }) {
   );
 }
 
-export function CustomTextInput({ id, placeholder, label = "", event = null }) {
+export function CustomTextInput({
+  id,
+  placeholder,
+  defaultValue = null,
+  label = "",
+  event = null,
+}) {
   return (
     <div className="relative h-10 flex items-center rounded-lg grow">
       {label && (
@@ -284,12 +259,13 @@ export function CustomTextInput({ id, placeholder, label = "", event = null }) {
         </label>
       )}
 
-      <div className="grow h-full bg-background rounded-lg overflow-hidden">
+      <div className="grow h-full bg-input rounded-lg overflow-hidden">
         <input
           className="h-full w-full block text-xs pl-3 box-border"
           placeholder={placeholder}
           id={id}
           onChange={(e) => event?.onChange(e.target.value)}
+          defaultValue={defaultValue}
         ></input>
       </div>
     </div>

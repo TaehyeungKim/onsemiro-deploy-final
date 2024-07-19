@@ -1,6 +1,6 @@
 import { DataContext } from ".";
 import { useContext } from "react";
-import { FloatingSection } from "./components";
+import { FloatingSection, CustomTextInput } from "./components";
 import IconImage from "../../components/IconImage";
 
 import howToKakao from "../../assets/howto_kakao_id.png";
@@ -16,7 +16,19 @@ export default function KakaoAuth() {
         매칭에 동의했을 때 외에는 절대 공개되지 않아요
       </h5>
       <div className="relative h-8 flex items-center mt-6 px-3">
-        <input
+        <CustomTextInput
+          id="profile_kakao"
+          placeholder={"카카오톡 아이디 입력하기"}
+          event={{
+            onChange: (id) =>
+              dataContext?.setter({
+                ...dataContext.data,
+                kakao_id: id,
+              }),
+          }}
+          defaultValue={dataContext.data.kakao_id ?? null}
+        />
+        {/* <input
           className="h-full grow block placeholder:text-xs placeholder:pl-3 bg-background rounded-lg"
           placeholder="카카오톡 아이디 입력하기"
           onChange={(e) =>
@@ -26,7 +38,7 @@ export default function KakaoAuth() {
             })
           }
           defaultValue={dataContext.data.kakao_id ?? null}
-        ></input>
+        ></input> */}
       </div>
       <div className="w-3/4 m-auto mt-20">
         <IconImage src={howToKakao} />

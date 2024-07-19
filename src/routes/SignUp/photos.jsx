@@ -39,7 +39,7 @@ export default function Photos() {
         </p>
         <p className="mt-3">사진은 반드시, 얼굴이 나온 사진이어야 해요!</p>
         <button
-          className="flex items-center justify-center bg-background w-full mt-3 rounded-lg"
+          className="flex items-center justify-center bg-input w-full mt-3 rounded-lg"
           onClick={openFileInput(photoRef)}
         >
           <div className="w-9 mr-2">
@@ -60,7 +60,7 @@ export default function Photos() {
       <FloatingSection>
         <SectionTitle>성병 검사지</SectionTitle>
         <button
-          className="flex items-center justify-center bg-background w-full mt-3 rounded-lg"
+          className="flex items-center justify-center bg-input w-full mt-3 rounded-lg"
           onClick={openFileInput(stdRef)}
         >
           <div className="w-9 mr-2">

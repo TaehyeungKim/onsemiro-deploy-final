@@ -23,7 +23,7 @@ export default function Introduction() {
       </FloatingSection>
       <FloatingSection>
         <h5>간단한 자기소개를 적어주세요.</h5>
-        <div className="w-11/12 aspect-square bg-background rounded-lg mx-auto mt-4">
+        <div className="w-11/12 aspect-square bg-input rounded-lg mx-auto mt-4">
           <textarea
             className="block w-full h-full resize-none outline-none p-4 bg-transparent"
             placeholder="자기소개를 적어주세요."

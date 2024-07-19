@@ -1,14 +1,24 @@
 import IconImage from "../../components/IconImage";
 import closeIcon from "../../assets/ph_x.png";
 import Letter from "../../components/Letter";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { timeMatch } from "../../components/MainIconSection/utils";
+import { requestMatching } from "../../apis/api";
 
 export default function LetterLayout({ info, close, i = 0 }) {
   const [index, setIndex] = useState(i);
   const timeInfo = useMemo(
     () => info.length > 0 && timeMatch(info[index].time),
     [info, index]
+  );
+
+  const request = useCallback(
+    (data) => {
+      // console.log(data, info[index]);
+      if (info[index].matching_type === 1) return requestMatching(data);
+      else return;
+    },
+    [info]
   );
 
   return (
@@ -23,6 +33,7 @@ export default function LetterLayout({ info, close, i = 0 }) {
       </div>
       <div className="flex flex-row w-letter-width justify-between mt-3">
         <button
+          onClick={() => request({ counter_id: info[index].id })}
           className={`${
             info[index].matching_type === 2 ? "bg-sub" : "bg-main"
           } text-white w-44 p-2 rounded-xl shadow-lg text-lg`}

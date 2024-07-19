@@ -3,10 +3,13 @@ import { useEffect, useMemo } from "react";
 import ProfileWOPhoto from "../../assets/profile1.png";
 import ProfileWPhoto from "../../assets/profile2.png";
 
+import styles from "./index.module.scss";
+
 import check from "../../assets/check.png";
 import AuthLabel from "./authlabel";
 import ProfileLine from "./profileline";
 import { filterValidProfileKey, keyMapWithKorean } from "../../assets/asset";
+import { messageFrame } from "../../assets/message/message";
 
 import "./index.css";
 
@@ -104,7 +107,7 @@ export default function Letter({ info, timeInfo, index }) {
 
   return (
     <div
-      className="letterFrame flex flex-col items-center w-full shrink-0"
+      className="letterFrame flex flex-col items-center w-full shrink-0 px-3"
       style={{ transform: `translateX(-${index * 100}%)` }}
     >
       <header className="top-0 w-4/5 flex flex-row items-center justify-center py-3 border-b-2 ">
@@ -115,33 +118,10 @@ export default function Letter({ info, timeInfo, index }) {
           {/* {info.date} {timeInfo.time} 쪽지 */}
         </h5>
       </header>
-      <div className="w-4/5 bg-sub text-center rounded-2xl shadow-lg py-2 mt-2">
+      <div className="w-full bg-main text-center rounded-2xl shadow-lg py-2 my-5">
         {info.message}
       </div>
-      <div className="w-full mt-3 relative">
-        <div className="w-1/4 m-auto">
-          <IconImage
-            src={
-              info.photo ??
-              (info.approval.photo_approval_status
-                ? ProfileWPhoto
-                : ProfileWOPhoto)
-            }
-          />
-        </div>
-        {info.approval.std_test_approval_status ? (
-          <div className="bg-main rounded-xl flex absolute top-0 right-12 items-center w- px-3 py-1 box-border shadow-lg">
-            <div className="w-4 mr-2">
-              <IconImage src={check}></IconImage>
-            </div>
-            <p className="text-center text-white text-xs">
-              STD 3종 <br />
-              검사 완료
-            </p>
-          </div>
-        ) : null}
-      </div>
-      <section className="w-full px-3 mb-2">
+      <section className="w-full mb-2">
         <h4 className="text-sm">기본 정보</h4>
         <div className="rounded-lg border-slate-400 border-2 p-1">
           <div className="flex flex-row">
@@ -157,22 +137,53 @@ export default function Letter({ info, timeInfo, index }) {
           </p>
         </div>
       </section>
+      <div className="w-full mt-3 relative">
+        <div className="w-1/4 m-auto">
+          <IconImage
+            src={
+              info.photo ??
+              (info.approval.photo_approval_status
+                ? ProfileWPhoto
+                : ProfileWOPhoto)
+            }
+          />
+        </div>
+        {info.approval.std_test_approval_status ? (
+          <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
+            <div className="w-4 mr-2">
+              <IconImage src={check}></IconImage>
+            </div>
+            <p className="text-center text-white text-xs">
+              STD 3종 <br />
+              검사 완료
+            </p>
+          </div>
+        ) : null}
+      </div>
+      <section className={`w-full rounded-3xl block`}>
+        {/* <IconImage src={messageFrame()}></IconImage> */}
+        <div className="w-full flex items-center">
+          {messageFrame()}
+          <h4 className="absolute p-4">{info.introduction}adadadadad</h4>
+        </div>
+      </section>
+
       <section className="w-full px-3">
         <h4 className="text-sm">상세 정보</h4>
         <div className="rounded-lg border-slate-400 border-2 p-1">
-          {keys.map((key) => (
-            <ProfileLine
-              label={keyMapWithKorean[key]}
-              value={info[key]}
-              key={key}
-            ></ProfileLine>
-          ))}
-        </div>
-      </section>
-      <section className="w-full px-3">
-        <h4 className="text-sm">소개글</h4>
-        <div className="rounded-lg border-slate-400 border-2 p-1">
-          {info.introduction}
+          {keys.map((key) =>
+            key === "eyelid" ? null : (
+              <ProfileLine
+                label={keyMapWithKorean[key]}
+                value={
+                  key === "appearance"
+                    ? `${info[key]} ${info["eyelid"]}`
+                    : info[key]
+                }
+                key={key}
+              ></ProfileLine>
+            )
+          )}
         </div>
       </section>
     </div>
