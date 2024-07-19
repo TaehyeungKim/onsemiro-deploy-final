@@ -43,15 +43,6 @@ export default function SignUpPage() {
           toggle: (open, type, data = undefined) => {
             if (open) setIdealChoice({ visible: open, type });
             else {
-              // if (type && data) {
-              //   data.type = type;
-              //   setSignUpData({
-              //     ...signUpData,
-              //     preference: {
-              //       ...data,
-              //     },
-              //   });
-              // }
               setIdealChoice({ visible: open });
             }
           },
@@ -79,9 +70,8 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
     (level) => {
       switch (level) {
         case 0:
-          console.log(signUpData.auth_self && signUpData.auth_school);
-          if (signUpData.auth_self && signUpData.auth_school)
-            levelSetter(level + 1);
+          // console.log(signUpData.auth_self && signUpData.auth_school);
+          levelSetter(level + 1);
           break;
         case 1:
           if (signUpData.kakao_id) levelSetter(level + 1);
