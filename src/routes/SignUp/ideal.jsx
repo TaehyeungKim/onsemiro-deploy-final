@@ -1,6 +1,12 @@
 import { FloatingSection } from "./components";
 import { DataContext, IdealChoiceToggleContext } from ".";
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import IconImage from "../../components/IconImage";
 import ArrowLeft from "../../assets/arrow_left.png";
 import { Conditions } from "../../assets/asset";
@@ -22,9 +28,16 @@ function ConditionSelect({ label, reqType }) {
   const idealToggleContext = useContext(IdealChoiceToggleContext);
   const dataContext = useContext(DataContext);
 
-  // useEffect(() => {
-  //   console.log(dataContext.data);
-  // }, []);
+  const initializeAndToggle = useCallback(() => {
+    dataContext.setter({
+      ...dataContext.data,
+      preference: {
+        ...dataContext.data.preference,
+        [reqType]: undefined,
+      },
+    });
+    idealToggleContext.toggle(true, reqType);
+  }, [reqType]);
 
   return (
     <div className="bg-background flex flex-col items-center w-full rounded-lg">
@@ -37,7 +50,10 @@ function ConditionSelect({ label, reqType }) {
           고르기
         </button>
       ) : (
-        <div className="bg-background-darker w-4/5 py-3 flex justify-center items-center rounded-lg my-3">
+        <button
+          className="bg-background-darker w-4/5 py-3 flex justify-center items-center rounded-lg my-3"
+          onClick={initializeAndToggle}
+        >
           <div className="w-5 mr-2">
             <IconImage
               src={
@@ -56,7 +72,7 @@ function ConditionSelect({ label, reqType }) {
                 Object.keys(dataContext.data.preference[reqType])[0]
             ).label
           }
-        </div>
+        </button>
       )}
     </div>
   );
@@ -97,10 +113,6 @@ function ConditionSet({ type, close, reqType }) {
 
   const dataContext = useContext(DataContext);
   const idealChoiceContext = useContext(IdealChoiceToggleContext);
-
-  // useEffect(() => {
-  //   setConditionSetData({ ...conditionSetData, type: reqType });
-  // }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -168,10 +180,6 @@ export function IdealChoiceSub({ reqType }) {
 
   const [isConditionSetVisible, setIsConditionSetVisible] = useState(false);
   const [type, setType] = useState(undefined);
-
-  // useEffect(() => {
-  //   console.log(dataContext.data);
-  // }, []);
 
   if (isConditionSetVisible)
     return (

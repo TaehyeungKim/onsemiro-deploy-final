@@ -3,15 +3,15 @@ import { DataContext } from ".";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
 import { CITYSET } from "../../assets/asset";
 
-function SelectRegionRow({ label, regions, setter, sup = undefined }) {
-  const dataContext = useContext(DataContext);
+function SelectRegionRow({ label, regions, setter, context, sup = undefined }) {
+  // const dataContext = useContext(DataContext);
 
   const ref = useRef(null);
 
   const LABELMAP = { 도시: "city", 행정구역: "subRegion" };
 
   useEffect(() => {
-    if (!dataContext.data[label]) ref.current?.setAttribute("selected", true);
+    if (!context.data[label]) ref.current?.setAttribute("selected", true);
   }, [sup]);
 
   return (
@@ -22,7 +22,7 @@ function SelectRegionRow({ label, regions, setter, sup = undefined }) {
       <select
         className="block grow ml-16 bg-background box-border px-3 py-2 rounded-md"
         onChange={(e) => setter(e.target.value)}
-        value={dataContext.data[LABELMAP[label]]}
+        value={context.data[LABELMAP[label]]}
       >
         <option hidden ref={ref}>
           선택하기
@@ -53,7 +53,7 @@ export function FrequencySetSection({ meetNum, setter }) {
   );
 }
 
-export function LocationSetSection({ set, city, setter }) {
+export function LocationSetSection({ set, city, setter, context }) {
   return (
     <>
       <div className="mb-3">
@@ -61,6 +61,7 @@ export function LocationSetSection({ set, city, setter }) {
           label="도시"
           regions={set.map((set) => set.city)}
           setter={setter.city}
+          context={context}
         ></SelectRegionRow>
       </div>
 
@@ -70,6 +71,7 @@ export function LocationSetSection({ set, city, setter }) {
             label="행정구역"
             regions={set.find((s) => s.city === city).sub}
             setter={setter.sub}
+            context={context}
             sup={city}
           ></SelectRegionRow>
         </div>
@@ -120,25 +122,8 @@ export default function FrequencyAndLocation() {
               sub: setSub,
             }}
             city={city}
+            context={dataContext}
           />
-          {/* <div className="mb-3">
-            <SelectRegionRow
-              label="도시"
-              regions={CITYSET.map((set) => set.city)}
-              setter={setCity}
-            ></SelectRegionRow>
-          </div>
-
-          {city && (
-            <div>
-              <SelectRegionRow
-                label="행정구역"
-                regions={CITYSET.find((set) => set.city === city).sub}
-                setter={setSub}
-                sup={city}
-              ></SelectRegionRow>
-            </div>
-          )} */}
         </section>
       </FloatingSection>
     </>
