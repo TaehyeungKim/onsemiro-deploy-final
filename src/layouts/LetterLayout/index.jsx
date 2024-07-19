@@ -24,16 +24,10 @@ export default function LetterLayout({ info, close, i = 0 }) {
       <div className="flex flex-row w-letter-width justify-between mt-3">
         <button
           className={`${
-            info[index].meta.type === "request" &&
-            info[index].meta.status === "photo"
-              ? "bg-auth"
-              : "bg-main"
+            info[index].matching_type === 2 ? "bg-sub" : "bg-main"
           } text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
         >
-          {info[index].meta.type === "request" &&
-          info[index].meta.status === "photo"
-            ? "사진 요청"
-            : "매칭 수락"}
+          {info[index].matching_type === 2 ? "사진 요청" : "매칭 요청"}
         </button>
         <button className="bg-[#A9A9A9] text-white w-44 p-2 rounded-xl shadow-lg text-lg">
           거절

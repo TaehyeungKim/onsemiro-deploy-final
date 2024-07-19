@@ -1,11 +1,12 @@
 import IconImage from "../IconImage";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import ProfileWOPhoto from "../../assets/profile1.png";
 import ProfileWPhoto from "../../assets/profile2.png";
 
 import check from "../../assets/check.png";
 import AuthLabel from "./authlabel";
 import ProfileLine from "./profileline";
+import { filterValidProfileKey, keyMapWithKorean } from "../../assets/asset";
 
 import "./index.css";
 
@@ -99,37 +100,7 @@ export default function Letter({ info, timeInfo, index }) {
   //   }
   // }, [info]);
 
-  const keys = useMemo(
-    () =>
-      Object.keys(info.profile).filter(
-        (key) =>
-          key !== "introduction" &&
-          key !== "photo_status" &&
-          key !== "auth_self" &&
-          key !== "auth_univ" &&
-          key !== "disease_inspection" &&
-          key !== "univ" &&
-          key !== "gender" &&
-          key !== "age" &&
-          key !== "photo"
-      ),
-    []
-  );
-
-  const keyMapWithKorean = useMemo(
-    () => ({
-      location: "거주 지역",
-      height: "키",
-      weight: "체형",
-      face: "생김새",
-      mbti: "MBTI",
-      character: "성격",
-      interest: "관심사",
-      period: "만남 주기",
-      tendency: "성적 성향",
-    }),
-    []
-  );
+  const keys = useMemo(() => filterValidProfileKey(info), [info]);
 
   return (
     <div
@@ -138,10 +109,10 @@ export default function Letter({ info, timeInfo, index }) {
     >
       <header className="top-0 w-4/5 flex flex-row items-center justify-center py-3 border-b-2 ">
         <div className="w-5 mr-3">
-          <IconImage src={timeInfo.icon}></IconImage>
+          {/* <IconImage src={timeInfo.icon}></IconImage> */}
         </div>
         <h5 className="tracking-wider">
-          {info.date} {timeInfo.time} 쪽지
+          {/* {info.date} {timeInfo.time} 쪽지 */}
         </h5>
       </header>
       <div className="w-4/5 bg-sub text-center rounded-2xl shadow-lg py-2 mt-2">
@@ -151,12 +122,14 @@ export default function Letter({ info, timeInfo, index }) {
         <div className="w-1/4 m-auto">
           <IconImage
             src={
-              info.profile.photo ??
-              (info.profile.photo_status ? ProfileWPhoto : ProfileWOPhoto)
+              info.photo ??
+              (info.approval.photo_approval_status
+                ? ProfileWPhoto
+                : ProfileWOPhoto)
             }
           />
         </div>
-        {info.profile.disease_inspection ? (
+        {info.approval.std_test_approval_status ? (
           <div className="bg-main rounded-xl flex absolute top-0 right-12 items-center w- px-3 py-1 box-border shadow-lg">
             <div className="w-4 mr-2">
               <IconImage src={check}></IconImage>
@@ -172,12 +145,15 @@ export default function Letter({ info, timeInfo, index }) {
         <h4 className="text-sm">기본 정보</h4>
         <div className="rounded-lg border-slate-400 border-2 p-1">
           <div className="flex flex-row">
-            {info.profile.auth_self ? <AuthLabel>본인 인증</AuthLabel> : null}
-            {info.profile.auth_univ ? <AuthLabel>학교 인증</AuthLabel> : null}
+            {info.approval.photo_approval_status ? (
+              <AuthLabel>본인 인증</AuthLabel>
+            ) : null}
+            {info.approval.email_approval_status ? (
+              <AuthLabel>학교 인증</AuthLabel>
+            ) : null}
           </div>
           <p className="text-base">
-            {info.profile.univ}에 재학중인, {info.profile.age}세{" "}
-            {info.profile.gender}
+            {info.univ}에 재학중인, {info.age}세 {info.gender}
           </p>
         </div>
       </section>
@@ -187,7 +163,7 @@ export default function Letter({ info, timeInfo, index }) {
           {keys.map((key) => (
             <ProfileLine
               label={keyMapWithKorean[key]}
-              value={info.profile[key]}
+              value={info[key]}
               key={key}
             ></ProfileLine>
           ))}
@@ -196,7 +172,7 @@ export default function Letter({ info, timeInfo, index }) {
       <section className="w-full px-3">
         <h4 className="text-sm">소개글</h4>
         <div className="rounded-lg border-slate-400 border-2 p-1">
-          {info.profile.introduction}
+          {info.introduction}
         </div>
       </section>
     </div>

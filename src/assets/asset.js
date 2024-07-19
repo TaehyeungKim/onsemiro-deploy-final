@@ -405,3 +405,31 @@ export const heightRange = (thumb) => {
   const point = thumb - 145;
   return parseInt(point / 5) + 1;
 };
+
+export const filterValidProfileKey = (info) =>
+  Object.keys(info).filter(
+    (key) =>
+      key !== "introduction" &&
+      key !== "approval" &&
+      key !== "univ" &&
+      key !== "gender" &&
+      key !== "age" &&
+      key !== "photo" &&
+      key !== "id" &&
+      key !== "nickname" &&
+      key !== "message" &&
+      key !== "matching_type"
+  );
+
+export const keyMapWithKorean = {
+  location: "거주 지역",
+  height: "키",
+  weight: "체형",
+  appearance: "생김새",
+  mbti: "MBTI",
+  character: "성격",
+  hobby: "관심사",
+  meeting_frequency: "만남 주기",
+  bdsm: "성적 성향",
+  gender_preference: "성적 지향",
+};

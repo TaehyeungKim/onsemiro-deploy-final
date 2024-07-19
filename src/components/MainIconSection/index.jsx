@@ -1,15 +1,13 @@
-import IconImage from "../IconImage";
-
-export default function MainIconSection({ icon, caption, children }) {
+export default function MainSection({ caption, children }) {
   return (
-    <section className="flex flex-col mb-6 h-main-isection-height">
+    <section className="flex flex-col mb-6 mt-6 w-full">
       <div className="flex flex-row items-center relative mb-2">
-        <div className="w-5 mr-2">
+        {/* <div className="w-5 mr-2">
           <IconImage src={icon}></IconImage>
-        </div>
-        <h4 className="text-base">{caption}</h4>
+        </div> */}
+        <h4 className="text-base text-center w-full">{caption}</h4>
       </div>
-      <div className="bg-main-icon-section w-full rounded-xl flex flex-col items-center justify-center grow pb-4">
+      <div className="w-full rounded-md overflow-hidden shadow-lg">
         {children}
       </div>
     </section>

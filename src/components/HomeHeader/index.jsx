@@ -1,5 +1,5 @@
 import menu from "../../assets/hambg-menu.png";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo/logo.png";
 import login from "../../assets/login.png";
 import IconImage from "../IconImage";
 
@@ -9,7 +9,7 @@ export default function HomeHeader() {
       <button className="w-8">
         <IconImage src={menu} />
       </button>
-      <div className="w-36">
+      <div className="w-40">
         <IconImage src={logo} />
       </div>
       <button className="w-8">

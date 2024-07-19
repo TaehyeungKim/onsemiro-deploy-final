@@ -25,7 +25,7 @@ export default function SignUpPage() {
 
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(13);
+  const [curLevel, setCurLevel] = useState(0);
 
   const [idealChoice, setIdealChoice] = useState({
     visible: false,

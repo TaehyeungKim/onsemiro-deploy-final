@@ -1,4 +1,4 @@
-import MainIconSection from ".";
+import MainSection from ".";
 import { LetterArrive, LetterChecked, LetterClosed } from "./cases";
 import { timeMatch } from "./utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -45,7 +45,11 @@ export default function Recommend() {
       user_id: recommended.data.recommended_user_id,
     });
     setRecommendInfo([
-      { ...profile.data, message: MESSAGE_MAP(recommended.data.matching_type) },
+      {
+        ...profile.data,
+        message: MESSAGE_MAP(recommended.data.matching_type),
+        matching_type: recommended.data.matching_type,
+      },
     ]);
   };
 
@@ -59,21 +63,26 @@ export default function Recommend() {
   );
 
   const modeMatch = useCallback((status) => {
-    if (status === "arrival") return <LetterArrive></LetterArrive>;
-    else if (status === "checked") return <LetterChecked></LetterChecked>;
-    return <LetterClosed time={recommendInfo.later}></LetterClosed>;
+    // if (status === "arrival") return <LetterArrive></LetterArrive>;
+    // else if (status === "checked") return <LetterChecked></LetterChecked>;
+    // return <LetterClosed time={recommendInfo.later}></LetterClosed>;
+    return <LetterArrive></LetterArrive>;
   });
 
   return (
     recommendInfo.length > 0 && (
       <>
-        <div className="cursor-pointer" onClick={() => setLetterVisible(true)}>
-          <MainIconSection
+        <div
+          className="cursor-pointer w-full mx-auto"
+          onClick={() => setLetterVisible(true)}
+        >
+          <MainSection
             icon={timeInfo.icon}
-            caption={`${recommendInfo[0].date} ${timeInfo.time} 쪽지 (${recommendInfo[0].time}:00) `}
+            // caption={`${recommendInfo[0].date} ${timeInfo.time} 쪽지 (${recommendInfo[0].time}:00) `}
+            caption={"7/8 밤 쪽지(22:00)"}
           >
             {modeMatch(recommendInfo.status)}
-          </MainIconSection>
+          </MainSection>
         </div>
         {letterVisible ? (
           <LetterLayout info={recommendInfo} close={closeLetter}>

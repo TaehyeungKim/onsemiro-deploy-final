@@ -7,12 +7,10 @@ export default function ActiveMode() {
   const toggleMode = () => setModeOn(!isModeOn);
 
   return (
-    <div
-      className="flex items-center flex-col cursor-pointer w-20"
-      onClick={toggleMode}
-    >
+    <div className="flex items-center cursor-pointer" onClick={toggleMode}>
+      <p className="text-base mr-5">매칭 활성화</p>
       <div
-        className={`bg-slate-300 ${styles.frame} flex items-center overflow-clip relative mb-1`}
+        className={`bg-slate-300 ${styles.frame} flex items-center overflow-clip relative`}
       >
         <p className="absolute right-2 text-sm">OFF</p>
         <div
@@ -20,7 +18,7 @@ export default function ActiveMode() {
             isModeOn ? styles["below-layer-on"] : styles["below-layer-off"]
           } ${styles["below-layer"]} ${
             styles["transition"]
-          } bg-main relative overflow-hidden`}
+          } bg-light-green relative overflow-hidden`}
         >
           <p className="absolute text-sm left-2 w-full text-white">ON</p>
         </div>
@@ -30,7 +28,6 @@ export default function ActiveMode() {
           } ${styles["transition"]} z-20`}
         ></div>
       </div>
-      <p className="text-sm">매칭 참여</p>
     </div>
   );
 }
