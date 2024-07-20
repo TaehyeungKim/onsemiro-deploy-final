@@ -438,7 +438,12 @@ export const keyMapWithKorean = {
 export const PLAY_DATA = [
   {
     id: 0,
-    question: "",
-    answers: ["", "", "", ""],
+    question: "ㄷ람ㄹㄴㅁㄹㅁㄴㅇㅁㄴㅇ",
+    answers: ["ㅁㅁㅇ", "ㅁㅇㅁㅇㅁㅇ", "ㅁㅇㅁㅇㅁㅇ", "ㅁㅇㅁㅇㅇㅁ"],
+  },
+  {
+    id: 1,
+    question: "ㅁㅇㅁㅇㅁㅇㅁㅇㄴㅇㄴㅁ",
+    answers: ["ㅁㅁㅇ", "ㅁㅇㅁㅇㅁㅇ", "ㅁㅇㅁㅇㅁㅇ", "ㅁㅇㅁㅇㅇㅁ"],
   },
 ];
