@@ -31,7 +31,7 @@ export default function SignUpPage() {
 
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(1);
+  const [curLevel, setCurLevel] = useState(0);
 
   const [idealChoice, setIdealChoice] = useState({
     visible: false,
@@ -99,7 +99,7 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
           }
           break;
         case 4:
-          if (signUpData.bdsm && signUpData.sexual_tendency)
+          if (signUpData.bdsm && signUpData.gender_preference)
             levelSetter(level + 1);
           break;
         case 5:
@@ -156,6 +156,11 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
                   const { city, subRegion } = target;
                   return `${city} ${subRegion}`;
                 }
+              case "mbti":
+                if (data.preference) {
+                  const { first, second, third, fourth } = target;
+                  return `${first} ${second} ${third} ${fourth}`;
+                }
               default:
                 if (data.preference) return target;
             }
@@ -166,7 +171,7 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
             nickname: dataContext.data.nickname,
             univ: dataContext.data.univ,
             gender: dataContext.data.gender_identity,
-            gender_prefernece: dataContext.data.sexual_tendency,
+            gender_preference: dataContext.data.gender_preference,
             age: dataContext.data.age,
             bdsm: dataContext.data.bdsm,
             height: heightRange(dataContext.data.height),
@@ -193,6 +198,7 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
             ideal_location: "",
             ideal_condition: {},
           };
+
           if (dataContext.data.preference) {
             const { required, optional_1, optional_2 } =
               dataContext.data.preference;
@@ -278,7 +284,7 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
       <SignUpSub level={curLevel}></SignUpSub>
 
       <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
-        {curLevel === 12 ? (
+        {curLevel === 13 ? (
           <MainCustomButton
             addedStyle="!bg-background !text-black !mx-0 grow"
             event={{
@@ -300,7 +306,7 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
               changeLevel(curLevel);
             },
           }}
-          addedStyle={curLevel === 12 ? "!mx-0 grow" : null}
+          addedStyle={curLevel === 13 ? "!mx-0 grow" : null}
         >
           {buttonActionPerLevel().message}
         </MainCustomButton>

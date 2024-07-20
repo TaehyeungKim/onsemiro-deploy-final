@@ -164,7 +164,7 @@ export default function Letter({ info, timeInfo, index }) {
         {/* <IconImage src={messageFrame()}></IconImage> */}
         <div className="w-full flex items-center">
           {messageFrame()}
-          <h4 className="absolute p-4">{info.introduction}adadadadad</h4>
+          <h4 className="absolute p-4">{info.introduction}</h4>
         </div>
       </section>
 

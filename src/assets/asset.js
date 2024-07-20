@@ -434,3 +434,11 @@ export const keyMapWithKorean = {
   bdsm: "성적 성향",
   gender_preference: "성적 지향",
 };
+
+export const PLAY_DATA = [
+  {
+    id: 0,
+    question: "",
+    answers: ["", "", "", ""],
+  },
+];

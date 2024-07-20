@@ -1,21 +1,20 @@
 import HomeHeader from "../../components/HomeHeader";
+import { useState } from "react";
 
 export default function PlayPage() {
+  const [level, setLevel] = useState(0);
+
   return (
     <div className="flex flex-col">
       <HomeHeader />
       <main className="flex flex-col w-full mt-header-height relative">
         <div className="flex flex-row items-center justify-between fixed top-header-height w-main-frame py-4 px-2 z-10">
-          <button
-            className="bg-main text-white w-full box-border py-4 rounded-md text-xl mb-5"
-          >
+          <button className="bg-main text-white w-full box-border py-4 rounded-md text-xl mb-5">
             ONSEMIRO로
             <br />
             돌아가기
           </button>
-          <button
-            className="bg-main text-white w-full box-border py-4 rounded-md text-xl mb-5"
-          >
+          <button className="bg-main text-white w-full box-border py-4 rounded-md text-xl mb-5">
             내 프로필
             <br />
             표시 확인

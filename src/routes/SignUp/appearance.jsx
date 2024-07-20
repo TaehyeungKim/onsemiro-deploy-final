@@ -32,7 +32,7 @@ export default function Appearance() {
         <ExtendedRangeBar
           max={MAX}
           min={MIN}
-          defaultValue={dataContext.data.height ?? MIN + 5}
+          defaultValue={height}
           step={5}
           setter={(height) => setHeight(parseInt(height))}
           captions={[150, 155, 160, 165, 170, 175, 180, 185]}

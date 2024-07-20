@@ -46,7 +46,7 @@ export default function Sexual() {
         <SectionTitle>성적 지향</SectionTitle>
         <SelectionRadioGrid
           collection={sexualOrientation}
-          name="sexual_tendency"
+          name="gender_preference"
           dataContext={dataContext}
         />
       </FloatingSection>

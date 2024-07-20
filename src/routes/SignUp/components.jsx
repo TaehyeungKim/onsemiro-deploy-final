@@ -168,6 +168,8 @@ export function ExtendedRangeBar({
                     id={`ex-range-${i}`}
                     value={i}
                     onChange={(e) => setter(e.target.value)}
+                    // defaultValue={defaultValue}
+                    defaultChecked={i === defaultValue ?? false}
                   />
                   <label
                     htmlFor={`ex-range-${i}`}

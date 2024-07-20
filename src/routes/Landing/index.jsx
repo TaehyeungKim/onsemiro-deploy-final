@@ -8,7 +8,7 @@ export default function LandingPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    signIn({ phone_num: "dkdkdkdkdkdk" });
+    // signIn({ phone_num: "dkdkdkdkdkdk" });
   }, []);
 
   return (
@@ -42,7 +42,10 @@ export default function LandingPage() {
         >
           설문하고 회원가입하기
         </button>
-        <button className="bg-sub text-black w-80 px-16 py-4 rounded-lg text-xl mb-11 shadow-lg">
+        <button
+          className="bg-sub text-black w-80 px-16 py-4 rounded-lg text-xl mb-11 shadow-lg"
+          onClick={() => navigate("/signin")}
+        >
           로그인하기
         </button>
       </main>

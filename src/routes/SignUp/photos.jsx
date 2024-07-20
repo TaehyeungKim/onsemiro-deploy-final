@@ -39,13 +39,19 @@ export default function Photos() {
         </p>
         <p className="mt-3">사진은 반드시, 얼굴이 나온 사진이어야 해요!</p>
         <button
-          className="flex items-center justify-center bg-input w-full mt-3 rounded-lg"
+          className="flex items-center justify-center bg-input h-11 w-full mt-3 rounded-lg"
           onClick={openFileInput(photoRef)}
         >
-          <div className="w-9 mr-2">
-            <IconImage src={upload}></IconImage>
-          </div>
-          업로드하기
+          {!photo ? (
+            <>
+              <div className="w-9 mr-2">
+                <IconImage src={upload}></IconImage>
+              </div>
+              업로드하기
+            </>
+          ) : (
+            photo.name
+          )}
         </button>
         <input
           type="file"
@@ -60,13 +66,19 @@ export default function Photos() {
       <FloatingSection>
         <SectionTitle>성병 검사지</SectionTitle>
         <button
-          className="flex items-center justify-center bg-input w-full mt-3 rounded-lg"
+          className="flex items-center justify-center bg-input h-11 w-full mt-3 rounded-lg"
           onClick={openFileInput(stdRef)}
         >
-          <div className="w-9 mr-2">
-            <IconImage src={upload}></IconImage>
-          </div>
-          업로드하기
+          {!std ? (
+            <>
+              <div className="w-9 mr-2">
+                <IconImage src={upload}></IconImage>
+              </div>
+              업로드하기
+            </>
+          ) : (
+            std.name
+          )}
         </button>
         <input
           type="file"
