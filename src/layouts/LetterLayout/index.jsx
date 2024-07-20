@@ -1,25 +1,55 @@
 import IconImage from "../../components/IconImage";
 import closeIcon from "../../assets/ph_x.png";
 import Letter from "../../components/Letter";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { timeMatch } from "../../components/MainIconSection/utils";
-import { requestMatching } from "../../apis/api";
+import { requestMatching, getRecommend, getRequestForMe } from "../../apis/api";
 
-export default function LetterLayout({ info, close, i = 0 }) {
+export default function LetterLayout({
+  info,
+  close,
+  requestToMe = false,
+  i = 0,
+}) {
   const [index, setIndex] = useState(i);
   const timeInfo = useMemo(
     () => info.length > 0 && timeMatch(info[index].time),
     [info, index]
   );
 
-  const request = useCallback(
+  const apiCall = useCallback(
     (data) => {
-      // console.log(data, info[index]);
-      if (info[index].matching_type === 1) return requestMatching(data);
+      if (!requestToMe) {
+        if (info[index].matching_type === 1)
+          return requestMatching(data).then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              getRecommend();
+              close();
+            }
+          });
+        else return;
+      }
+      if (info[index].matching_type === 1)
+        return requestMatching(data).then((res) => {
+          if (res.status === 200 || res.status === 201) {
+            getRequestForMe();
+            close();
+          }
+        });
       else return;
     },
-    [info]
+    [info, requestToMe, index]
   );
+
+  const buttonMessage = useMemo(() => {
+    if (requestToMe)
+      return info[index].matching_type === 1 ? "매칭 수락" : "사진 공개";
+    else return info[index].matching_type === 1 ? "매칭 요청" : "사진 요청";
+  }, [info, requestToMe, index]);
+
+  const buttonColor = useMemo(() => {
+    return info[index].matching_type === 1 ? "bg-main" : "bg-sub";
+  }, [info, index]);
 
   return (
     <div className="fixed w-screen h-screen bg-mask top-0 left-0 z-30 flex items-center justify-center flex-col">
@@ -33,12 +63,10 @@ export default function LetterLayout({ info, close, i = 0 }) {
       </div>
       <div className="flex flex-row w-letter-width justify-between mt-3">
         <button
-          onClick={() => request({ counter_id: info[index].id })}
-          className={`${
-            info[index].matching_type === 2 ? "bg-sub" : "bg-main"
-          } text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
+          onClick={() => apiCall({ counter_id: info[index].id })}
+          className={`${buttonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
         >
-          {info[index].matching_type === 2 ? "사진 요청" : "매칭 요청"}
+          {buttonMessage}
         </button>
         <button className="bg-[#A9A9A9] text-white w-44 p-2 rounded-xl shadow-lg text-lg">
           거절
