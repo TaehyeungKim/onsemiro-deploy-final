@@ -67,9 +67,18 @@ export const getRestrictedProfile = async (data) => {
 export const requestMatching = async (data) => {
   const response = await instanceWithToken.post("/matching/type1/", data);
 
-  if (response.status === 200 || response.status === 200) {
+  if (response.status === 200 || response.status === 201) {
     console.log(response.data);
     return response;
+  } else console.log(response);
+  return response;
+};
+
+export const getRequestForMe = async () => {
+  const response = await instanceWithToken.get("/matching/request/");
+
+  if (response.status === 200) {
+    console.log(response.data);
   } else console.log(response);
   return response;
 };

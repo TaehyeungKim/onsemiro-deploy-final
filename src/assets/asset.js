@@ -418,7 +418,9 @@ export const filterValidProfileKey = (info) =>
       key !== "id" &&
       key !== "nickname" &&
       key !== "message" &&
-      key !== "matching_type"
+      key !== "matching_type" &&
+      key !== "matching_id" &&
+      key !== "time"
   );
 
 export const keyMapWithKorean = {
@@ -447,19 +449,6 @@ export const PLAY_DATA = [
     answers: ["ㅁㅁㅇ", "ㅁㅇㅁㅇㅁㅇ", "ㅁㅇㅁㅇㅁㅇ", "ㅁㅇㅁㅇㅇㅁ"],
   },
 ];
-
-{
-  /* <LandingReviewArticle
-                point={2.5}
-                info={{
-                  univ: "서울대",
-                  age: 24,
-                  content:
-                    "일단 다른 앱들과 다르게 대학생들끼리 교류하는게 특이하고 좋았고 매칭률고 좋고 이상한 사람 많이 없는거 같아서 짱 좋아요",
-                  date: "2024.07.20",
-                }}
-              /> */
-}
 
 export const REVIEWS = [
   {

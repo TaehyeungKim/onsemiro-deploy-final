@@ -13,97 +13,119 @@ import { messageFrame } from "../../assets/message/message";
 
 import "./index.css";
 
-export default function Letter({ info, timeInfo, index }) {
-  // const message = useMemo(() => {
-  //   switch (info.meta.type) {
-  //     case "recommend":
-  //       if (info.profile.photo_status)
-  //         return (
-  //           <>
-  //             사진이 등록된 사용자에요!
-  //             <br />
-  //             사진 요청 여부를 다음 쪽지 시간(17:00)
-  //             <br />
-  //             전까지 결정해주세요.
-  //           </>
-  //         );
-  //       return (
-  //         <>
-  //           사진이 등록되지 않은 사용자에요!
-  //           <br />
-  //           매칭 수락 여부를 다음 쪽지 시간(17:00)
-  //           <br />
-  //           전까지 결정해주세요.
-  //         </>
-  //       );
-  //     case "request":
-  //       if (info.meta.status === "photo")
-  //         return (
-  //           <>
-  //             상대방이 사진 공개를 요청했어요!
-  //             <br />
-  //             상대방의 프로필이 마음에 든다면 사진을
-  //             <br />
-  //             공개하고 서로의 얼굴을 확인해보세요.
-  //           </>
-  //         );
-  //       else if (info.meta.status === "finalAfterPhoto")
-  //         return (
-  //           <>
-  //             상대방이 사진 요청을 수락하셨습니다.
-  //             <br />
-  //             매칭 수락 여부를 24시간 내에 결정해주세요.
-  //           </>
-  //         );
-  //       return (
-  //         <>
-  //           사진이 등록되지 않은 사용자에요!
-  //           <br />
-  //           매칭 수락 여부를 다음 쪽지 시간(17:00)
-  //           <br />
-  //           전까지 결정해주세요.
-  //         </>
-  //       );
-  //     case "response":
-  //       if (
-  //         info.meta.status === "directReject" ||
-  //         info.meta.status === "finalReject"
-  //       )
-  //         return (
-  //           <>
-  //             상호 의견이 달라 매칭에 실패하였습니다.
-  //             <br />
-  //             창을 닫으면 더 이상 프로필을 볼 수 없습니다.
-  //             <br />
-  //             다음 매칭을 기대해 주세요.
-  //           </>
-  //         );
-  //       else if (info.meta.status === "photoReject") {
-  //         return (
-  //           <>
-  //             상대방이 사진 요청을 거절하셨습니다.
-  //             <br />
-  //             창을 닫으면 더 이상 프로필을 볼 수 없습니다.
-  //             <br />
-  //             새로운 상대를 찾아드릴게요!
-  //           </>
-  //         );
-  //       } else if (
-  //         info.meta.status === "directSuccess" ||
-  //         info.meta.status === "finalSuccess"
-  //       ) {
-  //         return (
-  //           <>
-  //             축하드립니다! 매칭에 성공하셨습니다.
-  //             <br />
-  //             상대방의 카톡 아이디는 {info.counter_id}입니다.
-  //           </>
-  //         );
-  //       }
-  //   }
-  // }, [info]);
+// const message = useMemo(() => {
+//   switch (info.meta.type) {
+//     case "recommend":
+//       if (info.profile.photo_status)
+//         return (
+//           <>
+//             사진이 등록된 사용자에요!
+//             <br />
+//             사진 요청 여부를 다음 쪽지 시간(17:00)
+//             <br />
+//             전까지 결정해주세요.
+//           </>
+//         );
+//       return (
+//         <>
+//           사진이 등록되지 않은 사용자에요!
+//           <br />
+//           매칭 수락 여부를 다음 쪽지 시간(17:00)
+//           <br />
+//           전까지 결정해주세요.
+//         </>
+//       );
+//     case "request":
+//       if (info.meta.status === "photo")
+//         return (
+//           <>
+//             상대방이 사진 공개를 요청했어요!
+//             <br />
+//             상대방의 프로필이 마음에 든다면 사진을
+//             <br />
+//             공개하고 서로의 얼굴을 확인해보세요.
+//           </>
+//         );
+//       else if (info.meta.status === "finalAfterPhoto")
+//         return (
+//           <>
+//             상대방이 사진 요청을 수락하셨습니다.
+//             <br />
+//             매칭 수락 여부를 24시간 내에 결정해주세요.
+//           </>
+//         );
+//       return (
+//         <>
+//           사진이 등록되지 않은 사용자에요!
+//           <br />
+//           매칭 수락 여부를 다음 쪽지 시간(17:00)
+//           <br />
+//           전까지 결정해주세요.
+//         </>
+//       );
+//     case "response":
+//       if (
+//         info.meta.status === "directReject" ||
+//         info.meta.status === "finalReject"
+//       )
+//         return (
+//           <>
+//             상호 의견이 달라 매칭에 실패하였습니다.
+//             <br />
+//             창을 닫으면 더 이상 프로필을 볼 수 없습니다.
+//             <br />
+//             다음 매칭을 기대해 주세요.
+//           </>
+//         );
+//       else if (info.meta.status === "photoReject") {
+//         return (
+//           <>
+//             상대방이 사진 요청을 거절하셨습니다.
+//             <br />
+//             창을 닫으면 더 이상 프로필을 볼 수 없습니다.
+//             <br />
+//             새로운 상대를 찾아드릴게요!
+//           </>
+//         );
+//       } else if (
+//         info.meta.status === "directSuccess" ||
+//         info.meta.status === "finalSuccess"
+//       ) {
+//         return (
+//           <>
+//             축하드립니다! 매칭에 성공하셨습니다.
+//             <br />
+//             상대방의 카톡 아이디는 {info.counter_id}입니다.
+//           </>
+//         );
+//       }
+//   }
+// }, [info]);
 
+export default function Letter({ info, index }) {
   const keys = useMemo(() => filterValidProfileKey(info), [info]);
+
+  const date = useMemo(
+    () =>
+      info.time &&
+      new Intl.DateTimeFormat("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+      })
+        .format(new Date(info.time))
+        .replace("/", "."),
+    [info]
+  );
+
+  const time = useMemo(() => {
+    const t = info.time && new Date(info.time).getUTCHours();
+    if (!t) return;
+    if (t >= 6 && t < 12) return { part: "아침", time: t };
+    else if (t >= 12 && t < 19) return { part: "오후", time: t };
+    else if (t >= 19 && t < 22) return { part: "저녁", time: t };
+    else if (t >= 22 || t < 2) return { part: "밤", time: t };
+    else return { part: "새벽", time: t };
+  }, [info]);
 
   return (
     <div
@@ -111,11 +133,8 @@ export default function Letter({ info, timeInfo, index }) {
       style={{ transform: `translateX(-${index * 100}%)` }}
     >
       <header className="top-0 w-4/5 flex flex-row items-center justify-center py-3 border-b-2 ">
-        <div className="w-5 mr-3">
-          {/* <IconImage src={timeInfo.icon}></IconImage> */}
-        </div>
         <h5 className="tracking-wider">
-          {/* {info.date} {timeInfo.time} 쪽지 */}
+          {date && time && `${date} ${time.part} 쪽지`}
         </h5>
       </header>
       <div className="w-full bg-main text-center rounded-2xl shadow-lg py-2 my-5">
@@ -125,10 +144,10 @@ export default function Letter({ info, timeInfo, index }) {
         <h4 className="text-sm">기본 정보</h4>
         <div className="rounded-lg border-slate-400 border-2 p-1">
           <div className="flex flex-row">
-            {info.approval.photo_approval_status ? (
+            {info.approval?.photo_approval_status ? (
               <AuthLabel>본인 인증</AuthLabel>
             ) : null}
-            {info.approval.email_approval_status ? (
+            {info.approval?.email_approval_status ? (
               <AuthLabel>학교 인증</AuthLabel>
             ) : null}
           </div>
@@ -142,13 +161,13 @@ export default function Letter({ info, timeInfo, index }) {
           <IconImage
             src={
               info.photo ??
-              (info.approval.photo_approval_status
+              (info.approval?.photo_approval_status
                 ? ProfileWPhoto
                 : ProfileWOPhoto)
             }
           />
         </div>
-        {info.approval.std_test_approval_status ? (
+        {info.approval?.std_test_approval_status ? (
           <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
             <div className="w-4 mr-2">
               <IconImage src={check}></IconImage>
@@ -177,8 +196,9 @@ export default function Letter({ info, timeInfo, index }) {
                 label={keyMapWithKorean[key]}
                 value={
                   key === "appearance"
-                    ? `${info[key]} ${info["eyelid"]}`
-                    : info[key]
+                    ? info[key] &&
+                      `${info[key]} ${info["eyelid"] && info["eyelid"]}`
+                    : info[key] ?? null
                 }
                 key={key}
               ></ProfileLine>
