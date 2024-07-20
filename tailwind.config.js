@@ -25,6 +25,7 @@ module.exports = {
         pale: "#f5f5f5",
         "sub-pale": "#F2F2F2",
         "light-green": "#2EEF4D",
+        mint: "#CDF0EA",
       },
       borderRadius: {
         half: "50%",
@@ -32,6 +33,7 @@ module.exports = {
       backgroundImage: {
         letter: "url('/src/assets/letterpaper.png')",
         "main-image": "url('/src/assets/background/background.png')",
+        "landing-image": "url('/src/assets/background/landing.png')",
       },
       backgroundSize: {
         frame: "473px",
