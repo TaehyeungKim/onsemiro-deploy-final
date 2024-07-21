@@ -4,9 +4,8 @@ import { useRecoilState } from "recoil";
 import { signUpState } from "state/state";
 
 export default function NickNameInput() {
-  const [nicknameInput, setNicknameInput] = useState("");
-
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
+  const [nicknameInput, setNicknameInput] = useState(signUpData.nickname ?? "");
 
   useEffect(() => {
     setSignUpData({ ...signUpData, nickname: nicknameInput });
@@ -22,6 +21,7 @@ export default function NickNameInput() {
           id="nickname"
           placeholder="닉네임 입력하기"
           event={{ onChange: setNicknameInput }}
+          defaultValue={nicknameInput}
         />
       </FloatingSection>
     </>

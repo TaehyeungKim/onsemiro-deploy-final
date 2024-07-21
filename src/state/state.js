@@ -12,3 +12,8 @@ export const idealChoiceVisibleState = atom({
     reqType: undefined,
   },
 });
+
+export const layoutFloatingEndState = atom({
+  key: "layoutFloating",
+  default: false,
+});

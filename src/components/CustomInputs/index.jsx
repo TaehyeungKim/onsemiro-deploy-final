@@ -7,10 +7,15 @@ import {
   useLayoutEffect,
 } from "react";
 
+import { useSetRecoilState } from "recoil";
+import { layoutFloatingEndState } from "state/state";
+
 import styles from "./index.module.scss";
 
 export function FloatingSection({ children, addedStyle = "" }) {
   const section = useRef(null);
+
+  const setLayoutFloatingEndState = useSetRecoilState(layoutFloatingEndState);
 
   useLayoutEffect(() => {
     if (!section.current?.previousElementSibling) {
@@ -24,8 +29,11 @@ export function FloatingSection({ children, addedStyle = "" }) {
       const { nextElementSibling } = e.target;
       if (nextElementSibling) {
         nextElementSibling.setAttribute("style", "display: block");
+      } else {
+        setLayoutFloatingEndState(true);
       }
     });
+    return () => setLayoutFloatingEndState(false);
   }, []);
 
   return (
@@ -217,8 +225,9 @@ export function ExtendedRangeBar({
       </div>
       <div className="w-full h-1 flex justify-between">
         <div className=" h-full aspect-square invisible"></div>
-        {captions.map((c) => (
+        {captions.map((c, i) => (
           <span
+            key={i}
             className={`h-full flex justify-center aspect-square text-center text-xs`}
           >
             {c}
