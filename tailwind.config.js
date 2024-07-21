@@ -26,6 +26,7 @@ module.exports = {
         "sub-pale": "#F2F2F2",
         "light-green": "#2EEF4D",
         mint: "#CDF0EA",
+        "count-red": "#F35757",
       },
       borderRadius: {
         half: "50%",
