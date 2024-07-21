@@ -1,4 +1,5 @@
 import {
+  MatchMenuOverlay,
   MatchResultOverlay,
   MatchSituationMenuOverlay,
 } from "components/Overlay";
@@ -16,7 +17,7 @@ export default function MatchingSituation({ count }) {
 
   if (state.for === "menu")
     return (
-      <MatchSituationMenuOverlay
+      <MatchMenuOverlay
         count={count}
         close={() => dispatch({ for: "home" })}
         opener={dispatch}

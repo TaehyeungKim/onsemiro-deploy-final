@@ -8,7 +8,7 @@ export default function InterestSelected({ icons }) {
         className={`relative ${styles.triangle} border-b-background border-b-[10px] mx-auto`}
       ></div>
       <div
-        className={`bg-background flex justify-center items-center ${styles.frame} w-fit px-10`}
+        className={`bg-background-darker flex justify-center items-center ${styles.frame} w-fit px-10`}
       >
         {icons.map((v, i) => (
           <div key={i} className="w-4 mx-1">

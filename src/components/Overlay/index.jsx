@@ -1,6 +1,9 @@
 import IconImage from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
-import { CustomButtonWithCount } from "components/CustomButton";
+import {
+  CustomButtonWithCount,
+  MainCustomButton,
+} from "components/CustomButton";
 import testProfile from "assets/testProfile.png";
 import styles from "./styles.module.scss";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -13,7 +16,7 @@ function OverlayBackground({ children }) {
   );
 }
 
-function MatchOverlayMenuLayout({ title, children, close }) {
+function FloatAndShrink({ Child, close, children, ...props }) {
   const container = useRef(null);
 
   const [shrink, setShrink] = useState(false);
@@ -43,26 +46,47 @@ function MatchOverlayMenuLayout({ title, children, close }) {
         ref={container}
         className={` ${styles.floating} min-w-main-frame bg-background px-1 box-border rounded-xl shadow-md`}
       >
-        <header className="w-full relative flex justify-center items-center after:content-[''] after:block after:h-0 after:absolute after:bottom-0 after:w-11/12 after:border-black after:border-[0.5px] after:opacity-10 ">
-          <h3 className="text-center h-9 text-lg">{title}</h3>
-          <button
-            className="block w-6  absolute right-4"
-            onClick={() => setShrink(true)}
-          >
-            <IconImage src={closeIcon} />
-          </button>
-        </header>
-        <div className="flex flex-col justify-between w-full mx-auto gap-3 py-4 max-h-[600px] overflow-y-scroll">
-          {children}
-        </div>
+        {
+          <Child close={() => setShrink(true)} {...props}>
+            {children}
+          </Child>
+        }
       </div>
     </OverlayBackground>
   );
 }
 
-export function MatchSituationMenuOverlay({ count, close, opener }) {
+function MatchOverlayMenuLayout({ close, children, title }) {
   return (
-    <MatchOverlayMenuLayout title={"매칭 현황 보기"} close={close}>
+    <FloatAndShrink
+      Child={MatchOverlayMenuContentFrame}
+      close={close}
+      title={title}
+    >
+      {children}
+    </FloatAndShrink>
+  );
+}
+
+function MatchOverlayMenuContentFrame({ title, close, children }) {
+  return (
+    <>
+      <header className="w-full relative flex justify-center items-center after:content-[''] after:block after:h-0 after:absolute after:bottom-0 after:w-11/12 after:border-black after:border-[0.5px] after:opacity-10 ">
+        <h3 className="text-center h-9 text-lg">{title}</h3>
+        <button className="block w-6  absolute right-4" onClick={close}>
+          <IconImage src={closeIcon} />
+        </button>
+      </header>
+      <div className="flex flex-col justify-between w-full mx-auto gap-3 py-4 max-h-[600px] overflow-y-scroll">
+        {children}
+      </div>
+    </>
+  );
+}
+
+export function MatchMenuOverlay({ count, close, opener }) {
+  return (
+    <MatchOverlayMenuLayout close={close} title={"매칭 결과 조회"}>
       <div className="w-2/3 mx-auto flex flex-col gap-3">
         <CustomButtonWithCount
           count={count.matching}
@@ -125,12 +149,29 @@ export function MatchResultOverlay({ close, dataByDay = [] }) {
   );
 }
 
-export function CustomAlertLayout({ children }) {
+export function FloatingCustomAlertLayout({ children, close, ...props }) {
   return (
-    <OverlayBackground>
-      <div className="bg-background-darker rounded-lg flex flex-col justify-center items-center p-4">
-        {children}
+    <FloatAndShrink Child={CustomAlertLayout} close={close} {...props}>
+      {children}
+    </FloatAndShrink>
+  );
+}
+
+export function CustomAlertLayout({ children, close, ...props }) {
+  return (
+    <div className=" rounded-lg flex flex-col justify-center items-center p-4">
+      {children}
+      <div className="flex justify-center mt-6 gap-5">
+        <MainCustomButton event={{ onClick: props.confirm }}>
+          확인
+        </MainCustomButton>
+        <MainCustomButton
+          addedStyle="bg-white !text-black"
+          event={{ onClick: close }}
+        >
+          취소
+        </MainCustomButton>
       </div>
-    </OverlayBackground>
+    </div>
   );
 }

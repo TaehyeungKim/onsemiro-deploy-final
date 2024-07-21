@@ -15,7 +15,7 @@ import NickNameInput from "./subs/nickname";
 
 export default function SignUpSub({ level }) {
   return (
-    <main className="px-2 flex flex-col w-full h-fit">
+    <main className="px-2 flex flex-col w-full h-fit grow">
       {(() => {
         switch (level) {
           case 0:
