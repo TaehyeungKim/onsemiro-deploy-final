@@ -74,6 +74,16 @@ export const requestMatching = async (data) => {
   return response;
 };
 
+export const acceptMatching = async (data) => {
+  const response = await instanceWithToken.put("/matching/type1/", data);
+
+  if (response.status === 200 || response.status === 201) {
+    console.log(response.data);
+    return response;
+  } else console.log(response);
+  return response;
+};
+
 export const getRequestForMe = async () => {
   const response = await instanceWithToken.get("/matching/request/");
 
