@@ -1,16 +1,20 @@
 import { FloatingSection } from "./components";
 import { useState, useContext, useEffect } from "react";
 import { DataContext } from ".";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 export default function Introduction() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [introduction, setIntroduction] = useState(
-    dataContext.data.introduction ?? ""
+    signUpData.introduction ?? ""
   );
 
   useEffect(() => {
-    dataContext.setter({ ...dataContext.data, introduction: introduction });
+    setSignUpData({ ...signUpData, introduction });
   }, [introduction]);
 
   return (

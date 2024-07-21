@@ -1,11 +1,5 @@
 import ProgressBar from "../../components/ProgressBar";
-import {
-  useState,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-} from "react";
+import { useState, useCallback } from "react";
 import IconImage from "../../components/IconImage";
 import ArorwLeft from "../../assets/arrow_left.png";
 import closeButton from "../../assets/ph_x.png";
@@ -13,69 +7,32 @@ import SignUpSub from "./sub";
 import { MainCustomButton } from "../../components/CustomButton";
 import { IdealChoiceSub } from "./ideal";
 import { submitProfile } from "../../apis/api";
-import { heightRange } from "../../assets/asset";
+import { heightRange, IDEAL_REQ_TYPE } from "../../assets/asset";
 import CustomAlertLayout from "../../components/CustomAlert";
 import { useNavigate } from "react-router-dom";
-
-export const DataContext = createContext({
-  data: {},
-  setter: undefined,
-});
-
-export const IdealChoiceToggleContext = createContext({
-  toggle: undefined,
-});
+import { useRecoilValue, useRecoilState } from "recoil";
+import { signUpState, idealChoiceVisibleState } from "../../state/state";
 
 export default function SignUpPage() {
-  const [signUpData, setSignUpData] = useState({});
-
   const TOTAL_LEVEL_COUNT = 14;
 
   const [curLevel, setCurLevel] = useState(0);
 
-  const [idealChoice, setIdealChoice] = useState({
-    visible: false,
-    type: "",
-  });
+  const idealChoiceVisible = useRecoilValue(idealChoiceVisibleState);
 
-  useEffect(() => {
-    console.log(signUpData);
-  }, [curLevel]);
-
-  return (
-    <DataContext.Provider
-      value={{
-        data: signUpData,
-        setter: setSignUpData,
-      }}
-    >
-      <IdealChoiceToggleContext.Provider
-        value={{
-          toggle: (open, type, data = undefined) => {
-            if (open) setIdealChoice({ visible: open, type });
-            else {
-              setIdealChoice({ visible: open });
-            }
-          },
-        }}
-      >
-        {!idealChoice.visible ? (
-          <SignUpMain
-            signUpData={signUpData}
-            curLevel={curLevel}
-            levelSetter={setCurLevel}
-            total={TOTAL_LEVEL_COUNT}
-          ></SignUpMain>
-        ) : (
-          <IdealChoiceSub reqType={idealChoice.type} />
-        )}
-      </IdealChoiceToggleContext.Provider>
-    </DataContext.Provider>
+  return !idealChoiceVisible.visible ? (
+    <SignUpMain
+      curLevel={curLevel}
+      levelSetter={setCurLevel}
+      total={TOTAL_LEVEL_COUNT}
+    ></SignUpMain>
+  ) : (
+    <IdealChoiceSub reqType={idealChoiceVisible.reqType} />
   );
 }
 
-function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
-  const dataContext = useContext(DataContext);
+function SignUpMain({ curLevel, levelSetter, total }) {
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const navigate = useNavigate();
 
@@ -132,62 +89,83 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
           break;
         case 12:
           levelSetter(level + 1);
+
           break;
         case 13:
           const preferDataSoap = (key, data) => {
             const target =
-              (data.preference.required && data.preference.required[key]) ||
-              (data.preference.optional_1 && data.preference.optional_1[key]) ||
-              (data.preference.optional_2 && data.preference.optional_2[key]);
-            switch (key) {
-              case "height":
-                if (data.preference) {
-                  const { height_min, height_max } = target;
+              signUpData.preference &&
+              signUpData.preference[
+                IDEAL_REQ_TYPE.find(
+                  (r) =>
+                    signUpData.preference[r] && signUpData.preference[r][key]
+                )
+              ];
 
-                  return `${height_min} ${height_max}`;
-                }
-              case "age":
-                if (data.preference) {
-                  const { age_min, age_max } = target;
-                  return `${age_min} ${age_max}`;
-                }
-              case "location":
-                if (data.preference) {
-                  const { city, subRegion } = target;
-                  return `${city} ${subRegion}`;
-                }
-              case "mbti":
-                if (data.preference) {
-                  const { first, second, third, fourth } = target;
-                  return `${first} ${second} ${third} ${fourth}`;
-                }
-              default:
-                if (data.preference) return target;
+            if (target) {
+              switch (key) {
+                case "height":
+                  if (data.preference) {
+                    let { height_min, height_max } = target[key];
+                    if (height_min === undefined || height_max === undefined)
+                      return undefined;
+                    if (height_min < 150) height_min = 150;
+                    if (height_max > 185) height_max = 185;
+                    return `${height_min} ${height_max}`;
+                  }
+                case "age":
+                  if (data.preference) {
+                    const { age_min, age_max } = target[key];
+                    if (age_min === undefined || age_max === undefined)
+                      return undefined;
+
+                    return `${age_min} ${age_max}`;
+                  }
+                case "location":
+                  if (data.preference) {
+                    const { city, subRegion } = target[key];
+                    if (city === undefined || subRegion === undefined)
+                      return undefined;
+                    return `${city} ${subRegion}`;
+                  }
+                case "mbti":
+                  if (data.preference) {
+                    const { first, second, third, fourth } = target[key];
+                    if (!first || !second || !third || !fourth)
+                      return undefined;
+                    return `${first} ${second} ${third} ${fourth}`;
+                  }
+                default:
+                  if (data.preference) return target[key];
+              }
             }
           };
 
           const data = {
-            kakao_id: dataContext.data.kakao_id,
-            nickname: dataContext.data.nickname,
-            univ: dataContext.data.univ,
-            gender: dataContext.data.gender_identity,
-            gender_preference: dataContext.data.gender_preference,
-            age: dataContext.data.age,
-            bdsm: dataContext.data.bdsm,
-            height: heightRange(dataContext.data.height),
-            weight: dataContext.data.shape,
-            appearance: dataContext.data.appearance,
-            eyelid: dataContext.data.eyelid,
-            mbti: dataContext.data.mbti,
-            character: dataContext.data.character,
-            location: `${dataContext.data.city} ${dataContext.data.subRegion}`,
-            hobby: [
-              ...dataContext.data.interest.map((interest) => interest.value),
+            kakao_id: signUpData.kakao_id,
+            nickname: signUpData.nickname,
+            univ: signUpData.univ,
+            gender: signUpData.gender_identity,
+            gender_preference: signUpData.gender_preference,
+            age: signUpData.age,
+            bdsm: signUpData.bdsm,
+            height: heightRange(signUpData.height),
+            weight: signUpData.shape,
+            appearance: signUpData.appearance,
+            eyelid: signUpData.eyelid,
+            mbti: signUpData.mbti,
+            character: signUpData.character,
+            location:
+              signUpData.city &&
+              signUpData.subRegion &&
+              `${signUpData.city} ${signUpData.subRegion}`,
+            hobby: signUpData.interest && [
+              ...signUpData.interest.map((interest) => interest.value),
             ],
-            introduction: dataContext.data.introduction,
-            match_same_univ: dataContext.data.same_univ,
-            gender_wanted: dataContext.data.prefer_gender_identity,
-            meeting_frequency: dataContext.data.meeting_frequency,
+            introduction: signUpData.introduction,
+            match_same_univ: signUpData.same_univ,
+            gender_wanted: signUpData.prefer_gender_identity,
+            meeting_frequency: signUpData.meeting_frequency,
             ideal_age: 0,
             ideal_bdsm: "",
             ideal_height: "",
@@ -199,28 +177,27 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
             ideal_condition: {},
           };
 
-          if (dataContext.data.preference) {
-            const { required, optional_1, optional_2 } =
-              dataContext.data.preference;
+          if (signUpData.preference) {
+            const { required, optional_1, optional_2 } = signUpData.preference;
             if (required) {
               const key = Object.keys(required)[0];
-              data[`ideal_${key}`] = preferDataSoap(key, dataContext.data);
+              data[`ideal_${key}`] = preferDataSoap(key, signUpData);
               data.ideal_condition.required = key;
             }
             if (optional_1) {
               const key = Object.keys(optional_1)[0];
-              data[`ideal_${key}`] = preferDataSoap(key, dataContext.data);
+              data[`ideal_${key}`] = preferDataSoap(key, signUpData);
               data.ideal_condition.optional_1 = key;
             }
             if (optional_2) {
               const key = Object.keys(optional_2)[0];
-              data[`ideal_${key}`] = preferDataSoap(key, dataContext.data);
+              data[`ideal_${key}`] = preferDataSoap(key, signUpData);
 
               data.ideal_condition.optional_2 = key;
             }
           }
-
-          submitProfile(data);
+          console.log(data);
+          // submitProfile(data);
           break;
       }
     },
@@ -289,11 +266,9 @@ function SignUpMain({ signUpData, curLevel, levelSetter, total }) {
             addedStyle="!bg-background !text-black !mx-0 grow"
             event={{
               onClick: () => {
-                dataContext.setter({
-                  ...dataContext.data,
-                  preference: undefined,
-                });
-                console.log(dataContext.data);
+                setSignUpData({ ...signUpData, preference: undefined });
+
+                console.log(signUpData);
               },
             }}
           >

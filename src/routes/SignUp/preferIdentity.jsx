@@ -1,10 +1,25 @@
 import { DataContext } from ".";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FloatingSection, SelectionRadioGrid } from "./components";
 import { GenderIdentity } from "../../assets/asset";
+import { signUpState } from "../../state/state";
+import { useRecoilState } from "recoil";
 
 export default function PreferIdentity() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
+
+  const [preferGenderIdentity, setPreferGenderIdentity] = useState(
+    signUpData.prefer_gender_identity ?? ""
+  );
+
+  useEffect(() => {
+    setSignUpData({
+      ...signUpData,
+      prefer_gender_identity: preferGenderIdentity,
+    });
+  }, [preferGenderIdentity]);
 
   return (
     <>
@@ -17,7 +32,8 @@ export default function PreferIdentity() {
         <SelectionRadioGrid
           collection={GenderIdentity}
           name={"prefer_gender_identity"}
-          dataContext={dataContext}
+          setter={(pgi) => setPreferGenderIdentity(pgi)}
+          defaultV={preferGenderIdentity}
         ></SelectionRadioGrid>
       </FloatingSection>
     </>

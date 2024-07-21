@@ -3,15 +3,18 @@ import upload from "../../assets/upload.png";
 import IconImage from "../../components/IconImage";
 import { useCallback, useRef, useState, useContext, useEffect } from "react";
 import { DataContext } from ".";
+import { signUpState } from "../../state/state";
+import { useRecoilState } from "recoil";
 
 export default function Photos() {
   const photoRef = useRef(null);
   const stdRef = useRef(null);
 
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
-  const [photo, setPhoto] = useState(dataContext.data.photo ?? null);
-  const [std, setStd] = useState(dataContext.data.std ?? null);
+  const [photo, setPhoto] = useState(signUpData.photo ?? null);
+  const [std, setStd] = useState(signUpData.std ?? null);
 
   const openFileInput = useCallback(
     (fileRef) => {
@@ -22,7 +25,7 @@ export default function Photos() {
   );
 
   useEffect(() => {
-    dataContext.setter({ ...dataContext.data, std: std, photo: photo });
+    setSignUpData({ ...signUpData, std, photo });
   }, [std, photo]);
 
   return (
