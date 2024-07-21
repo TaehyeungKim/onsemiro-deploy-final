@@ -31,7 +31,7 @@ module.exports = {
         half: "50%",
       },
       backgroundImage: {
-        letter: "url('/src/assets/letterpaper.png')",
+        letter: "url('/src/assets/background/letterpaper.png')",
         "main-image": "url('/src/assets/background/background.png')",
         "landing-image": "url('/src/assets/background/landing.png')",
       },

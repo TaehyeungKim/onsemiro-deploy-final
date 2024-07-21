@@ -1,5 +1,5 @@
 import IconImage from "../IconImage";
-import check from "../../assets/check.png";
+import check from "../../assets/icons/check.png";
 
 export default function AuthLabel({ children }) {
   return (

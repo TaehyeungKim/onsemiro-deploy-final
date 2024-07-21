@@ -1,5 +1,4 @@
-import { DataContext } from ".";
-import { useContext, useMemo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FloatingSection,
   SectionTitle,
@@ -15,7 +14,6 @@ import { useRecoilState } from "recoil";
 import { signUpState } from "../../state/state";
 
 export default function Appearance() {
-  // const dataContext = useContext(DataContext);
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [MIN, MAX] = [145, 185];

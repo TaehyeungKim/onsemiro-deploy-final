@@ -1,8 +1,8 @@
 import { FloatingSection, SectionTitle } from "./components";
-import upload from "../../assets/upload.png";
+import upload from "../../assets/icons/upload.png";
 import IconImage from "../../components/IconImage";
-import { useCallback, useRef, useState, useContext, useEffect } from "react";
-import { DataContext } from ".";
+import { useCallback, useRef, useState, useEffect } from "react";
+
 import { signUpState } from "../../state/state";
 import { useRecoilState } from "recoil";
 

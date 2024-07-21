@@ -1,15 +1,11 @@
-import { DataContext } from ".";
-import { useContext } from "react";
 import { FloatingSection, CustomTextInput } from "./components";
 import IconImage from "../../components/IconImage";
 
-import howToKakao from "../../assets/howto_kakao_id.png";
+import howToKakao from "../../assets/captures/howto_kakao_id.png";
 import { useRecoilState } from "recoil";
 import { signUpState } from "../../state/state";
 
 export default function KakaoAuth() {
-  // const dataContext = useContext(DataContext);
-
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   return (
@@ -26,10 +22,6 @@ export default function KakaoAuth() {
           placeholder={"카카오톡 아이디 입력하기"}
           event={{
             onChange: (id) => setSignUpData({ ...signUpData, kakao_id: id }),
-            // dataContext?.setter({
-            //   ...dataContext.data,
-            //   kakao_id: id,
-            // }),
           }}
           defaultValue={signUpData.kakao_id ?? null}
         />

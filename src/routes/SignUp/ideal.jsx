@@ -1,14 +1,8 @@
 import { FloatingSection } from "./components";
-import { DataContext, IdealChoiceToggleContext } from ".";
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+
+import { useState, useCallback } from "react";
 import IconImage from "../../components/IconImage";
-import ArrowLeft from "../../assets/arrow_left.png";
+import ArrowLeft from "../../assets/icons/arrow_left.png";
 import { Conditions } from "../../assets/asset";
 import { MainCustomButton } from "../../components/CustomButton";
 import {
@@ -28,9 +22,6 @@ import { signUpState, idealChoiceVisibleState } from "../../state/state";
 import { IDEAL_REQ_TYPE } from "../../assets/asset";
 
 function ConditionSelect({ label, reqType }) {
-  // const idealToggleContext = useContext(IdealChoiceToggleContext);
-  // const dataContext = useContext(DataContext);
-
   const signUpData = useRecoilValue(signUpState);
   const setIdealChoiceVisible = useSetRecoilState(idealChoiceVisibleState);
 

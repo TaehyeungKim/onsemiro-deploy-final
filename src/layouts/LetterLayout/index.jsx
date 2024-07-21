@@ -1,7 +1,7 @@
 import IconImage from "../../components/IconImage";
-import closeIcon from "../../assets/ph_x.png";
+import closeIcon from "../../assets/icons/ph_x.png";
 import Letter from "../../components/Letter";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { timeMatch } from "../../components/MainIconSection/utils";
 import {
   requestMatching,

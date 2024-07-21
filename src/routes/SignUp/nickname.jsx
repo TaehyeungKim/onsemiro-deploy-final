@@ -1,13 +1,11 @@
-import { DataContext } from ".";
 import { CustomTextInput, FloatingSection } from "./components";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { signUpState } from "../../state/state";
 
 export default function NickNameInput() {
   const [nicknameInput, setNicknameInput] = useState("");
 
-  // const dataContext = useContext(DataContext);
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   useEffect(() => {

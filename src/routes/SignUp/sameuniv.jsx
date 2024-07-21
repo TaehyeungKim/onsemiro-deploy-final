@@ -1,9 +1,8 @@
-import { DataContext } from ".";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FloatingSection } from "./components";
 import IconImage from "../../components/IconImage";
-import Ok from "../../assets/ok.png";
-import No from "../../assets/no.png";
+import Ok from "../../assets/icons/ok.png";
+import No from "../../assets/icons/no.png";
 import { useRecoilState } from "recoil";
 import { signUpState } from "../../state/state";
 

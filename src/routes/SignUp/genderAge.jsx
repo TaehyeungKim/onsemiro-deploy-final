@@ -1,5 +1,4 @@
-import { DataContext } from ".";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   FloatingSection,
   SectionTitle,
@@ -11,7 +10,6 @@ import { useRecoilState } from "recoil";
 import { signUpState } from "../../state/state";
 
 export default function AgeAndGender() {
-  // const dataContext = useContext(DataContext);
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const DEFAULT_AGE = 25;

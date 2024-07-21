@@ -1,5 +1,5 @@
 import IconImage from "../../components/IconImage";
-import close from "../../assets/ph_x.png";
+import close from "../../assets/icons/ph_x.png";
 import ProgressBar from "../../components/ProgressBar";
 import { MainCustomButton } from "../../components/CustomButton";
 import { useEffect } from "react";

@@ -1,6 +1,6 @@
-import menu from "../../assets/hambg-menu.png";
+import menu from "../../assets/icons/hambg-menu.png";
 import logo from "../../assets/logo/logo.png";
-import login from "../../assets/login.png";
+import login from "../../assets/icons/login.png";
 import IconImage from "../IconImage";
 
 export default function HomeHeader() {

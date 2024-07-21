@@ -1,13 +1,10 @@
-import { DataContext } from ".";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FloatingSection, SelectionRadioGrid } from "./components";
 import { GenderIdentity } from "../../assets/asset";
 import { signUpState } from "../../state/state";
 import { useRecoilState } from "recoil";
 
 export default function PreferIdentity() {
-  // const dataContext = useContext(DataContext);
-
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [preferGenderIdentity, setPreferGenderIdentity] = useState(

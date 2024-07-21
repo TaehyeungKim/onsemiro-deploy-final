@@ -5,7 +5,7 @@ import ProfileWPhoto from "../../assets/profile2.png";
 
 import styles from "./index.module.scss";
 
-import check from "../../assets/check.png";
+import check from "../../assets/icons/check.png";
 import AuthLabel from "./authlabel";
 import ProfileLine from "./profileline";
 import { filterValidProfileKey, keyMapWithKorean } from "../../assets/asset";

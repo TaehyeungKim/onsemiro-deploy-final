@@ -150,8 +150,6 @@ export function ExtendedRangeBar({
   setter,
   captions,
 }) {
-  // const [innerValue, setInnerValue] = useState(defaultValue);
-
   return (
     <>
       <div className="w-full h-4 mx-auto relative flex items-center mt-14 ">

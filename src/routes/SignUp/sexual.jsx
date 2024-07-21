@@ -1,5 +1,4 @@
-import { DataContext } from ".";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FloatingSection,
   SectionTitle,
@@ -10,8 +9,6 @@ import { useRecoilState } from "recoil";
 import { signUpState } from "../../state/state";
 
 export default function Sexual() {
-  // const dataContext = useContext(DataContext);
-
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [genderPreference, setGenderPreference] = useState(

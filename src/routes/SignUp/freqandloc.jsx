@@ -1,16 +1,12 @@
-import { useRef, useEffect, useContext, useState } from "react";
-import { DataContext } from ".";
+import { useRef, useEffect, useState } from "react";
+
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
 import { CITYSET } from "../../assets/asset";
 import { selector, useRecoilState, useRecoilValue } from "recoil";
 import { signUpState } from "../../state/state";
 
 function SelectRegionRow({ label, regions, setter, selected }) {
-  // const dataContext = useContext(DataContext);
-
   const ref = useRef(null);
-
-  // const LABELMAP = { 도시: "city", 행정구역: "subRegion" };
 
   const [selectedRegion, setSelectedRegion] = useState(selected);
 
@@ -95,8 +91,6 @@ export function LocationSetSection({ set, setter }) {
 }
 
 export default function FrequencyAndLocation() {
-  // const dataContext = useContext(DataContext);
-
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [meetNum, setMeetNum] = useState(signUpData.meeting_frequency ?? 1);

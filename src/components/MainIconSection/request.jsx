@@ -1,14 +1,8 @@
 import MainIconSection from ".";
-import Love from "../../assets/love 1.png";
-import { useState, useEffect, useMemo, useCallback } from "react";
+
+import { useState, useEffect, useCallback } from "react";
 import { RequestHold } from "./cases";
 import Letter from "../Letter";
-// import {
-//   dummyDirectFinalRequestData,
-//   dummyFinalAfterPhotoRequestData,
-//   dummyPhotoRequestData,
-// } from "../../data/dummy";
-import { timeMatch } from "./utils";
 import LetterLayout from "../../layouts/LetterLayout";
 import { getRequestForMe } from "../../apis/api";
 
@@ -93,7 +87,7 @@ export default function Request() {
           className="cursor-pointer w-full mx-auto"
           onClick={() => setLetterVisible(true)}
         >
-          <MainIconSection icon={Love} caption={"나에게 온 요청"}>
+          <MainIconSection caption={"나에게 온 요청"}>
             <RequestHold count={requestInfo.length}></RequestHold>
           </MainIconSection>
         </div>

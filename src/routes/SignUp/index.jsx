@@ -1,8 +1,8 @@
 import ProgressBar from "../../components/ProgressBar";
 import { useState, useCallback } from "react";
 import IconImage from "../../components/IconImage";
-import ArorwLeft from "../../assets/arrow_left.png";
-import closeButton from "../../assets/ph_x.png";
+import ArrowLeft from "../../assets/icons/arrow_left.png";
+import closeButton from "../../assets/icons/ph_x.png";
 import SignUpSub from "./sub";
 import { MainCustomButton } from "../../components/CustomButton";
 import { IdealChoiceSub } from "./ideal";
@@ -241,7 +241,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
               className={`w-3 block`}
               onClick={() => curLevel > 0 && levelSetter((l) => l - 1)}
             >
-              <IconImage src={ArorwLeft} />
+              <IconImage src={ArrowLeft} />
             </button>
           ) : null}
 

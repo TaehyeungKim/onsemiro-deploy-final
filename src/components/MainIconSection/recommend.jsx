@@ -85,9 +85,7 @@ export default function Recommend() {
           </MainSection>
         </div>
         {letterVisible ? (
-          <LetterLayout info={recommendInfo} close={closeLetter}>
-            {/* <Letter info={recommendInfo} timeInfo={timeInfo}></Letter> */}
-          </LetterLayout>
+          <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
         ) : null}
       </>
     )

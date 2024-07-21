@@ -1,5 +1,4 @@
-import { DataContext } from ".";
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { FloatingSection } from "./components";
 import IconImage from "../../components/IconImage";
 import InterestSelected from "../../components/InterestSelected";
@@ -8,8 +7,6 @@ import { useRecoilState } from "recoil";
 import { signUpState } from "../../state/state";
 
 export default function Interest() {
-  // const dataContext = useContext(DataContext);
-
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const valueSet = useMemo(() => interestValueSet, []);
@@ -27,10 +24,6 @@ export default function Interest() {
   );
 
   useEffect(() => {
-    // dataContext.setter({
-    //   ...dataContext.data,
-    //   interest: [...interest],
-    // });
     setSignUpData({ ...signUpData, interest: [...interest] });
 
     setIcons([
@@ -39,10 +32,6 @@ export default function Interest() {
       ),
     ]);
   }, [interest]);
-
-  useEffect(() => {
-    console.log(interest);
-  }, []);
 
   return (
     <>

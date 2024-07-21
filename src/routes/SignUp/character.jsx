@@ -1,5 +1,4 @@
-import { DataContext } from ".";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
 import { characterKeyMap } from "../../assets/asset";
 import { useRecoilState } from "recoil";
