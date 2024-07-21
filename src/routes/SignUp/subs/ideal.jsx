@@ -1,10 +1,10 @@
-import { FloatingSection } from "./components";
+import { FloatingSection } from "components/CustomInputs";
 
 import { useState, useCallback } from "react";
-import IconImage from "../../components/IconImage";
-import ArrowLeft from "../../assets/icons/arrow_left.png";
-import { Conditions } from "../../assets/asset";
-import { MainCustomButton } from "../../components/CustomButton";
+import IconImage from "components/IconImage";
+import ArrowLeft from "assets/icons/arrow_left.png";
+import { Conditions } from "assets/asset";
+import { MainCustomButton } from "components/CustomButton";
 import {
   IdealAgeSet,
   IdealAppearanceSet,
@@ -16,10 +16,10 @@ import {
   IdealMBTISet,
   IdealSexualSet,
   IdealShapeSet,
-} from "./conditionSet";
+} from "../conditionSet";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { signUpState, idealChoiceVisibleState } from "../../state/state";
-import { IDEAL_REQ_TYPE } from "../../assets/asset";
+import { signUpState, idealChoiceVisibleState } from "state/state";
+import { IDEAL_REQ_TYPE } from "assets/asset";
 
 function ConditionSelect({ label, reqType }) {
   const signUpData = useRecoilValue(signUpState);

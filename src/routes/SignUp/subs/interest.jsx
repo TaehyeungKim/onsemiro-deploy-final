@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
-import { FloatingSection } from "./components";
-import IconImage from "../../components/IconImage";
-import InterestSelected from "../../components/InterestSelected";
-import { interestValueSet } from "../../assets/asset";
+import { FloatingSection } from "components/CustomInputs";
+import IconImage from "components/IconImage";
+import InterestSelected from "components/InterestSelected";
+import { interestValueSet } from "assets/asset";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function Interest() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);

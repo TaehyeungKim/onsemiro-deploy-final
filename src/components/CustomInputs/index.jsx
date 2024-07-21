@@ -6,7 +6,7 @@ import {
   useDeferredValue,
 } from "react";
 
-import styles from "./components.module.scss";
+import styles from "./index.module.scss";
 
 export function FloatingSection({ children, addedStyle = "" }) {
   return <section className={`p-3 ${addedStyle}`}>{children}</section>;

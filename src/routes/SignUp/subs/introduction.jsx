@@ -1,8 +1,8 @@
-import { FloatingSection } from "./components";
+import { FloatingSection } from "components/CustomInputs";
 import { useState, useEffect } from "react";
 
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function Introduction() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);

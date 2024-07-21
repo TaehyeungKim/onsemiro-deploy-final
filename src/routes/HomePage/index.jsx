@@ -1,8 +1,8 @@
-import HomeHeader from "../../components/HomeHeader";
-import MatchingStatus from "../../components/MatchingStatus";
-import ActiveMode from "../../components/ActiveMode";
-import Recommend from "../../components/MainIconSection/recommend";
-import Request from "../../components/MainIconSection/request";
+import HomeHeader from "components/HomeHeader";
+import MatchingSituation from "components/HomeContent/situation";
+import ActiveMode from "components/ActiveMode";
+import Recommend from "components/HomeContent/recommend";
+import Request from "components/HomeContent/request";
 
 export default function HomePage() {
   return (
@@ -13,7 +13,7 @@ export default function HomePage() {
           <ActiveMode />
         </div>
         <section className="mt-28 px-6 flex flex-col items-center justify-center grow">
-          <MatchingStatus count={1} />
+          <MatchingSituation count={1} />
           <Recommend></Recommend>
           <Request></Request>
         </section>

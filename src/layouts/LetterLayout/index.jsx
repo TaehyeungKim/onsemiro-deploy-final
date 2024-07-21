@@ -1,14 +1,14 @@
-import IconImage from "../../components/IconImage";
-import closeIcon from "../../assets/icons/ph_x.png";
-import Letter from "../../components/Letter";
+import IconImage from "components/IconImage";
+import closeIcon from "assets/icons/ph_x.png";
+import Letter from "components/Letter";
 import { useCallback, useMemo, useState } from "react";
-import { timeMatch } from "../../components/MainIconSection/utils";
+// import { timeMatch } from "../../components/HomeContent/utils";
 import {
   requestMatching,
   getRecommend,
   getRequestForMe,
   acceptMatching,
-} from "../../apis/api";
+} from "apis/api";
 
 export default function LetterLayout({
   info,
@@ -17,10 +17,10 @@ export default function LetterLayout({
   i = 0,
 }) {
   const [index, setIndex] = useState(i);
-  const timeInfo = useMemo(
-    () => info.length > 0 && timeMatch(info[index].time),
-    [info, index]
-  );
+  // const timeInfo = useMemo(
+  //   () => info.length > 0 && timeMatch(info[index].time),
+  //   [info, index]
+  // );
 
   const apiCall = useCallback(
     (data) => {
@@ -63,7 +63,7 @@ export default function LetterLayout({
           <IconImage src={closeIcon}></IconImage>
         </button>
         {info.map((i, k) => (
-          <Letter key={k} info={i} timeInfo={timeInfo} index={index}></Letter>
+          <Letter key={k} info={i} index={index}></Letter>
         ))}
       </div>
       <div className="flex flex-row w-letter-width justify-between mt-3">

@@ -1,10 +1,9 @@
 import MainIconSection from ".";
 
 import { useState, useEffect, useCallback } from "react";
-import { RequestHold } from "./cases";
-import Letter from "../Letter";
-import LetterLayout from "../../layouts/LetterLayout";
-import { getRequestForMe } from "../../apis/api";
+
+import LetterLayout from "layouts/LetterLayout";
+import { getRequestForMe } from "apis/api";
 
 const MESSAGE_MAP = (type) => {
   if (type === 1)
@@ -27,6 +26,18 @@ const MESSAGE_MAP = (type) => {
     </>
   );
 };
+
+function RequestHold({ count }) {
+  return (
+    <>
+      <div
+        className={`w-full relative ${!count ? "bg-sub-pale" : "bg-sub"} py-6`}
+      >
+        <h5 className="text-center">결정하지 않은 요청이 {count}개 있어요</h5>
+      </div>
+    </>
+  );
+}
 
 export default function Request() {
   const [requestInfo, setRequestInfo] = useState([]);

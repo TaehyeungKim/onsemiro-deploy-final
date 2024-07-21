@@ -1,9 +1,9 @@
-import { FloatingSection, CustomTextInput } from "./components";
-import IconImage from "../../components/IconImage";
+import { FloatingSection, CustomTextInput } from "components/CustomInputs";
+import IconImage from "components/IconImage";
 
-import howToKakao from "../../assets/captures/howto_kakao_id.png";
+import howToKakao from "assets/captures/howto_kakao_id.png";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function KakaoAuth() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);

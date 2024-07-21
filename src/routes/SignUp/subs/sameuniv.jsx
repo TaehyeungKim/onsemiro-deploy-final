@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { FloatingSection } from "./components";
-import IconImage from "../../components/IconImage";
-import Ok from "../../assets/icons/ok.png";
-import No from "../../assets/icons/no.png";
+import { FloatingSection } from "components/CustomInputs";
+import IconImage from "components/IconImage";
+import Ok from "assets/icons/ok.png";
+import No from "assets/icons/no.png";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function SameUniv() {
-  // const dataContext = useContext(DataContext);
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [sameUniv, setSameUniv] = useState(

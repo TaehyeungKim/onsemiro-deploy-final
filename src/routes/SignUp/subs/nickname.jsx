@@ -1,7 +1,7 @@
-import { CustomTextInput, FloatingSection } from "./components";
+import { CustomTextInput, FloatingSection } from "components/CustomInputs";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function NickNameInput() {
   const [nicknameInput, setNicknameInput] = useState("");

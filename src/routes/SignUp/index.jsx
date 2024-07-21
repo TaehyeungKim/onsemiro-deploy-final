@@ -1,17 +1,17 @@
-import ProgressBar from "../../components/ProgressBar";
+import ProgressBar from "components/ProgressBar";
 import { useState, useCallback } from "react";
-import IconImage from "../../components/IconImage";
-import ArrowLeft from "../../assets/icons/arrow_left.png";
-import closeButton from "../../assets/icons/ph_x.png";
+import IconImage from "components/IconImage";
+import ArrowLeft from "assets/icons/arrow_left.png";
+import closeButton from "assets/icons/ph_x.png";
 import SignUpSub from "./sub";
-import { MainCustomButton } from "../../components/CustomButton";
-import { IdealChoiceSub } from "./ideal";
-import { submitProfile } from "../../apis/api";
-import { heightRange, IDEAL_REQ_TYPE } from "../../assets/asset";
-import CustomAlertLayout from "../../components/CustomAlert";
+import { MainCustomButton } from "components/CustomButton";
+import { IdealChoiceSub } from "./subs/ideal";
+import { submitProfile } from "apis/api";
+import { heightRange, IDEAL_REQ_TYPE } from "assets/asset";
+import { CustomAlertLayout } from "components/Overlay";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { signUpState, idealChoiceVisibleState } from "../../state/state";
+import { signUpState, idealChoiceVisibleState } from "state/state";
 
 export default function SignUpPage() {
   const TOTAL_LEVEL_COUNT = 14;

@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
-import { FloatingSection, SectionTitle, RangeBar } from "./components";
-import { characterKeyMap } from "../../assets/asset";
+import {
+  FloatingSection,
+  SectionTitle,
+  RangeBar,
+} from "components/CustomInputs";
+import { characterKeyMap } from "assets/asset";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 function MBTILetterRow({ order, item, counter, data, setter }) {
   return (
@@ -110,7 +114,6 @@ export function CharacterSettingSection({ characterSym, setter, keyMap }) {
 }
 
 export default function Character() {
-  // const dataContext = useContext(DataContext);
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [mbti, setMBTI] = useState(

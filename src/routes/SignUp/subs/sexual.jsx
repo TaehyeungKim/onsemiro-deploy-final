@@ -3,10 +3,10 @@ import {
   FloatingSection,
   SectionTitle,
   SelectionRadioGrid,
-} from "./components";
-import { sexualTendency, sexualOrientation } from "../../assets/asset";
+} from "components/CustomInputs";
+import { sexualTendency, sexualOrientation } from "assets/asset";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function Sexual() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);

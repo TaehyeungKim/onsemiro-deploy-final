@@ -1,11 +1,10 @@
 import MainSection from ".";
 import { LetterArrive, LetterChecked, LetterClosed } from "./cases";
-import { timeMatch } from "./utils";
+// import { timeMatch } from "./utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-// import { dummyRecommendData } from "../../data/dummy";
-import LetterLayout from "../../layouts/LetterLayout";
-import { getRecommend, getRestrictedProfile } from "../../apis/api";
+import LetterLayout from "layouts/LetterLayout";
+import { getRecommend, getRestrictedProfile } from "apis/api";
 
 const MESSAGE_MAP = (type) => {
   if (type === 1)
@@ -57,10 +56,10 @@ export default function Recommend() {
     getRecommendedProfile();
   }, []);
 
-  const timeInfo = useMemo(
-    () => recommendInfo.length > 0 && timeMatch(recommendInfo[0].time),
-    [recommendInfo]
-  );
+  // const timeInfo = useMemo(
+  //   () => recommendInfo.length > 0 && timeMatch(recommendInfo[0].time),
+  //   [recommendInfo]
+  // );
 
   const modeMatch = useCallback((status) => {
     // if (status === "arrival") return <LetterArrive></LetterArrive>;
@@ -77,7 +76,7 @@ export default function Recommend() {
           onClick={() => setLetterVisible(true)}
         >
           <MainSection
-            icon={timeInfo.icon}
+            // icon={timeInfo.icon}
             // caption={`${recommendInfo[0].date} ${timeInfo.time} 쪽지 (${recommendInfo[0].time}:00) `}
             caption={"7/8 밤 쪽지(22:00)"}
           >

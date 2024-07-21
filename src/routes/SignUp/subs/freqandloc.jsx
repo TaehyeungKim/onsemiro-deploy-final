@@ -1,9 +1,13 @@
 import { useRef, useEffect, useState } from "react";
 
-import { FloatingSection, SectionTitle, RangeBar } from "./components";
-import { CITYSET } from "../../assets/asset";
+import {
+  FloatingSection,
+  SectionTitle,
+  RangeBar,
+} from "components/CustomInputs";
+import { CITYSET } from "assets/asset";
 import { selector, useRecoilState, useRecoilValue } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 function SelectRegionRow({ label, regions, setter, selected }) {
   const ref = useRef(null);

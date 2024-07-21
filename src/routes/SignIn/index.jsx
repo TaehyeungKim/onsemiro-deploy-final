@@ -1,8 +1,9 @@
-import { CustomTextInput } from "../SignUp/components";
-import { MainCustomButton } from "../../components/CustomButton";
+import { CustomTextInput } from "components/CustomInputs";
+
+import { MainCustomButton } from "components/CustomButton";
 import { useState } from "react";
-import { signIn } from "../../apis/api";
-import { getCookie } from "../../utils/cookie";
+import { signIn } from "apis/api";
+import { getCookie } from "utils/cookie";
 import { useNavigate } from "react-router-dom";
 
 export default function SignInPage() {

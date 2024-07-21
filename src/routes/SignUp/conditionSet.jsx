@@ -1,5 +1,9 @@
-import { DoubleThumbRangeBar } from "./components";
-import { FloatingSection, SelectionRadioGrid } from "./components";
+import {
+  DoubleThumbRangeBar,
+  FloatingSection,
+  SelectionRadioGrid,
+} from "components/CustomInputs";
+
 import { useState, useEffect, useCallback } from "react";
 
 import {
@@ -9,9 +13,9 @@ import {
   AppearanceCollection,
   characterKeyMap,
   CITYSET,
-} from "../../assets/asset";
-import { CharacterSettingSection, MBTISettingSection } from "./character";
-import { FrequencySetSection, LocationSetSection } from "./freqandloc";
+} from "assets/asset";
+import { CharacterSettingSection, MBTISettingSection } from "./subs/character";
+import { FrequencySetSection, LocationSetSection } from "./subs/freqandloc";
 
 function IdealSetCaption({ children }) {
   return <h5 className="mt-10 text-2xl">{children}</h5>;

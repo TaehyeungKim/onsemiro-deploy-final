@@ -4,10 +4,10 @@ import {
   SectionTitle,
   SelectionRadioGrid,
   RangeBar,
-} from "./components";
-import { GenderIdentity } from "../../assets/asset";
+} from "components/CustomInputs";
+import { GenderIdentity } from "assets/asset";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function AgeAndGender() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);

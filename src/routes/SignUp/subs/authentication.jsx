@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { FloatingSection, SectionTitle, CustomTextInput } from "./components";
-import IconImage from "../../components/IconImage";
-import check from "../../assets/icons/check_black.png";
-import search from "../../assets/icons/search.png";
-import { MainCustomButton } from "../../components/CustomButton";
-import { signUp, authSchool } from "../../apis/api";
+import {
+  FloatingSection,
+  SectionTitle,
+  CustomTextInput,
+} from "components/CustomInputs";
+import IconImage from "components/IconImage";
+import check from "assets/icons/check_black.png";
+import search from "assets/icons/search.png";
+import { MainCustomButton } from "components/CustomButton";
+import { signUp, authSchool } from "apis/api";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function AuthenticateSelf() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);

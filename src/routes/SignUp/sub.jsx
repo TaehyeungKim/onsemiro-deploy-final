@@ -1,17 +1,17 @@
-import AuthenticateSelf from "./authentication";
-import KakaoAuth from "./kakaoid";
-import AgeAndGender from "./genderAge";
-import Sexual from "./sexual";
-import Appearance from "./appearance";
-import Character from "./character";
-import Interest from "./interest";
-import FrequencyAndLocation from "./freqandloc";
-import SameUniv from "./sameuniv";
-import Photos from "./photos";
-import Introduction from "./introduction";
-import PreferIdentity from "./preferIdentity";
-import Ideal from "./ideal";
-import NickNameInput from "./nickname";
+import AuthenticateSelf from "./subs/authentication";
+import KakaoAuth from "./subs/kakaoid";
+import AgeAndGender from "./subs/genderAge";
+import Sexual from "./subs/sexual";
+import Appearance from "./subs/appearance";
+import Character from "./subs/character";
+import Interest from "./subs/interest";
+import FrequencyAndLocation from "./subs/freqandloc";
+import SameUniv from "./subs/sameuniv";
+import Photos from "./subs/photos";
+import Introduction from "./subs/introduction";
+import PreferIdentity from "./subs/preferIdentity";
+import Ideal from "./subs/ideal";
+import NickNameInput from "./subs/nickname";
 
 export default function SignUpSub({ level }) {
   return (
@@ -46,6 +46,7 @@ export default function SignUpSub({ level }) {
             return <SameUniv />;
           case 13:
             return <Ideal />;
+          default:
         }
       })()}
     </main>

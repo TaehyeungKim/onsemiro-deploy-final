@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import IconImage from "../IconImage";
+import IconImage from "components/IconImage";
 
 export default function InterestSelected({ icons }) {
   return (

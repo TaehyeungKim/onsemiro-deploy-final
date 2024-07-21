@@ -4,14 +4,14 @@ import {
   SectionTitle,
   SelectionRadioGrid,
   ExtendedRangeBar,
-} from "./components";
+} from "components/CustomInputs";
 import {
   ShapeCollection,
   AppearanceCollection,
   EyelidCollection,
-} from "../../assets/asset";
+} from "assets/asset";
 import { useRecoilState } from "recoil";
-import { signUpState } from "../../state/state";
+import { signUpState } from "state/state";
 
 export default function Appearance() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);

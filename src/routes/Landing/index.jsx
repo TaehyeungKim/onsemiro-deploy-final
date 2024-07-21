@@ -1,18 +1,18 @@
-import HomeHeader from "../../components/HomeHeader";
+import HomeHeader from "components/HomeHeader";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "../../apis/api";
+import { signIn } from "apis/api";
 import { useEffect, useRef } from "react";
-import f1 from "../../assets/captions/feature 1.png";
-import f2 from "../../assets/captions/feature 2.png";
-import f3 from "../../assets/captions/feature 3.png";
-import f4 from "../../assets/captions/Reviews.png";
-import f1_cap from "../../assets/captures/letter_cap.png";
-import f2_cap from "../../assets/captures/auth_cap.png";
-import f3_cap from "../../assets/captures/choice_cap.png";
+import f1 from "assets/captions/feature 1.png";
+import f2 from "assets/captions/feature 2.png";
+import f3 from "assets/captions/feature 3.png";
+import f4 from "assets/captions/Reviews.png";
+import f1_cap from "assets/captures/letter_cap.png";
+import f2_cap from "assets/captures/auth_cap.png";
+import f3_cap from "assets/captures/choice_cap.png";
 import styles from "./index.module.scss";
 
-import { REVIEWS } from "../../assets/asset";
-import { MainCustomButton } from "../../components/CustomButton";
+import { REVIEWS } from "assets/asset";
+import { MainCustomButton } from "components/CustomButton";
 
 function LandingSectionCaption({ src }) {
   return (

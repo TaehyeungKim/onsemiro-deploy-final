@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { FloatingSection, SelectionRadioGrid } from "./components";
-import { GenderIdentity } from "../../assets/asset";
-import { signUpState } from "../../state/state";
+import { FloatingSection, SelectionRadioGrid } from "components/CustomInputs";
+import { GenderIdentity } from "assets/asset";
+import { signUpState } from "state/state";
 import { useRecoilState } from "recoil";
 
 export default function PreferIdentity() {

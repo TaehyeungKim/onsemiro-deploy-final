@@ -1,15 +1,13 @@
 import IconImage from "../IconImage";
-import { useEffect, useMemo } from "react";
-import ProfileWOPhoto from "../../assets/profile1.png";
-import ProfileWPhoto from "../../assets/profile2.png";
+import { useMemo } from "react";
+import ProfileWOPhoto from "assets/profile1.png";
+import ProfileWPhoto from "assets/profile2.png";
 
-import styles from "./index.module.scss";
-
-import check from "../../assets/icons/check.png";
+import check from "assets/icons/check.png";
 import AuthLabel from "./authlabel";
 import ProfileLine from "./profileline";
-import { filterValidProfileKey, keyMapWithKorean } from "../../assets/asset";
-import { messageFrame } from "../../assets/message/message";
+import { filterValidProfileKey, keyMapWithKorean } from "assets/asset";
+import { messageFrame } from "assets/message/message";
 
 import "./index.css";
 
