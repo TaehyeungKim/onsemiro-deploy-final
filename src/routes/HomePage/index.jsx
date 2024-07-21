@@ -3,6 +3,7 @@ import MatchingSituation from "components/HomeContent/situation";
 import ActiveMode from "components/ActiveMode";
 import Recommend from "components/HomeContent/recommend";
 import Request from "components/HomeContent/request";
+import { MatchSituationMenuOverlay } from "components/Overlay";
 
 export default function HomePage() {
   return (
@@ -13,7 +14,7 @@ export default function HomePage() {
           <ActiveMode />
         </div>
         <section className="mt-28 px-6 flex flex-col items-center justify-center grow">
-          <MatchingSituation count={1} />
+          <MatchingSituation count={{ matching: 1, photo: 1 }} />
           <Recommend></Recommend>
           <Request></Request>
         </section>
