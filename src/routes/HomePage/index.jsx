@@ -3,7 +3,6 @@ import MatchingSituation from "components/HomeContent/situation";
 import ActiveMode from "components/ActiveMode";
 import Recommend from "components/HomeContent/recommend";
 import Request from "components/HomeContent/request";
-import { MatchSituationMenuOverlay } from "components/Overlay";
 
 export default function HomePage() {
   return (
