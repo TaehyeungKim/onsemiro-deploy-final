@@ -3,7 +3,12 @@ import closeIcon from "../../assets/ph_x.png";
 import Letter from "../../components/Letter";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { timeMatch } from "../../components/MainIconSection/utils";
-import { requestMatching, getRecommend, getRequestForMe } from "../../apis/api";
+import {
+  requestMatching,
+  getRecommend,
+  getRequestForMe,
+  acceptMatching,
+} from "../../apis/api";
 
 export default function LetterLayout({
   info,
@@ -30,7 +35,7 @@ export default function LetterLayout({
         else return;
       }
       if (info[index].matching_type === 1)
-        return requestMatching(data).then((res) => {
+        return acceptMatching(data).then((res) => {
           if (res.status === 200 || res.status === 201) {
             getRequestForMe();
             close();
