@@ -1,41 +1,31 @@
 import { DataContext } from ".";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   FloatingSection,
   SectionTitle,
   SelectionRadioGrid,
 } from "./components";
-import { sexualTendency } from "../../assets/asset";
+import { sexualTendency, sexualOrientation } from "../../assets/asset";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 export default function Sexual() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
 
-  const sexualOrientation = useMemo(() => {
-    return [
-      {
-        main: "이성애자",
-        sub: "Heterosexual",
-      },
-      {
-        main: "대체로 이성애자",
-        sub: "Heteroflexible",
-      },
-      {
-        main: "양성애자",
-        sub: "Bisexual",
-      },
-      {
-        main: "대체로 동성애자",
-        sub: "Homoflexible",
-      },
-      { main: "동성애자", sub: "Homosexual" },
-      { main: "범성애자", sub: "Pansexual" },
-      { main: "무성애자", sub: "Asexual" },
-      { main: "남성애자", sub: "Androsexual" },
-      { main: "여성애자", sub: "Gynesexual" },
-      { main: "기타", sub: "Other" },
-    ];
-  }, []);
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
+
+  const [genderPreference, setGenderPreference] = useState(
+    signUpData.gender_preference ?? ""
+  );
+  const [bdsm, setBdsm] = useState(signUpData.bdsm ?? "");
+
+  useEffect(() => {
+    setSignUpData({
+      ...signUpData,
+      gender_preference: genderPreference,
+      bdsm: bdsm,
+    });
+  }, [genderPreference, bdsm]);
 
   return (
     <>
@@ -47,7 +37,8 @@ export default function Sexual() {
         <SelectionRadioGrid
           collection={sexualOrientation}
           name="gender_preference"
-          dataContext={dataContext}
+          setter={(preference) => setGenderPreference(preference)}
+          defaultV={genderPreference}
         />
       </FloatingSection>
       <FloatingSection addedStyle="mb-5">
@@ -55,7 +46,8 @@ export default function Sexual() {
         <SelectionRadioGrid
           collection={sexualTendency}
           name="bdsm"
-          dataContext={dataContext}
+          setter={(bdsm) => setBdsm(bdsm)}
+          defaultV={bdsm}
         />
       </FloatingSection>
     </>

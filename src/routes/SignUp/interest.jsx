@@ -4,18 +4,22 @@ import { FloatingSection } from "./components";
 import IconImage from "../../components/IconImage";
 import InterestSelected from "../../components/InterestSelected";
 import { interestValueSet } from "../../assets/asset";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 export default function Interest() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const valueSet = useMemo(() => interestValueSet, []);
 
-  const [interest, setInterest] = useState(dataContext.data.interest ?? []);
+  const [interest, setInterest] = useState(signUpData.interest ?? []);
 
   const [icons, setIcons] = useState(
-    dataContext.data.interest
+    signUpData.interest
       ? [
-          ...dataContext.data.interest.map(
+          ...signUpData.interest.map(
             (interest) => valueSet.find((set) => set === interest).icon
           ),
         ]
@@ -23,10 +27,11 @@ export default function Interest() {
   );
 
   useEffect(() => {
-    dataContext.setter({
-      ...dataContext.data,
-      interest: [...interest],
-    });
+    // dataContext.setter({
+    //   ...dataContext.data,
+    //   interest: [...interest],
+    // });
+    setSignUpData({ ...signUpData, interest: [...interest] });
 
     setIcons([
       ...interest.map(

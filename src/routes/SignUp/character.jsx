@@ -2,6 +2,8 @@ import { DataContext } from ".";
 import { useContext, useEffect, useState } from "react";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
 import { characterKeyMap } from "../../assets/asset";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 function MBTILetterRow({ order, item, counter, data, setter }) {
   return (
@@ -109,15 +111,16 @@ export function CharacterSettingSection({ characterSym, setter, keyMap }) {
 }
 
 export default function Character() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [mbti, setMBTI] = useState(
-    dataContext.data.mbti
+    signUpData.mbti
       ? {
-          first: dataContext.data.mbti[0],
-          second: dataContext.data.mbti[1],
-          third: dataContext.data.mbti[2],
-          fourth: dataContext.data.mbti[3],
+          first: signUpData.mbti[0],
+          second: signUpData.mbti[1],
+          third: signUpData.mbti[2],
+          fourth: signUpData.mbti[3],
         }
       : {
           first: "E",
@@ -128,31 +131,36 @@ export default function Character() {
   );
 
   const [characterSym, setCharacterSym] = useState(
-    dataContext.data.character
+    signUpData.character
       ? Object.keys(characterKeyMap).filter(
-          (key) => characterKeyMap[key] === dataContext.data.character
+          (key) => characterKeyMap[key] === signUpData.character
         )[0]
       : 0
   );
 
   useEffect(() => {
-    dataContext.setter({
-      ...dataContext.data,
+    setSignUpData({
+      ...signUpData,
       mbti: `${mbti["first"]}${mbti["second"]}${mbti["third"]}${mbti["fourth"]}`,
       character: characterKeyMap[characterSym],
     });
+    // dataContext.setter({
+    //   ...dataContext.data,
+    //   mbti: `${mbti["first"]}${mbti["second"]}${mbti["third"]}${mbti["fourth"]}`,
+    //   character: characterKeyMap[characterSym],
+    // });
   }, [mbti, characterSym]);
 
-  useEffect(() => {
-    if (dataContext.data.mbti) {
-      setMBTI({
-        first: dataContext.data.mbti[0],
-        second: dataContext.data.mbti[1],
-        third: dataContext.data.mbti[2],
-        fourth: dataContext.data.mbti[3],
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (dataContext.data.mbti) {
+  //     setMBTI({
+  //       first: dataContext.data.mbti[0],
+  //       second: dataContext.data.mbti[1],
+  //       third: dataContext.data.mbti[2],
+  //       fourth: dataContext.data.mbti[3],
+  //     });
+  //   }
+  // }, []);
 
   return (
     <>

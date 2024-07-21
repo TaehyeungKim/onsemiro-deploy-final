@@ -6,9 +6,13 @@ import check from "../../assets/check_black.png";
 import search from "../../assets/search.png";
 import { MainCustomButton } from "../../components/CustomButton";
 import { signUp, authSchool } from "../../apis/api";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 export default function AuthenticateSelf() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
@@ -91,8 +95,12 @@ export default function AuthenticateSelf() {
                   authSchool({ email: authSchoolInput.school_email }).then(
                     (res) => {
                       if (res.status === 200) {
-                        dataContext?.setter({
-                          ...dataContext.data,
+                        // dataContext?.setter({
+                        //   ...dataContext.data,
+                        //   univ: authSchoolInput.school_name,
+                        // });
+                        setSignUpData({
+                          ...signUpData,
                           univ: authSchoolInput.school_name,
                         });
                       }

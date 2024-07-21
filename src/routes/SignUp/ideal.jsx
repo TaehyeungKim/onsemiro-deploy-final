@@ -23,36 +23,31 @@ import {
   IdealSexualSet,
   IdealShapeSet,
 } from "./conditionSet";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { signUpState, idealChoiceVisibleState } from "../../state/state";
+import { IDEAL_REQ_TYPE } from "../../assets/asset";
 
 function ConditionSelect({ label, reqType }) {
-  const idealToggleContext = useContext(IdealChoiceToggleContext);
-  const dataContext = useContext(DataContext);
+  // const idealToggleContext = useContext(IdealChoiceToggleContext);
+  // const dataContext = useContext(DataContext);
 
-  const initializeAndToggle = useCallback(() => {
-    dataContext.setter({
-      ...dataContext.data,
-      preference: {
-        ...dataContext.data.preference,
-        [reqType]: undefined,
-      },
-    });
-    idealToggleContext.toggle(true, reqType);
-  }, [reqType]);
+  const signUpData = useRecoilValue(signUpState);
+  const setIdealChoiceVisible = useSetRecoilState(idealChoiceVisibleState);
 
   return (
     <div className="bg-input flex flex-col items-center w-full rounded-lg">
       <h3 className="py-10 text-2xl font-bold">{label}</h3>
-      {!dataContext.data.preference || !dataContext.data.preference[reqType] ? (
+      {!signUpData.preference || !signUpData.preference[reqType] ? (
         <button
           className=" mb-10 block w-fit after:content-[''] after:w-full after:block after:border-b-2 after:border-main text-main"
-          onClick={() => idealToggleContext.toggle(true, reqType)}
+          onClick={() => setIdealChoiceVisible({ visible: true, reqType })}
         >
           고르기
         </button>
       ) : (
         <button
           className="bg-input-darker w-4/5 py-3 flex justify-center items-center rounded-lg my-3"
-          onClick={initializeAndToggle}
+          onClick={() => setIdealChoiceVisible({ visible: true, reqType })}
         >
           <div className="w-5 mr-2">
             <IconImage
@@ -60,7 +55,7 @@ function ConditionSelect({ label, reqType }) {
                 Conditions.find(
                   (condition) =>
                     condition.condition ===
-                    Object.keys(dataContext.data.preference[reqType])[0]
+                    Object.keys(signUpData.preference[reqType])[0]
                 ).icon
               }
             />
@@ -69,7 +64,7 @@ function ConditionSelect({ label, reqType }) {
             Conditions.find(
               (condition) =>
                 condition.condition ===
-                Object.keys(dataContext.data.preference[reqType])[0]
+                Object.keys(signUpData.preference[reqType])[0]
             ).label
           }
         </button>
@@ -103,16 +98,19 @@ export default function Ideal() {
   );
 }
 
-export const TempConditionSelectContext = createContext({
-  data: {},
-  setter: undefined,
-});
-
 function ConditionSet({ type, close, reqType }) {
-  const [conditionSetData, setConditionSetData] = useState({});
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
+  const setIdealChoiceVisible = useSetRecoilState(idealChoiceVisibleState);
 
-  const dataContext = useContext(DataContext);
-  const idealChoiceContext = useContext(IdealChoiceToggleContext);
+  const [conditionSetData, setConditionSetData] = useState(
+    signUpData.preference ??
+      IDEAL_REQ_TYPE.reduce((prev, cur) => {
+        prev[cur] = undefined;
+        return prev;
+      }, {})
+  );
+
+  // useEffect(() => console.log(conditionSetData), []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -121,50 +119,102 @@ function ConditionSet({ type, close, reqType }) {
           <IconImage src={ArrowLeft} />
         </button>
       </header>
-      <TempConditionSelectContext.Provider
-        value={{
-          data: conditionSetData,
-          setter: setConditionSetData,
-        }}
-      >
-        {(() => {
-          switch (type.condition) {
-            case "age":
-              return <IdealAgeSet reqType={reqType} />;
-            case "sexual":
-              return <IdealSexualSet reqType={reqType} />;
-            case "shape":
-              return <IdealShapeSet reqType={reqType} />;
-            case "height":
-              return <IdealHeightSet reqType={reqType} />;
-            case "appearance":
-              return <IdealAppearanceSet reqType={reqType} />;
-            case "eyelid":
-              return <IdealEyelidSet reqType={reqType} />;
-            case "mbti":
-              return <IdealMBTISet reqType={reqType} />;
-            case "character":
-              return <IdealCharacterSet reqType={reqType} />;
-            case "frequency":
-              return <IdealFrequencySet reqType={reqType} />;
-            case "location":
-              return <IdealLocationSet reqType={reqType} />;
-          }
-        })()}
-      </TempConditionSelectContext.Provider>
+      {(() => {
+        switch (type.condition) {
+          case "age":
+            return (
+              <IdealAgeSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "sexual":
+            return (
+              <IdealSexualSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "shape":
+            return (
+              <IdealShapeSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "height":
+            return (
+              <IdealHeightSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "appearance":
+            return (
+              <IdealAppearanceSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "eyelid":
+            return (
+              <IdealEyelidSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "mbti":
+            return (
+              <IdealMBTISet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "character":
+            return (
+              <IdealCharacterSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "frequency":
+            return (
+              <IdealFrequencySet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+          case "location":
+            return (
+              <IdealLocationSet
+                reqType={reqType}
+                setter={setConditionSetData}
+                tempData={conditionSetData}
+              />
+            );
+        }
+      })()}
+
       <div className="mb-10">
         <MainCustomButton
           event={{
             onClick: () => {
-              dataContext.setter({
-                ...dataContext.data,
+              setSignUpData({
+                ...signUpData,
                 preference: {
-                  ...dataContext.data.preference,
-                  [reqType]: { ...conditionSetData },
+                  ...conditionSetData,
                 },
               });
-              // close();
-              idealChoiceContext.toggle(false);
+              setIdealChoiceVisible({ visible: false, reqType: undefined });
             },
           }}
         >{`'${type.label}' 선택하기`}</MainCustomButton>
@@ -174,12 +224,24 @@ function ConditionSet({ type, close, reqType }) {
 }
 
 export function IdealChoiceSub({ reqType }) {
-  const idealToggleContext = useContext(IdealChoiceToggleContext);
-
-  const dataContext = useContext(DataContext);
+  const signUpData = useRecoilValue(signUpState);
+  const setIdealChoiceVisible = useSetRecoilState(idealChoiceVisibleState);
 
   const [isConditionSetVisible, setIsConditionSetVisible] = useState(false);
   const [type, setType] = useState(undefined);
+
+  const blockChoices = useCallback(
+    (condition) => {
+      const others = IDEAL_REQ_TYPE.filter((key) => key !== reqType);
+
+      return others.some(
+        (key) =>
+          signUpData.preference &&
+          signUpData.preference[key]?.hasOwnProperty(condition)
+      );
+    },
+    [reqType]
+  );
 
   if (isConditionSetVisible)
     return (
@@ -195,7 +257,9 @@ export function IdealChoiceSub({ reqType }) {
       <header className="p-3">
         <button
           className="w-5 block"
-          onClick={() => idealToggleContext.toggle(false)}
+          onClick={() => {
+            setIdealChoiceVisible({ visible: false, reqType: undefined });
+          }}
         >
           <IconImage src={ArrowLeft} />
         </button>
@@ -210,32 +274,10 @@ export function IdealChoiceSub({ reqType }) {
               <button
                 key={condition.label}
                 className={`bg-input w-full py-3 flex justify-center items-center rounded-lg my-3 cursor-pointer ${
-                  dataContext.data.preference?.required?.hasOwnProperty(
-                    condition.condition
-                  ) ||
-                  dataContext.data.preference?.optional_1?.hasOwnProperty(
-                    condition.condition
-                  ) ||
-                  dataContext.data.preference?.optional_2?.hasOwnProperty(
-                    condition.condition
-                  )
-                    ? "opacity-20"
-                    : null
+                  blockChoices(condition.condition) ? "opacity-20" : null
                 }`}
                 onClick={() => {
-                  if (
-                    !(
-                      dataContext.data.preference?.required?.hasOwnProperty(
-                        condition.condition
-                      ) ||
-                      dataContext.data.preference?.optional_1?.hasOwnProperty(
-                        condition.condition
-                      ) ||
-                      dataContext.data.preference?.optional_2?.hasOwnProperty(
-                        condition.condition
-                      )
-                    )
-                  ) {
+                  if (!blockChoices(condition.condition)) {
                     setIsConditionSetVisible(true);
                     setType(condition);
                   }
@@ -250,7 +292,7 @@ export function IdealChoiceSub({ reqType }) {
           </div>
         </FloatingSection>
       </div>
-      <MainCustomButton addedStyle="mb-10">건너뛰기</MainCustomButton>
+      {/* <MainCustomButton addedStyle="mb-10">건너뛰기</MainCustomButton> */}
     </>
   );
 }

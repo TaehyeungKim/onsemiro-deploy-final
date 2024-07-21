@@ -7,16 +7,23 @@ import {
   RangeBar,
 } from "./components";
 import { GenderIdentity } from "../../assets/asset";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
+
 export default function AgeAndGender() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const DEFAULT_AGE = 25;
 
-  const [age, setAge] = useState(dataContext.data.age ?? DEFAULT_AGE);
+  const [age, setAge] = useState(signUpData.age ?? DEFAULT_AGE);
+  const [genderIdentity, setGenderIdentity] = useState(
+    signUpData.gender_identity ?? ""
+  );
 
   useEffect(() => {
-    dataContext.setter({ ...dataContext.data, age: age });
-  }, [age]);
+    setSignUpData({ ...signUpData, age: age, gender_identity: genderIdentity });
+  }, [age, genderIdentity]);
 
   const genderIdentityChoice = GenderIdentity;
 
@@ -30,7 +37,8 @@ export default function AgeAndGender() {
         <SelectionRadioGrid
           collection={genderIdentityChoice}
           name="gender_identity"
-          dataContext={dataContext}
+          setter={(identity) => setGenderIdentity(identity)}
+          defaultV={signUpData.gender_identity ?? genderIdentity}
         />
       </FloatingSection>
       <FloatingSection>
@@ -39,7 +47,7 @@ export default function AgeAndGender() {
           <RangeBar
             max={30}
             min={20}
-            defaultValue={dataContext.data.age ?? DEFAULT_AGE}
+            defaultValue={signUpData.age ?? age}
             step={1}
             setter={(age) => setAge(parseInt(age))}
             captions={[20, 25, 30]}

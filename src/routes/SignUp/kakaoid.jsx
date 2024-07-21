@@ -4,9 +4,14 @@ import { FloatingSection, CustomTextInput } from "./components";
 import IconImage from "../../components/IconImage";
 
 import howToKakao from "../../assets/howto_kakao_id.png";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 export default function KakaoAuth() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
+
   return (
     <FloatingSection addedStyle="mt-6">
       <h3 className="text-xl">카카오톡 아이디를 입력해주세요.</h3>
@@ -20,25 +25,14 @@ export default function KakaoAuth() {
           id="profile_kakao"
           placeholder={"카카오톡 아이디 입력하기"}
           event={{
-            onChange: (id) =>
-              dataContext?.setter({
-                ...dataContext.data,
-                kakao_id: id,
-              }),
+            onChange: (id) => setSignUpData({ ...signUpData, kakao_id: id }),
+            // dataContext?.setter({
+            //   ...dataContext.data,
+            //   kakao_id: id,
+            // }),
           }}
-          defaultValue={dataContext.data.kakao_id ?? null}
+          defaultValue={signUpData.kakao_id ?? null}
         />
-        {/* <input
-          className="h-full grow block placeholder:text-xs placeholder:pl-3 bg-background rounded-lg"
-          placeholder="카카오톡 아이디 입력하기"
-          onChange={(e) =>
-            dataContext?.setter({
-              ...dataContext.data,
-              kakao_id: e.target.value,
-            })
-          }
-          defaultValue={dataContext.data.kakao_id ?? null}
-        ></input> */}
       </div>
       <div className="w-3/4 m-auto mt-20">
         <IconImage src={howToKakao} />

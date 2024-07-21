@@ -5,6 +5,7 @@ import {
   useCallback,
   useDeferredValue,
 } from "react";
+
 import styles from "./components.module.scss";
 
 export function FloatingSection({ children, addedStyle = "" }) {
@@ -67,8 +68,8 @@ export function DoubleThumbRangeBar({
   defaultValue,
   setter,
 }) {
-  const [smaller, setSmaller] = useState(min);
-  const [bigger, setBigger] = useState(max);
+  const [smaller, setSmaller] = useState(defaultValue.min);
+  const [bigger, setBigger] = useState(defaultValue.max);
 
   const deferredBiggerValue = useDeferredValue(bigger);
   const deferredSmallerValue = useDeferredValue(smaller);
@@ -204,7 +205,9 @@ export function ExtendedRangeBar({
   );
 }
 
-export function SelectionRadioGrid({ collection, name, dataContext }) {
+export function SelectionRadioGrid({ collection, name, setter, defaultV }) {
+  // const [data, setData] = useRecoilState(atom);
+
   return (
     <div className="grid grid-cols-2 gap-5 w-3/4 mx-auto mt-10">
       {collection.map((value, i) => {
@@ -220,15 +223,15 @@ export function SelectionRadioGrid({ collection, name, dataContext }) {
               id={value.main}
               className="peer"
               name={name}
-              onChange={(e) =>
-                dataContext.setter({
-                  ...dataContext.data,
-                  [name]: e.target.value,
-                })
+              onChange={
+                (e) => setter(e.target.value)
+                // (e) => setData({ ...data, [name]: e.target.value })
+                // dataContext.setter({
+                //   ...dataContext.data,
+                //   [name]: e.target.value,
+                // })
               }
-              defaultChecked={
-                dataContext.data[name] === value.main ? true : false
-              }
+              defaultChecked={defaultV === value.main ? true : false}
             />
             <label
               htmlFor={value.main}

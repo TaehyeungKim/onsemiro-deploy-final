@@ -11,17 +11,23 @@ import {
   AppearanceCollection,
   EyelidCollection,
 } from "../../assets/asset";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 export default function Appearance() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [MIN, MAX] = [145, 185];
 
-  const [height, setHeight] = useState(dataContext.data.height ?? MIN + 5);
+  const [height, setHeight] = useState(signUpData.height ?? MIN + 5);
+  const [shape, setShape] = useState(signUpData.shape ?? "");
+  const [eyelid, setEyelid] = useState(signUpData.eyelid ?? "");
+  const [appearance, setAppearance] = useState(signUpData.appearance ?? "");
 
   useEffect(() => {
-    dataContext.setter({ ...dataContext.data, height: height });
-  }, [height]);
+    setSignUpData({ ...signUpData, height, shape, eyelid, appearance });
+  }, [height, shape, eyelid, appearance]);
   return (
     <>
       <FloatingSection>
@@ -55,7 +61,8 @@ export default function Appearance() {
         <SelectionRadioGrid
           collection={ShapeCollection}
           name="shape"
-          dataContext={dataContext}
+          setter={(shape) => setShape(shape)}
+          defaultV={shape}
         />
       </FloatingSection>
       <FloatingSection>
@@ -63,7 +70,8 @@ export default function Appearance() {
         <SelectionRadioGrid
           collection={AppearanceCollection}
           name="appearance"
-          dataContext={dataContext}
+          setter={(app) => setAppearance(app)}
+          defaultV={appearance}
         />
       </FloatingSection>
       <FloatingSection addedStyle="mb-7">
@@ -71,7 +79,8 @@ export default function Appearance() {
         <SelectionRadioGrid
           collection={EyelidCollection}
           name="eyelid"
-          dataContext={dataContext}
+          setter={(eyelid) => setEyelid(eyelid)}
+          defaultV={eyelid}
         ></SelectionRadioGrid>
       </FloatingSection>
     </>

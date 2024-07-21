@@ -4,16 +4,19 @@ import { FloatingSection } from "./components";
 import IconImage from "../../components/IconImage";
 import Ok from "../../assets/ok.png";
 import No from "../../assets/no.png";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 export default function SameUniv() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [sameUniv, setSameUniv] = useState(
-    dataContext.data.same_univ === false ? false : true
+    signUpData.same_univ === false ? false : true
   );
 
   useEffect(() => {
-    dataContext.setter({ ...dataContext.data, same_univ: sameUniv });
+    setSignUpData({ ...signUpData, same_univ: sameUniv });
   }, [sameUniv]);
 
   return (
@@ -51,7 +54,7 @@ export default function SameUniv() {
               name="same_univ"
               id="no"
               className="peer"
-              value={false}
+              // value={false}
               defaultChecked={sameUniv === false ?? false}
               onChange={(e) => setSameUniv(e.target.value === "true")}
             />

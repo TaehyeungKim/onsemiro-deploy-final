@@ -2,17 +2,22 @@ import { useRef, useEffect, useContext, useState } from "react";
 import { DataContext } from ".";
 import { FloatingSection, SectionTitle, RangeBar } from "./components";
 import { CITYSET } from "../../assets/asset";
+import { selector, useRecoilState, useRecoilValue } from "recoil";
+import { signUpState } from "../../state/state";
 
-function SelectRegionRow({ label, regions, setter, context, sup = undefined }) {
+function SelectRegionRow({ label, regions, setter, selected }) {
   // const dataContext = useContext(DataContext);
 
   const ref = useRef(null);
 
-  const LABELMAP = { 도시: "city", 행정구역: "subRegion" };
+  // const LABELMAP = { 도시: "city", 행정구역: "subRegion" };
+
+  const [selectedRegion, setSelectedRegion] = useState(selected);
 
   useEffect(() => {
-    if (!context.data[label]) ref.current?.setAttribute("selected", true);
-  }, [sup]);
+    if (!selectedRegion) ref.current?.setAttribute("selected", true);
+    setter(selectedRegion);
+  }, [selectedRegion]);
 
   return (
     <div className="flex justify-between items-center">
@@ -21,8 +26,8 @@ function SelectRegionRow({ label, regions, setter, context, sup = undefined }) {
       </label>
       <select
         className="block grow ml-16 bg-input box-border px-3 py-2 rounded-md"
-        onChange={(e) => setter(e.target.value)}
-        value={context.data[LABELMAP[label]]}
+        onChange={(e) => setSelectedRegion(e.target.value)}
+        value={selectedRegion}
       >
         <option hidden ref={ref}>
           선택하기
@@ -53,7 +58,17 @@ export function FrequencySetSection({ meetNum, setter }) {
   );
 }
 
-export function LocationSetSection({ set, city, setter, context }) {
+const signUpDataRegionState = selector({
+  key: "signUpDataRegionState",
+  get: ({ get }) => {
+    const { city, subRegion } = get(signUpState);
+    return { city, subRegion };
+  },
+});
+
+export function LocationSetSection({ set, setter }) {
+  const { city, subRegion } = useRecoilValue(signUpDataRegionState);
+
   return (
     <>
       <div className="mb-3">
@@ -61,7 +76,7 @@ export function LocationSetSection({ set, city, setter, context }) {
           label="도시"
           regions={set.map((set) => set.city)}
           setter={setter.city}
-          context={context}
+          selected={city}
         ></SelectRegionRow>
       </div>
 
@@ -71,8 +86,7 @@ export function LocationSetSection({ set, city, setter, context }) {
             label="행정구역"
             regions={set.find((s) => s.city === city).sub}
             setter={setter.sub}
-            context={context}
-            sup={city}
+            selected={subRegion}
           ></SelectRegionRow>
         </div>
       )}
@@ -81,21 +95,21 @@ export function LocationSetSection({ set, city, setter, context }) {
 }
 
 export default function FrequencyAndLocation() {
-  const dataContext = useContext(DataContext);
+  // const dataContext = useContext(DataContext);
 
-  const [meetNum, setMeetNum] = useState(
-    dataContext.data.meeting_frequency ?? 1
-  );
+  const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
-  const [city, setCity] = useState(dataContext.data.city ?? "");
-  const [sub, setSub] = useState(dataContext.data.subRegion ?? "");
+  const [meetNum, setMeetNum] = useState(signUpData.meeting_frequency ?? 1);
+
+  const [city, setCity] = useState(signUpData.city ?? "");
+  const [sub, setSub] = useState(signUpData.subRegion ?? "");
 
   useEffect(() => {
-    dataContext.setter({ ...dataContext.data, city: city, subRegion: sub });
+    setSignUpData({ ...signUpData, city: city, subRegion: sub });
   }, [city, sub]);
 
   useEffect(() => {
-    dataContext.setter({ ...dataContext.data, meeting_frequency: meetNum });
+    setSignUpData({ ...signUpData, meeting_frequency: meetNum });
   }, [meetNum]);
 
   return (
@@ -121,8 +135,6 @@ export default function FrequencyAndLocation() {
               city: setCity,
               sub: setSub,
             }}
-            city={city}
-            context={dataContext}
           />
         </section>
       </FloatingSection>

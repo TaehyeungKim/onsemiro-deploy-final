@@ -1,6 +1,6 @@
 import { DoubleThumbRangeBar } from "./components";
 import { FloatingSection, SelectionRadioGrid } from "./components";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { DataContext } from ".";
 import { TempConditionSelectContext } from "./ideal";
 import {
@@ -13,6 +13,8 @@ import {
 } from "../../assets/asset";
 import { CharacterSettingSection, MBTISettingSection } from "./character";
 import { FrequencySetSection, LocationSetSection } from "./freqandloc";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../state/state";
 
 function IdealSetCaption({ children }) {
   return <h5 className="mt-10 text-2xl">{children}</h5>;
@@ -26,36 +28,41 @@ function IdealSetChoice({ children }) {
   );
 }
 
-export function IdealAgeSet({ reqType }) {
-  const dataContext = useContext(DataContext);
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealAgeSet({ reqType, setter, tempData }) {
+  // const dataContext = useContext(DataContext);
+  // const conditionCtx = useContext(TempConditionSelectContext);
+
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   // const FORMER_RANGE = [20, 23];
   // const LATTER_RANGE = [26, 30];
 
   const [MIN, MAX] = [20, 29];
+  const adjustAgeData = useCallback((age) => {
+    if (age === 29) return age + 1;
+    if (age === 30) return age - 1;
+    return age;
+  }, []);
 
   const [ageMin, setAgeMin] = useState(
-    (dataContext.data.preference &&
-      dataContext.data.preference[reqType]?.age?.age_min) ??
-      MIN
+    tempData[reqType]?.age?.age_min
+      ? adjustAgeData(tempData[reqType]?.age?.age_min)
+      : MIN
   );
   const [ageMax, setAgeMax] = useState(
-    (dataContext.data.preference &&
-      dataContext.data.preference[reqType]?.age?.age_max) ??
-      MAX + 1
+    tempData[reqType]?.age?.age_max
+      ? adjustAgeData(tempData[reqType]?.age?.age_max)
+      : MAX
   );
 
   useEffect(() => {
-    if (ageMax === 29) setAgeMax(30);
-  }, [ageMax]);
-
-  useEffect(() => {
-    conditionCtx.setter({
-      ...conditionCtx.data,
-      age: {
-        age_min: ageMin,
-        age_max: ageMax,
+    setter({
+      ...tempData,
+      [reqType]: {
+        age: {
+          age_min: adjustAgeData(ageMin),
+          age_max: adjustAgeData(ageMax),
+        },
       },
     });
   }, [ageMin, ageMax]);
@@ -77,17 +84,43 @@ export function IdealAgeSet({ reqType }) {
             return arr;
           })()}
           setter={{ setSmaller: setAgeMin, setBigger: setAgeMax }}
+          defaultValue={{
+            min: ageMin,
+            max: ageMax,
+          }}
         ></DoubleThumbRangeBar>
         <h5 className="text-center text-lg mt-10">
-          {ageMin}세 이상 {ageMax}세 이하
+          {adjustAgeData(ageMin)}세 이상 {adjustAgeData(ageMax)}세 이하
         </h5>
       </IdealSetChoice>
     </>
   );
 }
 
-export function IdealSexualSet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealSexualSet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
+
+  const [sexual, setSexual] = useState(tempData[reqType]?.sexual ?? "");
+
+  useEffect(() => {
+    // setSignUpData({
+    //   ...signUpData,
+    //   preference: {
+    //     ...signUpData.preference,
+    //     [reqType]: {
+    //       sexual,
+    //     },
+    //   },
+    // });
+    setter({
+      ...tempData,
+      [reqType]: {
+        sexual,
+      },
+    });
+  }, [sexual]);
+
   return (
     <>
       <FloatingSection>
@@ -97,15 +130,28 @@ export function IdealSexualSet({ reqType }) {
         <SelectionRadioGrid
           collection={sexualTendency}
           name="sexual"
-          dataContext={conditionCtx}
+          setter={(s) => setSexual(s)}
+          defaultV={sexual}
         ></SelectionRadioGrid>
       </IdealSetChoice>
     </>
   );
 }
 
-export function IdealShapeSet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealShapeSet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
+
+  const [shape, setShape] = useState(tempData[reqType]?.shape ?? "");
+
+  useEffect(() => {
+    setter({
+      ...tempData,
+      [reqType]: {
+        shape,
+      },
+    });
+  }, [shape]);
 
   return (
     <>
@@ -116,39 +162,46 @@ export function IdealShapeSet({ reqType }) {
         <SelectionRadioGrid
           collection={ShapeCollection}
           name="shape"
-          dataContext={conditionCtx}
+          setter={(shape) => setShape(shape)}
+          defaultV={shape}
         ></SelectionRadioGrid>
       </IdealSetChoice>
     </>
   );
 }
 
-export function IdealHeightSet({ reqType }) {
+export function IdealHeightSet({ reqType, setter, tempData }) {
   // const FORMER_RANGE = [145, 150, 155, 160, 165];
   // const LATTER_RANGE = [170, 175, 180, 185, 190];
 
   const [MIN, MAX] = [145, 190];
 
-  const conditionCtx = useContext(TempConditionSelectContext);
-  const dataContext = useContext(DataContext);
+  // const conditionCtx = useContext(TempConditionSelectContext);
+  // const dataContext = useContext(DataContext);
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [heightMin, setHeightMin] = useState(
-    (dataContext.data.preference &&
-      dataContext.data.preference[reqType]?.height?.height_min) ??
-      MIN
+    tempData[reqType]?.height?.height_min ?? MIN
   );
   const [heightMax, setHeightMax] = useState(
-    (dataContext.data.preference &&
-      dataContext.data.preference[reqType]?.height?.height_max) ??
-      MAX
+    tempData[reqType]?.height?.height_max ?? MAX
   );
 
   useEffect(() => {
-    conditionCtx.setter({
-      ...conditionCtx.data,
-      height: {
-        height_min: heightMin,
-        height_max: heightMax,
+    // conditionCtx.setter({
+    //   ...conditionCtx.data,
+    //   height: {
+    //     height_min: heightMin,
+    //     height_max: heightMax,
+    //   },
+    // });
+    setter({
+      ...tempData,
+      [reqType]: {
+        height: {
+          height_min: heightMin,
+          height_max: heightMax,
+        },
       },
     });
   }, [heightMin, heightMax]);
@@ -173,6 +226,10 @@ export function IdealHeightSet({ reqType }) {
             "",
           ]}
           setter={{ setSmaller: setHeightMin, setBigger: setHeightMax }}
+          defaultValue={{
+            min: heightMin,
+            max: heightMax,
+          }}
         ></DoubleThumbRangeBar>
         <h5 className="text-center mt-9 text-lg">
           {heightMin === MIN ? "" : `${heightMin}이상 `}
@@ -183,8 +240,16 @@ export function IdealHeightSet({ reqType }) {
   );
 }
 
-export function IdealAppearanceSet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealAppearanceSet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
+  const [appearance, setAppearance] = useState(
+    tempData[reqType]?.appearance ?? ""
+  );
+
+  useEffect(() => {
+    setter({ ...tempData, [reqType]: { appearance } });
+  }, [appearance]);
 
   return (
     <>
@@ -195,15 +260,22 @@ export function IdealAppearanceSet({ reqType }) {
         <SelectionRadioGrid
           collection={AppearanceCollection}
           name="appearance"
-          dataContext={conditionCtx}
+          setter={(app) => setAppearance(app)}
+          defaultV={appearance}
         ></SelectionRadioGrid>
       </IdealSetChoice>
     </>
   );
 }
 
-export function IdealEyelidSet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealEyelidSet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
+  const [eyelid, setEyelid] = useState(tempData[reqType]?.eyelid ?? "");
+
+  useEffect(() => {
+    setter({ ...tempData, [reqType]: { eyelid } });
+  }, [eyelid]);
 
   return (
     <>
@@ -214,23 +286,26 @@ export function IdealEyelidSet({ reqType }) {
         <SelectionRadioGrid
           collection={EyelidCollection}
           name="eyelid"
-          dataContext={conditionCtx}
+          setter={(eye) => setEyelid(eye)}
+          defaultV={eyelid}
         ></SelectionRadioGrid>
       </IdealSetChoice>
     </>
   );
 }
 
-export function IdealMBTISet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealMBTISet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
+
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [mbti, setMBTI] = useState(
-    conditionCtx.data.mbti
+    tempData[reqType]?.mbti
       ? {
-          first: conditionCtx.data.mbti[0],
-          second: conditionCtx.data.mbti[1],
-          third: conditionCtx.data.mbti[2],
-          fourth: conditionCtx.data.mbti[3],
+          first: tempData[reqType].mbti[0],
+          second: tempData[reqType].mbti[1],
+          third: tempData[reqType].mbti[2],
+          fourth: tempData[reqType].mbti[3],
         }
       : {
           first: "E",
@@ -241,7 +316,21 @@ export function IdealMBTISet({ reqType }) {
   );
 
   useEffect(() => {
-    conditionCtx.setter({ ...conditionCtx.data, mbti: mbti });
+    // setSignUpData({
+    //   ...signUpData,
+    //   preference: {
+    //     ...signUpData.preference,
+    //     [reqType]: {
+    //       mbti: `${mbti[0]}${mbti[1]}${mbti[2]}${mbti[3]}`,
+    //     },
+    //   },
+    // });
+    setter({
+      ...tempData,
+      [reqType]: {
+        mbti: `${mbti.first}${mbti.second}${mbti.third}${mbti.fourth}`,
+      },
+    });
   }, [mbti]);
 
   return (
@@ -256,21 +345,37 @@ export function IdealMBTISet({ reqType }) {
   );
 }
 
-export function IdealCharacterSet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealCharacterSet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [characterSym, setCharacterSym] = useState(
-    conditionCtx.data.character
+    tempData[reqType]?.character
       ? Object.keys(characterKeyMap).filter(
-          (key) => characterKeyMap[key] === conditionCtx.data.character
+          (key) => characterKeyMap[key] === tempData[reqType].character
         )[0]
       : 0
   );
 
   useEffect(() => {
-    conditionCtx.setter({
-      ...conditionCtx.data,
-      character: characterKeyMap[characterSym],
+    // conditionCtx.setter({
+    //   ...conditionCtx.data,
+    //   character: characterKeyMap[characterSym],
+    // });
+    // setSignUpData({
+    //   ...signUpData,
+    //   preference: {
+    //     ...signUpData.preference,
+    //     [reqType]: {
+    //       character: characterKeyMap[characterSym],
+    //     },
+    //   },
+    // });
+    setter({
+      ...tempData,
+      [reqType]: {
+        character: characterKeyMap[characterSym],
+      },
     });
   }, [characterSym]);
 
@@ -290,13 +395,25 @@ export function IdealCharacterSet({ reqType }) {
   );
 }
 
-export function IdealFrequencySet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealFrequencySet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
 
-  const [meetNum, setMeetNum] = useState(conditionCtx.data.freqeuncy ?? 1);
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
+
+  const [meetNum, setMeetNum] = useState(tempData[reqType]?.frequency ?? 1);
 
   useEffect(() => {
-    conditionCtx.setter({ ...conditionCtx.data, frequency: meetNum });
+    // conditionCtx.setter({ ...conditionCtx.data, frequency: meetNum });
+    // setSignUpData({
+    //   ...signUpData,
+    //   preference: {
+    //     ...signUpData.preference,
+    //     [reqType]: {
+    //       frequency: meetNum,
+    //     },
+    //   },
+    // });
+    setter({ ...tempData, [reqType]: { frequency: meetNum } });
   }, [meetNum]);
 
   return (
@@ -316,26 +433,36 @@ export function IdealFrequencySet({ reqType }) {
   );
 }
 
-export function IdealLocationSet({ reqType }) {
-  const conditionCtx = useContext(TempConditionSelectContext);
+export function IdealLocationSet({ reqType, setter, tempData }) {
+  // const conditionCtx = useContext(TempConditionSelectContext);
 
-  const [city, setCity] = useState(conditionCtx.data.location?.city ?? "");
-  const [sub, setSub] = useState(conditionCtx.data.location?.subRegion ?? "");
+  // const [signUpData, setSignUpData] = useRecoilState(signUpState);
+
+  const [city, setCity] = useState(tempData[reqType].location?.city ?? "");
+  const [sub, setSub] = useState(tempData[reqType].location?.subRegion ?? "");
 
   useEffect(() => {
-    conditionCtx.setter({
-      ...conditionCtx.data,
-      location: {
-        city: city,
-        subRegion: sub,
+    // setSignUpData({
+    //   ...signUpData,
+    //   preference: {
+    //     ...signUpData.preference,
+    //     [reqType]: {
+    //       location: {
+    //         city,
+    //         subRegion: sub,
+    //       },
+    //     },
+    //   },
+    // });
+    setter({
+      ...tempData,
+      [reqType]: {
+        location: {
+          city,
+          subRegion: sub,
+        },
       },
     });
-    console.log(conditionCtx.data);
-    return () =>
-      conditionCtx.setter({
-        ...conditionCtx.data,
-        location: undefined,
-      });
   }, [city, sub]);
   return (
     <>
@@ -345,12 +472,10 @@ export function IdealLocationSet({ reqType }) {
       <IdealSetChoice>
         <LocationSetSection
           set={CITYSET}
-          city={city}
           setter={{
             city: setCity,
             sub: setSub,
           }}
-          context={conditionCtx}
         ></LocationSetSection>
       </IdealSetChoice>
     </>
