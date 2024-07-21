@@ -4,12 +4,39 @@ import {
   useState,
   useCallback,
   useDeferredValue,
+  useLayoutEffect,
 } from "react";
 
 import styles from "./index.module.scss";
 
 export function FloatingSection({ children, addedStyle = "" }) {
-  return <section className={`p-3 ${addedStyle}`}>{children}</section>;
+  const section = useRef(null);
+
+  useLayoutEffect(() => {
+    if (!section.current?.previousElementSibling) {
+      section.current?.setAttribute("style", "display: block");
+      // section.current?.classList.add(styles["section-floating"]);
+    }
+  }, []);
+
+  useEffect(() => {
+    section.current?.addEventListener("animationend", (e) => {
+      const { nextElementSibling } = e.target;
+      if (nextElementSibling) {
+        nextElementSibling.setAttribute("style", "display: block");
+      }
+    });
+  }, []);
+
+  return (
+    <section
+      ref={section}
+      className={`p-3 ${addedStyle} ${styles["section-floating"]}`}
+      style={{ display: "none" }}
+    >
+      {children}
+    </section>
+  );
 }
 
 export function SectionTitle({ children }) {

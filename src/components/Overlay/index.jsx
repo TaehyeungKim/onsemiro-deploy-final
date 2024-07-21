@@ -2,22 +2,53 @@ import IconImage from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
 import { CustomButtonWithCount } from "components/CustomButton";
 import testProfile from "assets/testProfile.png";
+import styles from "./styles.module.scss";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function OverlayBackground({ children }) {
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen bg-background z-40 flex items-center justify-center bg-opacity-70">
+    <div className="fixed top-0 left-0 w-screen h-screen bg-background-darker z-40 flex items-center justify-center bg-opacity-90">
       {children}
     </div>
   );
 }
 
 function MatchOverlayMenuLayout({ title, children, close }) {
+  const container = useRef(null);
+
+  const [shrink, setShrink] = useState(false);
+
+  const attachShrink = useCallback(() => {
+    if (shrink) {
+      container.current?.classList.remove(styles.floating);
+      container.current?.classList.add(styles.shrink);
+    }
+  }, [shrink]);
+
+  const closeWithShrink = useCallback(() => {
+    if (shrink) close();
+  }, [shrink]);
+
+  useEffect(() => attachShrink(), [shrink]);
+
+  useEffect(() => {
+    container.current?.addEventListener("animationend", closeWithShrink);
+    return () =>
+      container.current?.removeEventListener("animationend", closeWithShrink);
+  }, [shrink]);
+
   return (
     <OverlayBackground>
-      <div className="min-w-main-frame bg-background px-1 box-border ">
+      <div
+        ref={container}
+        className={` ${styles.floating} min-w-main-frame bg-background px-1 box-border rounded-xl shadow-md`}
+      >
         <header className="w-full relative flex justify-center items-center after:content-[''] after:block after:h-0 after:absolute after:bottom-0 after:w-11/12 after:border-black after:border-[0.5px] after:opacity-10 ">
           <h3 className="text-center h-9 text-lg">{title}</h3>
-          <button className="block w-6  absolute right-4" onClick={close}>
+          <button
+            className="block w-6  absolute right-4"
+            onClick={() => setShrink(true)}
+          >
             <IconImage src={closeIcon} />
           </button>
         </header>
@@ -63,7 +94,7 @@ export function MatchResultOverlay({ close, dataByDay = [] }) {
             {d.profiles.map((profile, p) => (
               <article
                 key={p}
-                className="flex flex-row w-full box-border rounded-lg border-main border-2 p-2 "
+                className="flex flex-row w-full box-border rounded-lg border-main border-2 p-2 cursor-pointer"
               >
                 <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
                   <IconImage src={testProfile} />

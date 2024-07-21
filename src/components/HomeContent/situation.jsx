@@ -26,7 +26,7 @@ export default function MatchingSituation({ count }) {
   if (state.for === "result")
     return (
       <MatchResultOverlay
-        close={() => dispatch({ for: "home" })}
+        close={() => dispatch({ for: "menu" })}
         dataByDay={[
           {
             day: "07.08",
