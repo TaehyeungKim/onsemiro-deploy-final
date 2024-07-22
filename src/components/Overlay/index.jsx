@@ -9,6 +9,7 @@ import styles from "./styles.module.scss";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { AUTH_UNIV_LIST } from "assets/asset";
+import LetterLayout from "layouts/LetterLayout";
 // import { createFuzzyMatcher } from "utils/match";
 
 function OverlayBackground({ children }) {
@@ -45,10 +46,7 @@ function FloatAndShrink({ Child, close, children, ...props }) {
 
   return (
     <OverlayBackground>
-      <div
-        ref={container}
-        className={` ${styles.floating} min-w-main-frame bg-background px-1 box-border rounded-xl shadow-md`}
-      >
+      <div ref={container} className={` ${styles.floating}`}>
         {
           <Child close={() => setShrink(true)} {...props}>
             {children}
@@ -70,14 +68,16 @@ function OverlayStandard({ close, children, title }) {
 function OverlayStandardLayout({ title, close, children }) {
   return (
     <>
-      <header className="w-full relative flex justify-center items-center after:content-[''] after:block after:h-0 after:absolute after:bottom-0 after:w-11/12 after:border-black after:border-[0.5px] after:opacity-10 ">
-        <h3 className="text-center h-9 text-lg">{title}</h3>
-        <button className="block w-6  absolute right-4" onClick={close}>
-          <IconImage src={closeIcon} />
-        </button>
-      </header>
-      <div className="flex flex-col justify-between w-full mx-auto gap-3 py-4 max-h-[600px] overflow-y-scroll">
-        {children}
+      <div className="min-w-main-frame bg-background px-1 box-border rounded-xl shadow-md">
+        <header className="w-full relative flex justify-center items-center after:content-[''] after:block after:h-0 after:absolute after:bottom-0 after:w-11/12 after:border-black after:border-[0.5px] after:opacity-10 ">
+          <h3 className="text-center h-9 text-lg">{title}</h3>
+          <button className="block w-6  absolute right-4" onClick={close}>
+            <IconImage src={closeIcon} />
+          </button>
+        </header>
+        <div className="flex flex-col justify-between w-full mx-auto gap-3 py-4 max-h-[600px] overflow-y-scroll">
+          {children}
+        </div>
       </div>
     </>
   );
@@ -158,7 +158,7 @@ export function FloatingCustomAlertLayout({ children, close, ...props }) {
 
 function CustomAlertLayout({ children, close, ...props }) {
   return (
-    <div className=" rounded-lg flex flex-col justify-center items-center p-4">
+    <div className="min-w-main-frame bg-background px-1 box-border  shadow-md rounded-lg flex flex-col justify-center items-center p-4">
       {children}
       <div className="flex justify-center mt-6 gap-5">
         <MainCustomButton onClick={props.confirm}>확인</MainCustomButton>
@@ -248,4 +248,16 @@ export function SearchOverlay({ close, select, ...props }) {
       <SearchOverlayContent select={select} {...props} />
     </OverlayStandard>
   );
+}
+
+function FloatingLetterOverlayLayout({ close, children, ...props }) {
+  return (
+    <FloatAndShrink Child={LetterLayout} close={close} {...props}>
+      {{ children }}
+    </FloatAndShrink>
+  );
+}
+
+export function FloatingLetterOverlay({ close, ...props }) {
+  return <FloatingLetterOverlayLayout close={close} {...props} />;
 }

@@ -23,7 +23,7 @@ export default function LetterLayout({
   // );
 
   const apiCall = useCallback(
-    (data) => {
+    async (data) => {
       if (!requestToMe) {
         if (info[index].matching_type === 1)
           return requestMatching(data).then((res) => {
@@ -57,8 +57,9 @@ export default function LetterLayout({
   }, [info, index]);
 
   return (
-    <div className="fixed w-screen h-screen bg-mask top-0 left-0 z-30 flex items-center justify-center flex-col">
-      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-4/5 w-letter-width flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2">
+    // <div className="fixed w-screen h-screen bg-mask top-0 left-0 z-30 flex items-center justify-center flex-col">
+    <>
+      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-full flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
         <button className="w-8 absolute top-2 right-2 z-10" onClick={close}>
           <IconImage src={closeIcon}></IconImage>
         </button>
@@ -84,7 +85,8 @@ export default function LetterLayout({
           handler={setIndex}
         ></Indexation>
       ) : null}
-    </div>
+    </>
+    // </div>
   );
 }
 

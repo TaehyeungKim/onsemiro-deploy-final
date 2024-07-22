@@ -2,8 +2,9 @@ import MainIconSection from ".";
 
 import { useState, useEffect, useCallback } from "react";
 
-import LetterLayout from "layouts/LetterLayout";
+// import LetterLayout from "layouts/LetterLayout";
 import { getRequestForMe } from "apis/api";
+import { FloatingLetterOverlay } from "components/Overlay";
 
 const MESSAGE_MAP = (type) => {
   if (type === 1)
@@ -103,13 +104,19 @@ export default function Request() {
           </MainIconSection>
         </div>
         {letterVisible ? (
-          <LetterLayout
+          <FloatingLetterOverlay
             info={requestInfo}
             close={closeLetter}
             index={requestIndex}
             requestToMe={true}
-          />
-        ) : null}
+          ></FloatingLetterOverlay>
+        ) : // <LetterLayout
+        //   info={requestInfo}
+        //   close={closeLetter}
+        //   index={requestIndex}
+        //   requestToMe={true}
+        // />
+        null}
       </>
     )
   );

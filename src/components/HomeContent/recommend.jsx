@@ -4,6 +4,7 @@ import { LetterArrive, LetterChecked, LetterClosed } from "./cases";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import LetterLayout from "layouts/LetterLayout";
+import { FloatingLetterOverlay } from "components/Overlay";
 import { getRecommend, getRestrictedProfile } from "apis/api";
 
 const MESSAGE_MAP = (type) => {
@@ -84,8 +85,13 @@ export default function Recommend() {
           </MainSection>
         </div>
         {letterVisible ? (
-          <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
-        ) : null}
+          <FloatingLetterOverlay
+            info={recommendInfo}
+            close={closeLetter}
+          ></FloatingLetterOverlay>
+        ) : // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
+        // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
+        null}
       </>
     )
   );

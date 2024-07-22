@@ -7,6 +7,7 @@ module.exports = {
         "main-frame": "473px",
 
         "letter-width": "calc(473px * 0.8)",
+        "letter-height": "calc(473px * 0.8 * 1.7)",
         "overflow-test": "200vh",
         "header-height": "75px",
         "main-isection-height": "320px",
