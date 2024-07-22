@@ -1,6 +1,5 @@
 import HomeHeader from "components/HomeHeader";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "apis/api";
 import { useEffect, useRef } from "react";
 import f1 from "assets/captions/feature 1.png";
 import f2 from "assets/captions/feature 2.png";
@@ -140,7 +139,7 @@ export default function LandingPage() {
         <footer className="fixed bottom-20 w-full flex flex-col bg-transparent items-center justify-start">
           <MainCustomButton
             addedStyle="!w-64"
-            event={{ onClick: () => navigate("/signup") }}
+            onClick={() => navigate("/signup")}
           >
             시작하기
           </MainCustomButton>

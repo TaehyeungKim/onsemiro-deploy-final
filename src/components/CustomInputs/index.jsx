@@ -248,7 +248,6 @@ export function CustomTextInput({
   placeholder,
   defaultValue = null,
   label = "",
-  event = null,
   ...props
 }) {
   return (
@@ -264,7 +263,6 @@ export function CustomTextInput({
           className="h-full w-full block text-xs pl-3 box-border"
           placeholder={placeholder}
           id={id}
-          onChange={(e) => event?.onChange(e.target.value)}
           defaultValue={defaultValue}
           {...props}
         ></input>

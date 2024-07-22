@@ -21,9 +21,9 @@ export default function KakaoAuth() {
         <CustomTextInput
           id="profile_kakao"
           placeholder={"카카오톡 아이디 입력하기"}
-          event={{
-            onChange: (id) => setSignUpData({ ...signUpData, kakao_id: id }),
-          }}
+          onChange={(e) =>
+            setSignUpData({ ...signUpData, kakao_id: e.target.value })
+          }
           defaultValue={signUpData.kakao_id ?? null}
         />
       </div>

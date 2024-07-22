@@ -21,7 +21,7 @@ export default function NickNameInput() {
         <CustomTextInput
           id="nickname"
           placeholder="닉네임 입력하기"
-          event={{ onChange: setNicknameInput }}
+          onChange={(e) => setNicknameInput(e.target.value)}
           defaultValue={nicknameInput}
         />
       </FloatingSection>

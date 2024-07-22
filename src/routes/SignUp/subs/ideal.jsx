@@ -217,16 +217,14 @@ function ConditionSet({ type, close, reqType }) {
       <div className="h-14">
         <FloatingElement ref={buttonArea}>
           <MainCustomButton
-            event={{
-              onClick: () => {
-                setSignUpData({
-                  ...signUpData,
-                  preference: {
-                    ...conditionSetData,
-                  },
-                });
-                setIdealChoiceVisible({ visible: false, reqType: undefined });
-              },
+            onClick={() => {
+              setSignUpData({
+                ...signUpData,
+                preference: {
+                  ...conditionSetData,
+                },
+              });
+              setIdealChoiceVisible({ visible: false, reqType: undefined });
             }}
           >{`'${type.label}' 선택하기`}</MainCustomButton>
         </FloatingElement>

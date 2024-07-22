@@ -1,8 +1,4 @@
-import {
-  MatchMenuOverlay,
-  MatchResultOverlay,
-  MatchSituationMenuOverlay,
-} from "components/Overlay";
+import { MatchMenuOverlay, MatchResultOverlay } from "components/Overlay";
 import { useState } from "react";
 import { useReducer } from "react";
 
@@ -11,8 +7,6 @@ function reducer(state, action) {
 }
 
 export default function MatchingSituation({ count }) {
-  // const [overlayVisible, setOverlayVisible] = useState(false);
-
   const [state, dispatch] = useReducer(reducer, { for: "home" });
 
   if (state.for === "menu")

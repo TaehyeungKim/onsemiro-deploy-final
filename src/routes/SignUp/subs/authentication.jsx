@@ -49,14 +49,14 @@ export default function AuthenticateSelf() {
               placeholder={"이름을 입력하세요."}
               id={"auth_name"}
               label={"이름"}
-              event={{ onChange: setNameInput }}
+              onChange={(e) => setNameInput(e.target.value)}
             />
           </div>
           <div className="mb-2 flex">
             <CustomTextInput
               id="auth_phone"
               placeholder={"전화번호"}
-              event={{ onChange: setPhoneInput }}
+              onChange={(e) => setPhoneInput(e.target.value)}
             />
             <MainCustomButton
               addedStyle={"h-full py-0 ml-6 flex items-center"}
@@ -78,10 +78,12 @@ export default function AuthenticateSelf() {
             <CustomTextInput
               id="auth_school_search"
               placeholder={"학교를 검색해주세요."}
-              event={{
-                onChange: (v) =>
-                  setAuthSchoolInput({ ...authSchoolInput, school_name: v }),
-              }}
+              onChange={(e) =>
+                setAuthSchoolInput({
+                  ...authSchoolInput,
+                  school_name: e.target.value,
+                })
+              }
               readOnly
               value={authSchoolInput.school_name}
             />
@@ -96,33 +98,33 @@ export default function AuthenticateSelf() {
             <CustomTextInput
               id="auth_schoolEmail"
               placeholder={"학교 이메일"}
-              event={{
-                onChange: (v) =>
-                  setAuthSchoolInput({ ...authSchoolInput, school_email: v }),
-              }}
+              onChange={(e) =>
+                setAuthSchoolInput({
+                  ...authSchoolInput,
+                  school_email: e.target.value,
+                })
+              }
             />
             <MainCustomButton
               addedStyle={"h-full py-0 ml-6 flex items-center"}
-              event={{
-                onClick: () => {
-                  requestSchoolVerifyCode({
-                    email: authSchoolInput.school_email,
-                    univ: authSchoolInput.school_name,
-                  }).then((res) => {
-                    if (res.status === 200) {
-                      setAuthSchool({
-                        univ: authSchoolInput.school_name,
-                        email: authSchoolInput.school_email,
-                        verification_code: "",
-                        requested: true,
-                      });
-                      setSignUpData({
-                        ...signUpData,
-                        univ: authSchoolInput.school_name,
-                      });
-                    }
-                  });
-                },
+              onClick={() => {
+                requestSchoolVerifyCode({
+                  email: authSchoolInput.school_email,
+                  univ: authSchoolInput.school_name,
+                }).then((res) => {
+                  if (res.status === 200) {
+                    setAuthSchool({
+                      univ: authSchoolInput.school_name,
+                      email: authSchoolInput.school_email,
+                      verification_code: "",
+                      requested: true,
+                    });
+                    setSignUpData({
+                      ...signUpData,
+                      univ: authSchoolInput.school_name,
+                    });
+                  }
+                });
               }}
             >
               인증
@@ -132,14 +134,11 @@ export default function AuthenticateSelf() {
             <CustomTextInput
               id="auth_school_verify_code"
               placeholder={"인증번호 입력하기"}
-              event={{
-                onChange: (code) => {
-                  setAuthSchool({
-                    ...authSchool,
-                    verification_code: code,
-                  });
-                  console.log(authSchool);
-                },
+              onChange={(code) => {
+                setAuthSchool({
+                  ...authSchool,
+                  verification_code: code,
+                });
               }}
             />
           </div>

@@ -22,18 +22,14 @@ export default function SignInPage() {
         <CustomTextInput
           id="signin_phone"
           placeholder={"전화번호"}
-          event={{
-            onChange: setPhoneInput,
-          }}
+          onChange={(e) => setPhoneInput(e.target.value)}
         />
         <div className="ml-6">
           <MainCustomButton
-            event={{
-              onClick: () => {
-                signIn({ phone_num: phoneInput }).then(() =>
-                  setVerifyInputVisible(true)
-                );
-              },
+            onClick={() => {
+              signIn({ phone_num: phoneInput }).then(() =>
+                setVerifyInputVisible(true)
+              );
             }}
           >
             인증
@@ -50,10 +46,8 @@ export default function SignInPage() {
           </div>
           <MainCustomButton
             addedStyle="w-full"
-            event={{
-              onClick: () => {
-                getCookie("access_token") && navigate("/home");
-              },
+            onClick={() => {
+              getCookie("access_token") && navigate("/home");
             }}
           >
             로그인하기
@@ -63,7 +57,7 @@ export default function SignInPage() {
       <h6 className="mt-3">* 전화번호는 소개에 노출되지 않습니다.</h6>
       <div className="mt-20 w-full flex-col flex items-center gap-3">
         <h5 className="font-bold">아직 계정이 없다면?</h5>
-        <MainCustomButton event={{ onClick: () => navigate("/signup") }}>
+        <MainCustomButton onClick={() => navigate("/signup")}>
           설문하고 회원가입하기
         </MainCustomButton>
       </div>

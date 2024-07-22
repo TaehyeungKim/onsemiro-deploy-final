@@ -133,12 +133,9 @@ function SignUpMain({ curLevel, levelSetter, total }) {
           {curLevel === 13 ? (
             <MainCustomButton
               addedStyle="!bg-background !text-black !mx-0 grow"
-              event={{
-                onClick: () => {
-                  setSignUpData({ ...signUpData, preference: undefined });
-
-                  console.log(signUpData);
-                },
+              onClick={() => {
+                setSignUpData({ ...signUpData, preference: undefined });
+                console.log(signUpData);
               }}
             >
               SKIP
@@ -146,11 +143,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
           ) : null}
 
           <MainCustomButton
-            event={{
-              onClick: () => {
-                changeLevel();
-              },
-            }}
+            onClick={() => changeLevel()}
             addedStyle={curLevel === 13 ? "!mx-0 grow" : null}
           >
             {buttonActionPerLevel().message}

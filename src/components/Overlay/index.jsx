@@ -89,7 +89,7 @@ export function MatchMenuOverlay({ count, close, opener }) {
       <div className="w-2/3 mx-auto flex flex-col gap-3">
         <CustomButtonWithCount
           count={count.matching}
-          event={{ onClick: () => opener({ for: "result" }) }}
+          onClick={() => opener({ for: "result" })}
         >
           매칭 결과
         </CustomButtonWithCount>
@@ -161,13 +161,8 @@ function CustomAlertLayout({ children, close, ...props }) {
     <div className=" rounded-lg flex flex-col justify-center items-center p-4">
       {children}
       <div className="flex justify-center mt-6 gap-5">
-        <MainCustomButton event={{ onClick: props.confirm }}>
-          확인
-        </MainCustomButton>
-        <MainCustomButton
-          addedStyle="bg-white !text-black"
-          event={{ onClick: close }}
-        >
+        <MainCustomButton onClick={props.confirm}>확인</MainCustomButton>
+        <MainCustomButton addedStyle="bg-white !text-black" onClick={close}>
           취소
         </MainCustomButton>
       </div>
