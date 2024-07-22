@@ -4,52 +4,9 @@ import {
   useState,
   useCallback,
   useDeferredValue,
-  useLayoutEffect,
 } from "react";
 
-import { useSetRecoilState } from "recoil";
-import { layoutFloatingEndState } from "state/state";
-
 import styles from "./index.module.scss";
-
-export function FloatingSection({ children, addedStyle = "" }) {
-  const section = useRef(null);
-
-  const setLayoutFloatingEndState = useSetRecoilState(layoutFloatingEndState);
-
-  useLayoutEffect(() => {
-    if (!section.current?.previousElementSibling) {
-      section.current?.setAttribute("style", "display: block");
-      // section.current?.classList.add(styles["section-floating"]);
-    }
-  }, []);
-
-  useEffect(() => {
-    section.current?.addEventListener("animationend", (e) => {
-      const { nextElementSibling } = e.target;
-      if (nextElementSibling) {
-        nextElementSibling.setAttribute("style", "display: block");
-      } else {
-        setLayoutFloatingEndState(true);
-      }
-    });
-    return () => setLayoutFloatingEndState(false);
-  }, []);
-
-  return (
-    <section
-      ref={section}
-      className={`p-3 ${addedStyle} ${styles["section-floating"]}`}
-      style={{ display: "none" }}
-    >
-      {children}
-    </section>
-  );
-}
-
-export function SectionTitle({ children }) {
-  return <h2 className="text-2xl font-bold">{children}</h2>;
-}
 
 export function RangeBar({
   max,
@@ -152,7 +109,7 @@ export function DoubleThumbRangeBar({
         step={step}
         className={`w-full block absolute top-0 left-0 h-full z-10 pointer-events-none`}
         defaultValue={min}
-        value={smaller}
+        //value={smaller}
         onChange={controlSmallerValue}
       ></input>
       <input
@@ -162,13 +119,16 @@ export function DoubleThumbRangeBar({
         step={step}
         className={`w-full block absolute top-0 left-0 h-full z-10 pointer-events-none`}
         defaultValue={max}
-        value={bigger}
+        //value={bigger}
         onChange={controlBiggerValue}
       ></input>
       <div className="w-full h-1 bg-white flex justify-between items-center absolute shadow-md">
         <div ref={progress} className="absolute bg-main shadow-md h-1"></div>
         {captions.map((c) => (
-          <div className="rounded-full aspect-square h-3 bg-white shadow-md flex justify-center">
+          <div
+            key={c}
+            className="rounded-full aspect-square h-3 bg-white shadow-md flex justify-center"
+          >
             <span className="block text-center translate-y-5 text-xs">{c}</span>
           </div>
         ))}

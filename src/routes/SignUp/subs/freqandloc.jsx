@@ -1,10 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 
-import {
-  FloatingSection,
-  SectionTitle,
-  RangeBar,
-} from "components/CustomInputs";
+import { RangeBar } from "components/CustomInputs";
+import { FloatingSection, SectionTitle } from "components/Floating";
 import { CITYSET } from "assets/asset";
 import { selector, useRecoilState, useRecoilValue } from "recoil";
 import { signUpState } from "state/state";
@@ -116,12 +113,14 @@ export default function FrequencyAndLocation() {
         <h5>원하는 만남 주기와 거주 지역을 알려주세요.</h5>
       </FloatingSection>
       <FloatingSection>
-        <SectionTitle>일주일에 원하는 만남 횟수</SectionTitle>
-        <div className="mt-14">
-          <FrequencySetSection
-            meetNum={meetNum}
-            setter={(num) => setMeetNum(parseInt(num))}
-          />
+        <div>
+          <SectionTitle>일주일에 원하는 만남 횟수</SectionTitle>
+          <div className="mt-14">
+            <FrequencySetSection
+              meetNum={meetNum}
+              setter={(num) => setMeetNum(parseInt(num))}
+            />
+          </div>
         </div>
       </FloatingSection>
       <FloatingSection>

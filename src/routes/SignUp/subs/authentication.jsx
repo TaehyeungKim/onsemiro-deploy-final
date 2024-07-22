@@ -1,20 +1,18 @@
 import { useState } from "react";
-import {
-  FloatingSection,
-  SectionTitle,
-  CustomTextInput,
-} from "components/CustomInputs";
+import { CustomTextInput } from "components/CustomInputs";
+import { FloatingSection, SectionTitle } from "components/Floating";
 import IconImage from "components/IconImage";
 import check from "assets/icons/check_black.png";
 import search from "assets/icons/search.png";
 import { MainCustomButton } from "components/CustomButton";
-import { signUp, authSchool } from "apis/api";
-import { useRecoilState } from "recoil";
-import { signUpState } from "state/state";
+import { signUp, requestSchoolVerifyCode } from "apis/api";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { signUpState, authSchoolState } from "state/state";
 import { SearchOverlay } from "components/Overlay";
 
 export default function AuthenticateSelf() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
+  const [authSchool, setAuthSchool] = useRecoilState(authSchoolState);
 
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
@@ -101,20 +99,23 @@ export default function AuthenticateSelf() {
               addedStyle={"h-full py-0 ml-6 flex items-center"}
               event={{
                 onClick: () => {
-                  authSchool({ email: authSchoolInput.school_email }).then(
-                    (res) => {
-                      if (res.status === 200) {
-                        // dataContext?.setter({
-                        //   ...dataContext.data,
-                        //   univ: authSchoolInput.school_name,
-                        // });
-                        setSignUpData({
-                          ...signUpData,
-                          univ: authSchoolInput.school_name,
-                        });
-                      }
+                  requestSchoolVerifyCode({
+                    email: authSchoolInput.school_email,
+                    univ: authSchoolInput.school_name,
+                  }).then((res) => {
+                    if (res.status === 200) {
+                      setAuthSchool({
+                        univ: authSchoolInput.school_name,
+                        email: authSchoolInput.school_email,
+                        verification_code: "",
+                        requested: true,
+                      });
+                      setSignUpData({
+                        ...signUpData,
+                        univ: authSchoolInput.school_name,
+                      });
                     }
-                  );
+                  });
                 },
               }}
             >
@@ -125,6 +126,15 @@ export default function AuthenticateSelf() {
             <CustomTextInput
               id="auth_school_verify_code"
               placeholder={"인증번호 입력하기"}
+              event={{
+                onChange: (code) => {
+                  setAuthSchool({
+                    ...authSchool,
+                    verification_code: code,
+                  });
+                  console.log(authSchool);
+                },
+              }}
             />
           </div>
         </div>

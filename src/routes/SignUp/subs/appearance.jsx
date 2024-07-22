@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  FloatingSection,
-  SectionTitle,
-  SelectionRadioGrid,
-  ExtendedRangeBar,
-} from "components/CustomInputs";
+import { SelectionRadioGrid, ExtendedRangeBar } from "components/CustomInputs";
+import { FloatingSection, SectionTitle } from "components/Floating";
 import {
   ShapeCollection,
   AppearanceCollection,

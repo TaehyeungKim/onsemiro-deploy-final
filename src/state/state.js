@@ -17,3 +17,13 @@ export const layoutFloatingEndState = atom({
   key: "layoutFloating",
   default: false,
 });
+
+export const authSchoolState = atom({
+  key: "authSchoolState",
+  default: {
+    univ: "",
+    email: "",
+    verification_code: "",
+    requested: false,
+  },
+});

@@ -18,7 +18,18 @@ export const signUp = async (data) => {
   return response;
 };
 
-export const authSchool = async (data) => {
+export const requestSchoolVerifyCode = async (data) => {
+  const response = await instanceWithToken.post("/account/email/", data);
+  if (response.status === 200 || response.status === 201) {
+    console.log(response.data);
+    // window.location.href = "/";
+  } else {
+    console.log("Error");
+  }
+  return response;
+};
+
+export const requestAuthSchool = async (data) => {
   const response = await instanceWithToken.put("/account/email/", data);
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);
@@ -29,11 +40,43 @@ export const authSchool = async (data) => {
   return response;
 };
 
-export const submitProfile = async (data) => {
-  const response = await instanceWithToken.put("/account/profile/", data);
+export const submitSignUpData = async (profile, photo) => {
+  const profileResponse = await submitProfile(profile);
+  if (profileResponse.status === 200 || profileResponse.status === 201) {
+    const photoResponse = await submitPhoto(photo);
+    if (photoResponse.status === 200 || photoResponse.status === 201) {
+      console.log("signUpSuccess");
+      // window.location.href = "/home";
+    } else console.log("error");
+  }
+};
+
+const submitProfile = async (profile) => {
+  const response = await instanceWithToken.put("/account/profile/", profile);
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);
-    window.location.href = "/home";
+  } else {
+    console.log(response);
+  }
+  return response;
+};
+
+const submitPhoto = async (photo) => {
+  console.log(photo);
+
+  const formData = new FormData();
+  formData.append("photo", photo.photo);
+  formData.append("std_test_report", photo.std_test_report);
+
+  const response = await instanceWithToken.post("/account/photo/", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  if (response.status === 200 || response.status === 201) {
+    console.log(response.data);
+    // window.location.href = "/home";
   } else {
     console.log(response);
   }
@@ -74,12 +117,34 @@ export const requestMatching = async (data) => {
   return response;
 };
 
+const requestKakaoId = async (data) => {
+  const response = await instanceWithToken.post(
+    "/account/profile/getkakao",
+    data
+  );
+
+  if (response.status === 200 || response.status === 201) {
+    console.log(response.data);
+    return response;
+  } else console.log(response);
+  return response;
+};
+
 export const acceptMatching = async (data) => {
   const response = await instanceWithToken.put("/matching/type1/", data);
 
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);
-    return response;
+    const kakaoResponse = await requestKakaoId({
+      counter_id: response.data.counter_id,
+    });
+    if (kakaoResponse.status === 200 || kakaoResponse.status === 201) {
+      console.log(kakaoResponse.data);
+      return kakaoResponse;
+    } else {
+      console.log(kakaoResponse);
+      return kakaoResponse;
+    }
   } else console.log(response);
   return response;
 };

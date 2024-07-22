@@ -41,7 +41,7 @@ export default function Recommend() {
     console.log("data", recommended.data.recommended_user_id);
 
     const profile = await getRestrictedProfile({
-      user_id: recommended.data.recommended_user_id,
+      counter_id: recommended.data.recommended_user_id,
     });
     setRecommendInfo([
       {

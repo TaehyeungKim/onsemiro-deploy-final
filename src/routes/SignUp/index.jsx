@@ -6,7 +6,7 @@ import closeButton from "assets/icons/ph_x.png";
 import SignUpSub from "./sub";
 import { MainCustomButton } from "components/CustomButton";
 import { IdealChoiceSub } from "./subs/ideal";
-import { submitProfile } from "apis/api";
+import { requestAuthSchool, submitSignUpData } from "apis/api";
 import { heightRange, IDEAL_REQ_TYPE } from "assets/asset";
 import { FloatingCustomAlertLayout } from "components/Overlay";
 import { useNavigate } from "react-router-dom";
@@ -15,13 +15,15 @@ import {
   signUpState,
   idealChoiceVisibleState,
   layoutFloatingEndState,
+  authSchoolState,
 } from "state/state";
 import styles from "./index.module.scss";
+import { FloatingElement } from "components/Floating";
 
 export default function SignUpPage() {
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(0);
+  const [curLevel, setCurLevel] = useState(13);
 
   const idealChoiceVisible = useRecoilValue(idealChoiceVisibleState);
 
@@ -39,7 +41,9 @@ export default function SignUpPage() {
 function SignUpMain({ curLevel, levelSetter, total }) {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
-  const isLayoutFloatingEnd = useRecoilValue(layoutFloatingEndState);
+  const [isLayoutFloatingEnd, setIsLayoutFloatigEnd] = useRecoilState(
+    layoutFloatingEndState
+  );
 
   const navigate = useNavigate();
 
@@ -47,52 +51,57 @@ function SignUpMain({ curLevel, levelSetter, total }) {
 
   const buttonArea = useRef(null);
 
-  const executeOnDataFulfilled = useCallback((level, data, execute) => {
-    switch (level) {
-      case 0:
-        execute();
+  const authSchool = useRecoilValue(authSchoolState);
 
-        break;
-      case 1:
-        if (data.kakao_id) execute();
-        break;
-      case 2:
-        if (data.nickname) execute();
-        break;
-      case 3:
-        if (data.gender_identity) execute();
-        break;
-      case 4:
-        if (data.bdsm && data.gender_preference) execute();
-        break;
-      case 5:
-        if (data.appearance && data.height && data.eyelid) execute();
-        break;
-      case 6:
-        if (data.mbti && data.character) execute();
-        break;
-      case 7:
-        if (data.interest && data.interest.length > 0) execute();
-        break;
-      case 8:
-        if (data.meeting_frequency && data.city && data.subRegion) execute();
-        break;
-      case 9:
-        if (data.std && data.photo) execute();
-        break;
-      case 10:
-        if (data.introduction) execute();
-        break;
-      case 11:
-        if (data.prefer_gender_identity) execute();
-        break;
-      case 12:
-        execute();
-        break;
-      case 13:
-        execute();
-    }
-  }, []);
+  const executeOnDataFulfilled = useCallback(
+    (level, data, execute) => {
+      switch (level) {
+        case 0:
+          if (authSchool.requested && authSchool.verification_code) execute();
+
+          break;
+        case 1:
+          if (data.kakao_id) execute();
+          break;
+        case 2:
+          if (data.nickname) execute();
+          break;
+        case 3:
+          if (data.gender_identity) execute();
+          break;
+        case 4:
+          if (data.bdsm && data.gender_preference) execute();
+          break;
+        case 5:
+          if (data.appearance && data.height && data.eyelid) execute();
+          break;
+        case 6:
+          if (data.mbti && data.character) execute();
+          break;
+        case 7:
+          if (data.interest && data.interest.length > 0) execute();
+          break;
+        case 8:
+          if (data.meeting_frequency && data.city && data.subRegion) execute();
+          break;
+        case 9:
+          if (data.std && data.photo) execute();
+          break;
+        case 10:
+          if (data.introduction) execute();
+          break;
+        case 11:
+          if (data.prefer_gender_identity) execute();
+          break;
+        case 12:
+          execute();
+          break;
+        case 13:
+          execute();
+      }
+    },
+    [authSchool]
+  );
 
   const changeLevel = useCallback(() => {
     executeOnDataFulfilled(curLevel, signUpData, () => {
@@ -200,10 +209,21 @@ function SignUpMain({ curLevel, levelSetter, total }) {
           }
         }
         console.log(data);
-        // submitProfile(data);
+        submitSignUpData(data, {
+          photo: signUpData.photo,
+          std_test_report: signUpData.std,
+        });
+      } else if (curLevel === 0) {
+        requestAuthSchool({
+          email: authSchool.email,
+          univ: authSchool.univ,
+          verification_code: authSchool.verification_code,
+        }).then((res) => {
+          if (res.status === 200) levelSetter(curLevel + 1);
+        });
       } else levelSetter(curLevel + 1);
     });
-  }, [signUpData, curLevel]);
+  }, [signUpData, curLevel, authSchool]);
 
   const buttonActionPerLevel = useCallback(() => {
     switch (curLevel) {
@@ -216,11 +236,17 @@ function SignUpMain({ curLevel, levelSetter, total }) {
 
   useEffect(() => {
     executeOnDataFulfilled(curLevel, signUpData, () => {
-      if (isLayoutFloatingEnd)
+      // console.log(isLayoutFloatingEnd);
+      if (isLayoutFloatingEnd) {
         buttonArea.current?.setAttribute("style", "display: flex");
+      }
     });
-    return () => buttonArea.current?.setAttribute("style", "display: none");
-  }, [signUpData, curLevel, isLayoutFloatingEnd]);
+    return () => {
+      // console.log("unmount");
+      buttonArea.current?.setAttribute("style", "display: none");
+      // setIsLayoutFloatigEnd(false);
+    };
+  }, [signUpData, curLevel, isLayoutFloatingEnd, authSchool]);
 
   return (
     <div className="box-border pb-11 flex flex-col min-h-screen">
@@ -261,37 +287,35 @@ function SignUpMain({ curLevel, levelSetter, total }) {
 
       <SignUpSub level={curLevel}></SignUpSub>
 
-      <div
-        className={`flex my-auto w-11/12 mx-auto gap-x-10 px-6 ${styles["button-floating"]}`}
-        ref={buttonArea}
-        style={{ display: "none" }}
-      >
-        {curLevel === 13 ? (
+      <FloatingElement ref={buttonArea}>
+        <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
+          {curLevel === 13 ? (
+            <MainCustomButton
+              addedStyle="!bg-background !text-black !mx-0 grow"
+              event={{
+                onClick: () => {
+                  setSignUpData({ ...signUpData, preference: undefined });
+
+                  console.log(signUpData);
+                },
+              }}
+            >
+              SKIP
+            </MainCustomButton>
+          ) : null}
+
           <MainCustomButton
-            addedStyle="!bg-background !text-black !mx-0 grow"
             event={{
               onClick: () => {
-                setSignUpData({ ...signUpData, preference: undefined });
-
-                console.log(signUpData);
+                changeLevel();
               },
             }}
+            addedStyle={curLevel === 13 ? "!mx-0 grow" : null}
           >
-            SKIP
+            {buttonActionPerLevel().message}
           </MainCustomButton>
-        ) : null}
-
-        <MainCustomButton
-          event={{
-            onClick: () => {
-              changeLevel();
-            },
-          }}
-          addedStyle={curLevel === 13 ? "!mx-0 grow" : null}
-        >
-          {buttonActionPerLevel().message}
-        </MainCustomButton>
-      </div>
+        </div>
+      </FloatingElement>
     </div>
   );
 }

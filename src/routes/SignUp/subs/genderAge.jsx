@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  FloatingSection,
-  SectionTitle,
-  SelectionRadioGrid,
-  RangeBar,
-} from "components/CustomInputs";
+import { SelectionRadioGrid, RangeBar } from "components/CustomInputs";
+import { FloatingSection, SectionTitle } from "components/Floating";
 import { GenderIdentity } from "assets/asset";
 import { useRecoilState } from "recoil";
 import { signUpState } from "state/state";

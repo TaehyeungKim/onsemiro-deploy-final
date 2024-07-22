@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { FloatingSection } from "components/CustomInputs";
+import { FloatingSection } from "components/Floating";
 import IconImage from "components/IconImage";
 import InterestSelected from "components/InterestSelected";
 import { interestValueSet } from "assets/asset";

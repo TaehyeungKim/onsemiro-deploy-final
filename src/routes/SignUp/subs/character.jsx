@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  FloatingSection,
-  SectionTitle,
-  RangeBar,
-} from "components/CustomInputs";
+import { RangeBar } from "components/CustomInputs";
+import { FloatingSection, SectionTitle } from "components/Floating";
 import { characterKeyMap } from "assets/asset";
 import { useRecoilState } from "recoil";
 import { signUpState } from "state/state";

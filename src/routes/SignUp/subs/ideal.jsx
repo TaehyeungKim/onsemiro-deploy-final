@@ -1,6 +1,6 @@
-import { FloatingSection } from "components/CustomInputs";
+import { FloatingSection, FloatingElement } from "components/Floating";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import IconImage from "components/IconImage";
 import ArrowLeft from "assets/icons/arrow_left.png";
 import { Conditions } from "assets/asset";
@@ -18,7 +18,11 @@ import {
   IdealShapeSet,
 } from "../conditionSet";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { signUpState, idealChoiceVisibleState } from "state/state";
+import {
+  signUpState,
+  idealChoiceVisibleState,
+  layoutFloatingEndState,
+} from "state/state";
 import { IDEAL_REQ_TYPE } from "assets/asset";
 
 function ConditionSelect({ label, reqType }) {
@@ -93,6 +97,10 @@ function ConditionSet({ type, close, reqType }) {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
   const setIdealChoiceVisible = useSetRecoilState(idealChoiceVisibleState);
 
+  const [isLayoutFloatingEnd, setIsLayoutFloatigEnd] = useRecoilState(
+    layoutFloatingEndState
+  );
+
   const [conditionSetData, setConditionSetData] = useState(
     signUpData.preference ??
       IDEAL_REQ_TYPE.reduce((prev, cur) => {
@@ -101,116 +109,129 @@ function ConditionSet({ type, close, reqType }) {
       }, {})
   );
 
-  // useEffect(() => console.log(conditionSetData), []);
+  const buttonArea = useRef(null);
+
+  useEffect(() => {
+    console.log(isLayoutFloatingEnd, buttonArea.current);
+    if (isLayoutFloatingEnd)
+      buttonArea.current?.setAttribute("style", "display: block");
+    return () => {
+      buttonArea.current?.setAttribute("style", "display: none");
+      // setIsLayoutFloatigEnd(false);
+    };
+  }, [isLayoutFloatingEnd]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="p-3">
-        <button className="w-5 block" onClick={close}>
-          <IconImage src={ArrowLeft} />
-        </button>
-      </header>
-      {(() => {
-        switch (type.condition) {
-          case "age":
-            return (
-              <IdealAgeSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "sexual":
-            return (
-              <IdealSexualSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "shape":
-            return (
-              <IdealShapeSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "height":
-            return (
-              <IdealHeightSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "appearance":
-            return (
-              <IdealAppearanceSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "eyelid":
-            return (
-              <IdealEyelidSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "mbti":
-            return (
-              <IdealMBTISet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "character":
-            return (
-              <IdealCharacterSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "frequency":
-            return (
-              <IdealFrequencySet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-          case "location":
-            return (
-              <IdealLocationSet
-                reqType={reqType}
-                setter={setConditionSetData}
-                tempData={conditionSetData}
-              />
-            );
-        }
-      })()}
-
-      <div className="mb-10">
-        <MainCustomButton
-          event={{
-            onClick: () => {
-              setSignUpData({
-                ...signUpData,
-                preference: {
-                  ...conditionSetData,
-                },
-              });
-              setIdealChoiceVisible({ visible: false, reqType: undefined });
-            },
-          }}
-        >{`'${type.label}' 선택하기`}</MainCustomButton>
+    <>
+      <div className="flex flex-col grow">
+        <header className="p-3">
+          <button className="w-5 block" onClick={close}>
+            <IconImage src={ArrowLeft} />
+          </button>
+        </header>
+        {(() => {
+          switch (type.condition) {
+            case "age":
+              return (
+                <IdealAgeSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "sexual":
+              return (
+                <IdealSexualSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "shape":
+              return (
+                <IdealShapeSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "height":
+              return (
+                <IdealHeightSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "appearance":
+              return (
+                <IdealAppearanceSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "eyelid":
+              return (
+                <IdealEyelidSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "mbti":
+              return (
+                <IdealMBTISet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "character":
+              return (
+                <IdealCharacterSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "frequency":
+              return (
+                <IdealFrequencySet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+            case "location":
+              return (
+                <IdealLocationSet
+                  reqType={reqType}
+                  setter={setConditionSetData}
+                  tempData={conditionSetData}
+                />
+              );
+          }
+        })()}
       </div>
-    </div>
+      <div className="h-14">
+        <FloatingElement ref={buttonArea}>
+          <MainCustomButton
+            event={{
+              onClick: () => {
+                setSignUpData({
+                  ...signUpData,
+                  preference: {
+                    ...conditionSetData,
+                  },
+                });
+                setIdealChoiceVisible({ visible: false, reqType: undefined });
+              },
+            }}
+          >{`'${type.label}' 선택하기`}</MainCustomButton>
+        </FloatingElement>
+      </div>
+    </>
   );
 }
 
@@ -236,11 +257,13 @@ export function IdealChoiceSub({ reqType }) {
 
   if (isConditionSetVisible)
     return (
-      <ConditionSet
-        type={type}
-        reqType={reqType}
-        close={() => setIsConditionSetVisible(false)}
-      />
+      <div className="pb-10 flex flex-col min-h-screen">
+        <ConditionSet
+          type={type}
+          reqType={reqType}
+          close={() => setIsConditionSetVisible(false)}
+        />
+      </div>
     );
 
   return (

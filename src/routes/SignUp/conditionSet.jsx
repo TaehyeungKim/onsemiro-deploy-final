@@ -1,8 +1,8 @@
 import {
   DoubleThumbRangeBar,
-  FloatingSection,
   SelectionRadioGrid,
 } from "components/CustomInputs";
+import { FloatingSection } from "components/Floating";
 
 import { useState, useEffect, useCallback } from "react";
 
@@ -23,8 +23,8 @@ function IdealSetCaption({ children }) {
 
 function IdealSetChoice({ children }) {
   return (
-    <FloatingSection addedStyle="grow items-center flex">
-      <div className="w-full">{children}</div>
+    <FloatingSection addedStyle="grow">
+      <div className="w-full h-full">{children}</div>
     </FloatingSection>
   );
 }
@@ -351,8 +351,8 @@ export function IdealFrequencySet({ reqType, setter, tempData }) {
 }
 
 export function IdealLocationSet({ reqType, setter, tempData }) {
-  const [city, setCity] = useState(tempData[reqType].location?.city ?? "");
-  const [sub, setSub] = useState(tempData[reqType].location?.subRegion ?? "");
+  const [city, setCity] = useState(tempData[reqType]?.location?.city ?? "");
+  const [sub, setSub] = useState(tempData[reqType]?.location?.subRegion ?? "");
 
   useEffect(() => {
     setter({

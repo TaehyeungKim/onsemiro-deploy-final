@@ -1,4 +1,5 @@
-import { CustomTextInput, FloatingSection } from "components/CustomInputs";
+import { CustomTextInput } from "components/CustomInputs";
+import { FloatingSection } from "components/Floating";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { signUpState } from "state/state";

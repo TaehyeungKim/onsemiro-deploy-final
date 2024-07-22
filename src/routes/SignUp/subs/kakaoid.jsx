@@ -1,4 +1,5 @@
-import { FloatingSection, CustomTextInput } from "components/CustomInputs";
+import { CustomTextInput } from "components/CustomInputs";
+import { FloatingSection } from "components/Floating";
 import IconImage from "components/IconImage";
 
 import howToKakao from "assets/captures/howto_kakao_id.png";

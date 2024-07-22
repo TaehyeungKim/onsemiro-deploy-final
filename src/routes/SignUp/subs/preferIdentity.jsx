@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { FloatingSection, SelectionRadioGrid } from "components/CustomInputs";
+import { SelectionRadioGrid } from "components/CustomInputs";
+import { FloatingSection } from "components/Floating";
 import { GenderIdentity } from "assets/asset";
 import { signUpState } from "state/state";
 import { useRecoilState } from "recoil";
@@ -26,6 +27,8 @@ export default function PreferIdentity() {
           <br />
           무엇인가요?
         </h5>
+      </FloatingSection>
+      <FloatingSection>
         <SelectionRadioGrid
           collection={GenderIdentity}
           name={"prefer_gender_identity"}

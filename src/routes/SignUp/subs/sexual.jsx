@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  FloatingSection,
-  SectionTitle,
-  SelectionRadioGrid,
-} from "components/CustomInputs";
+import { SelectionRadioGrid } from "components/CustomInputs";
+import { FloatingSection, SectionTitle } from "components/Floating";
 import { sexualTendency, sexualOrientation } from "assets/asset";
 import { useRecoilState } from "recoil";
 import { signUpState } from "state/state";
