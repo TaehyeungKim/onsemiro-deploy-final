@@ -5,10 +5,12 @@ module.exports = {
     extend: {
       spacing: {
         "main-frame": "473px",
+
         "letter-width": "calc(473px * 0.8)",
         "overflow-test": "200vh",
         "header-height": "75px",
         "main-isection-height": "320px",
+        "overlay-search": "600px",
       },
       colors: {
         background: "#F9F9F9",

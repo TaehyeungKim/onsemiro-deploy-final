@@ -11,12 +11,15 @@ import { MainCustomButton } from "components/CustomButton";
 import { signUp, authSchool } from "apis/api";
 import { useRecoilState } from "recoil";
 import { signUpState } from "state/state";
+import { SearchOverlay } from "components/Overlay";
 
 export default function AuthenticateSelf() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
+
+  const [univSearchVisible, setUnivSearchVisible] = useState(false);
 
   const [authSchoolInput, setAuthSchoolInput] = useState({
     school_name: "",
@@ -75,8 +78,13 @@ export default function AuthenticateSelf() {
                 onChange: (v) =>
                   setAuthSchoolInput({ ...authSchoolInput, school_name: v }),
               }}
+              readOnly
+              value={authSchoolInput.school_name}
             />
-            <button className="h-full absolute right-1">
+            <button
+              className="h-full absolute right-1"
+              onClick={() => setUnivSearchVisible(true)}
+            >
               <IconImage src={search} />
             </button>
           </div>
@@ -121,6 +129,17 @@ export default function AuthenticateSelf() {
           </div>
         </div>
       </FloatingSection>
+      {univSearchVisible && (
+        <SearchOverlay
+          close={() => setUnivSearchVisible(false)}
+          select={(univ) => {
+            setAuthSchoolInput({ ...authSchoolInput, school_name: univ });
+            setUnivSearchVisible(false);
+          }}
+          placeholder={"대학을 입력하세요. (ex: 서울대학교)"}
+          defaultValue={authSchoolInput.school_name}
+        />
+      )}
     </>
   );
 }

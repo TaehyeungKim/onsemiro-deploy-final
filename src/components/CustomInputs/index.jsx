@@ -289,6 +289,7 @@ export function CustomTextInput({
   defaultValue = null,
   label = "",
   event = null,
+  ...props
 }) {
   return (
     <div className="relative h-10 flex items-center rounded-lg grow">
@@ -305,6 +306,7 @@ export function CustomTextInput({
           id={id}
           onChange={(e) => event?.onChange(e.target.value)}
           defaultValue={defaultValue}
+          {...props}
         ></input>
       </div>
     </div>
