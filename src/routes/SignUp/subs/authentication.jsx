@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { FloatingSection, SectionTitle } from "components/Floating";
 import IconImage from "components/IconImage";
@@ -23,6 +23,12 @@ export default function AuthenticateSelf() {
     school_name: "",
     school_email: "",
   });
+
+  useEffect(() => {
+    if (authSchool.verification_code && authSchool.requested) {
+      setSignUpData({ ...signUpData, authorized: true });
+    }
+  }, [authSchool]);
 
   return (
     <>
