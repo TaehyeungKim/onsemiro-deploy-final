@@ -6,10 +6,6 @@ import { PLAY_DATA } from "../../assets/asset";
 export default function PlayPage() {
   const [level, setLevel] = useState(0);
 
-  // useEffect(() => {
-  //   console.log(PLAY_DATA[level]);
-  // }, [level]);
-
   return (
     <PlayLayout
       data={PLAY_DATA[level]}
