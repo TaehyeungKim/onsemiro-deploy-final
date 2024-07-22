@@ -108,8 +108,8 @@ export function DoubleThumbRangeBar({
         max={max}
         step={step}
         className={`w-full block absolute top-0 left-0 h-full z-10 pointer-events-none`}
-        defaultValue={min}
-        //value={smaller}
+        // defaultValue={min}
+        value={smaller}
         onChange={controlSmallerValue}
       ></input>
       <input
@@ -118,8 +118,8 @@ export function DoubleThumbRangeBar({
         max={max}
         step={step}
         className={`w-full block absolute top-0 left-0 h-full z-10 pointer-events-none`}
-        defaultValue={max}
-        //value={bigger}
+        // defaultValue={max}
+        value={bigger}
         onChange={controlBiggerValue}
       ></input>
       <div className="w-full h-1 bg-white flex justify-between items-center absolute shadow-md">
