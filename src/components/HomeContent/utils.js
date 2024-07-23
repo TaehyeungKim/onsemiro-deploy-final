@@ -46,6 +46,7 @@ export const getRecommendation = async (dataSetter) => {
   const profile = await getRestrictedProfile({
     counter_id: recommended.data.recommended_user_id,
   });
+  console.log(recommended.data, profile.data);
   dataSetter([
     {
       ...profile.data,

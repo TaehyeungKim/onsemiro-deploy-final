@@ -18,21 +18,6 @@ export default function Recommend() {
     setLetterVisible(false);
   }, []);
 
-  // const getRecommendedProfile = async () => {
-  //   const recommended = await getRecommend();
-
-  //   const profile = await getRestrictedProfile({
-  //     counter_id: recommended.data.recommended_user_id,
-  //   });
-  //   setRecommendData([
-  //     {
-  //       ...profile.data,
-  //       message: MESSAGE_MAP(recommended.data.matching_type),
-  //       matching_type: recommended.data.matching_type,
-  //     },
-  //   ]);
-  // };
-
   useEffect(() => {
     getRecommendation(setRecommendData);
   }, []);

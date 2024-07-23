@@ -8,7 +8,7 @@ import { MainCustomButton } from "components/CustomButton";
 import { IdealChoiceSub } from "./subs/ideal";
 import { requestAuthSchool } from "apis/api";
 
-import { FloatingCustomAlertLayout } from "components/Overlay";
+import { SignUpCancleAlert } from "components/Overlay";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
@@ -92,7 +92,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
   return (
     <div className="box-border pb-11 flex flex-col min-h-screen">
       {stopAlertVisible && (
-        <FloatingCustomAlertLayout
+        <SignUpCancleAlert
           close={() => setStopAlertVisible(false)}
           confirm={() => navigate("/signin")}
         >
@@ -100,7 +100,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
             여기서 멈추시면 온새미로 서비스를 이용할 수 없어요.
           </h4>
           <h4 className="mt-2 font-bold">정말 회원가입을 멈추시겠습니까?</h4>
-        </FloatingCustomAlertLayout>
+        </SignUpCancleAlert>
       )}
       <header className="p-2">
         <nav className="flex flex-row justify-between mb-3">
