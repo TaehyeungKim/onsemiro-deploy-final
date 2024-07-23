@@ -1,5 +1,11 @@
 import ProgressBar from "components/ProgressBar";
-import { useState, useCallback, useRef, useEffect } from "react";
+import {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import IconImage from "components/IconImage";
 import ArrowLeft from "assets/icons/arrow_left.png";
 import closeButton from "assets/icons/ph_x.png";
@@ -18,12 +24,12 @@ import {
   authSchoolState,
 } from "state/state";
 import { dataSoapBeforeSubmit, executeOnDataFulfilled } from "./utils";
-import { FloatingElement } from "components/Floating";
+import { FloatAndShrinkElement, FloatingElement } from "components/Floating";
 
 export default function SignUpPage() {
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(0);
+  const [curLevel, setCurLevel] = useState(13);
 
   const idealChoiceVisible = useRecoilValue(idealChoiceVisibleState);
 
@@ -47,7 +53,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
 
   const [stopAlertVisible, setStopAlertVisible] = useState(false);
 
-  const buttonArea = useRef(null);
+  const [buttonElements, setButtonElements] = useState(null);
 
   const authSchool = useRecoilValue(authSchoolState);
 
@@ -65,7 +71,9 @@ function SignUpMain({ curLevel, levelSetter, total }) {
         requestAuthSchool({ email, univ, verification_code }).then((res) => {
           if (res.status === 200) levelSetter(curLevel + 1);
         });
-      } else levelSetter(curLevel + 1);
+      } else {
+        levelSetter(curLevel + 1);
+      }
     });
   }, [signUpData, curLevel, authSchool]);
 
@@ -78,16 +86,46 @@ function SignUpMain({ curLevel, levelSetter, total }) {
     }
   }, [curLevel]);
 
+  const [transitionAbleState, setTransitionAbleState] = useState(false);
+
   useEffect(() => {
     executeOnDataFulfilled(curLevel, signUpData, () => {
       if (isLayoutFloatingEnd) {
-        buttonArea.current?.setAttribute("style", "display: flex");
+        console.log("float");
+        setTransitionAbleState(true);
       }
     });
     return () => {
-      buttonArea.current?.setAttribute("style", "display: none");
+      // buttonArea.current?.setAttribute("style", "display: none");
+      setTransitionAbleState(false);
     };
-  }, [signUpData, curLevel, isLayoutFloatingEnd, authSchool]);
+  }, [signUpData, isLayoutFloatingEnd, authSchool]);
+
+  useLayoutEffect(() => {
+    if (!isLayoutFloatingEnd) setButtonElements(null);
+    else
+      setButtonElements(
+        <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
+          {curLevel === 13 ? (
+            <MainCustomButton
+              addedStyle="!bg-background !text-black !mx-0 grow"
+              onClick={() => {
+                setSignUpData({ ...signUpData, preference: undefined });
+              }}
+            >
+              SKIP
+            </MainCustomButton>
+          ) : null}
+
+          <MainCustomButton
+            onClick={() => changeLevel()}
+            addedStyle={curLevel === 13 ? "!mx-0 grow" : null}
+          >
+            {buttonActionPerLevel().message}
+          </MainCustomButton>
+        </div>
+      );
+  }, [curLevel, isLayoutFloatingEnd, signUpData, authSchool]);
 
   return (
     <div className="box-border pb-11 flex flex-col min-h-screen">
@@ -128,8 +166,9 @@ function SignUpMain({ curLevel, levelSetter, total }) {
 
       <SignUpSub level={curLevel}></SignUpSub>
 
-      <FloatingElement ref={buttonArea}>
-        <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
+      <FloatingElement condition={transitionAbleState}>
+        {buttonElements}
+        {/* <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
           {curLevel === 13 ? (
             <MainCustomButton
               addedStyle="!bg-background !text-black !mx-0 grow"
@@ -148,7 +187,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
           >
             {buttonActionPerLevel().message}
           </MainCustomButton>
-        </div>
+        </div> */}
       </FloatingElement>
     </div>
   );

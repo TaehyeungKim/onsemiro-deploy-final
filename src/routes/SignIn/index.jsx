@@ -1,14 +1,19 @@
 import { CustomTextInput } from "components/CustomInputs";
 
 import { MainCustomButton } from "components/CustomButton";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { signIn } from "apis/api";
 import { getCookie } from "utils/cookie";
 import { useNavigate } from "react-router-dom";
 import { NoUserExistsAlert } from "components/Overlay";
 
+import styles from "./index.module.scss";
+import { FloatAndShrinkElement } from "components/Floating";
+
 export default function SignInPage() {
   const [phoneInput, setPhoneInput] = useState("");
+  const [verificationCodeInput, setVerificationCodeInput] = useState("");
+
   const [verifyInputVisible, setVerifyInputVisible] = useState(false);
 
   const [noUserExistsAlertVisible, setNoUserExistsAlertVisible] =
@@ -37,6 +42,7 @@ export default function SignInPage() {
           <div className="ml-6">
             <MainCustomButton
               onClick={() => {
+                if (verifyInputVisible) return;
                 signIn({ phone_num: phoneInput })
                   .then((res) => setVerifyInputVisible(true))
                   .catch((reason) => {
@@ -45,28 +51,34 @@ export default function SignInPage() {
                       setNoUserExistsAlertVisible(true);
                   });
               }}
+              addedStyle={`${
+                verifyInputVisible ? "!bg-input-darker !text-white" : null
+              } `}
             >
               인증
             </MainCustomButton>
           </div>
         </div>
         {getCookie("access_token") && verifyInputVisible ? (
-          <>
-            <div className="flex mb-8">
+          <div className={`block ${styles.afterLogin}`}>
+            <div className={`flex ${styles.verificationAppear} mb-3`}>
               <CustomTextInput
                 id="phone_verify"
                 placeholder={"인증번호 입력하기"}
+                onChange={(e) => setVerificationCodeInput(e.target.value)}
               />
             </div>
-            <MainCustomButton
-              addedStyle="w-full"
-              onClick={() => {
-                getCookie("access_token") && navigate("/home");
-              }}
-            >
-              로그인하기
-            </MainCustomButton>
-          </>
+            <FloatAndShrinkElement condition={verificationCodeInput}>
+              <MainCustomButton
+                addedStyle="w-full"
+                onClick={() => {
+                  getCookie("access_token") && navigate("/home");
+                }}
+              >
+                로그인하기
+              </MainCustomButton>
+            </FloatAndShrinkElement>
+          </div>
         ) : null}
         <h6 className="mt-3">* 전화번호는 소개에 노출되지 않습니다.</h6>
         <div className="mt-20 w-full flex-col flex items-center gap-3">
