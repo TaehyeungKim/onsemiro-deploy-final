@@ -38,11 +38,6 @@ export default function Recommend() {
     getRecommendedProfile();
   }, []);
 
-  // const timeInfo = useMemo(
-  //   () => recommendInfo.length > 0 && timeMatch(recommendInfo[0].time),
-  //   [recommendInfo]
-  // );
-
   const modeMatch = useCallback((status) => {
     // if (status === "arrival") return <LetterArrive></LetterArrive>;
     // else if (status === "checked") return <LetterChecked></LetterChecked>;

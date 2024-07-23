@@ -32,3 +32,8 @@ export const recommendDataState = atom({
   key: "recommendDataState",
   default: [],
 });
+
+export const requestDataState = atom({
+  key: "requestDataState",
+  default: [],
+});

@@ -2,7 +2,7 @@ import IconImage from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
 import Letter from "components/Letter";
 import { useCallback, useEffect, useMemo, useState } from "react";
-// import { timeMatch } from "../../components/HomeContent/utils";
+
 import {
   requestMatching,
   getRecommend,
@@ -10,11 +10,13 @@ import {
   acceptMatching,
   deleteRecommend,
   getRestrictedProfile,
+  deleteRequestForMe,
 } from "apis/api";
 
-import { recommendDataState } from "state/state";
+import { recommendDataState, requestDataState } from "state/state";
 import { useSetRecoilState } from "recoil";
 import { MESSAGE_MAP } from "assets/asset";
+import { callRequestForMe } from "components/HomeContent/utils";
 
 export default function LetterLayout({
   info,
@@ -28,6 +30,7 @@ export default function LetterLayout({
   const [copiedInfo] = useState([...info]);
 
   const setRecommendData = useSetRecoilState(recommendDataState);
+  const setRequestData = useSetRecoilState(requestDataState);
 
   const positiveCall = useCallback(
     async (data) => {
@@ -75,6 +78,15 @@ export default function LetterLayout({
           }
         });
       }
+      // console.log(copiedInfo[i]);
+      const deleteRes = await deleteRequestForMe({
+        matching_type: copiedInfo[i].matching_type,
+        counter_id: copiedInfo[i].counter_id,
+      });
+      if (deleteRes) {
+        callRequestForMe(setRequestData);
+        close();
+      }
     },
     [requestToMe, index]
   );
@@ -97,7 +109,7 @@ export default function LetterLayout({
   return (
     // <div className="fixed w-screen h-screen bg-mask top-0 left-0 z-30 flex items-center justify-center flex-col">
     <>
-      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-full flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
+      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
         <button className="w-8 absolute top-2 right-2 z-10" onClick={close}>
           <IconImage src={closeIcon}></IconImage>
         </button>
@@ -133,29 +145,31 @@ export default function LetterLayout({
 
 function Indexation({ index, length, handler }) {
   return (
-    <div className="flex flex-row rounded-lg bg-mask-deeper p-2">
-      {(() => {
-        const arr = [];
-        for (let i = 0; i < length; i++)
-          arr.push(
-            <div key={i}>
-              <input
-                type="radio"
-                id={`index_${i}`}
-                readOnly
-                hidden
-                checked={i === index ? true : false}
-                className="peer"
-              />
-              <label
-                className="rounded-full bg-black peer-checked:bg-white block w-4 aspect-square mx-1"
-                htmlFor={`index_${i}`}
-                onClick={() => handler(i)}
-              ></label>
-            </div>
-          );
-        return arr;
-      })()}
+    <div className="flex justify-center mt-3">
+      <div className="flex flex-row rounded-lg bg-mask-deeper p-2 w-fit">
+        {(() => {
+          const arr = [];
+          for (let i = 0; i < length; i++)
+            arr.push(
+              <div key={i}>
+                <input
+                  type="radio"
+                  id={`index_${i}`}
+                  readOnly
+                  hidden
+                  checked={i === index ? true : false}
+                  className="peer"
+                />
+                <label
+                  className="rounded-full bg-black peer-checked:bg-white block w-4 aspect-square mx-1"
+                  htmlFor={`index_${i}`}
+                  onClick={() => handler(i)}
+                ></label>
+              </div>
+            );
+          return arr;
+        })()}
+      </div>
     </div>
   );
 }

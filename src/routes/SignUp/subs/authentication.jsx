@@ -60,11 +60,7 @@ export default function AuthenticateSelf() {
             />
             <MainCustomButton
               addedStyle={"h-full py-0 ml-6 flex items-center"}
-              event={{
-                onClick: () => {
-                  signUp({ phone_num: phoneInput });
-                },
-              }}
+              onClick={() => signUp({ phone_num: phoneInput })}
             >
               인증
             </MainCustomButton>
@@ -134,10 +130,10 @@ export default function AuthenticateSelf() {
             <CustomTextInput
               id="auth_school_verify_code"
               placeholder={"인증번호 입력하기"}
-              onChange={(code) => {
+              onChange={(e) => {
                 setAuthSchool({
                   ...authSchool,
-                  verification_code: code,
+                  verification_code: e.target.value,
                 });
               }}
             />
