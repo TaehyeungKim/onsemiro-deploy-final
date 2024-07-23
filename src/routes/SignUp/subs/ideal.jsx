@@ -1,4 +1,8 @@
-import { FloatingSection, FloatingElement } from "components/Floating";
+import {
+  FloatingSection,
+  FloatingElement,
+  FloatAndShrinkElement,
+} from "components/Floating";
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import IconImage from "components/IconImage";
@@ -109,17 +113,15 @@ function ConditionSet({ type, close, reqType }) {
       }, {})
   );
 
-  const buttonArea = useRef(null);
-
-  useEffect(() => {
-    console.log(isLayoutFloatingEnd, buttonArea.current);
-    if (isLayoutFloatingEnd)
-      buttonArea.current?.setAttribute("style", "display: block");
-    return () => {
-      buttonArea.current?.setAttribute("style", "display: none");
-      // setIsLayoutFloatigEnd(false);
-    };
-  }, [isLayoutFloatingEnd]);
+  // useEffect(() => {
+  //   // console.log(isLayoutFloatingEnd, buttonArea.current);
+  //   if (isLayoutFloatingEnd)
+  //     // buttonArea.current?.setAttribute("style", "display: block");
+  //     return () => {
+  //       // buttonArea.current?.setAttribute("style", "display: none");
+  //       // setIsLayoutFloatigEnd(false);
+  //     };
+  // }, [isLayoutFloatingEnd]);
 
   return (
     <>
@@ -215,7 +217,7 @@ function ConditionSet({ type, close, reqType }) {
         })()}
       </div>
       <div className="h-14">
-        <FloatingElement ref={buttonArea}>
+        <FloatingElement condition={isLayoutFloatingEnd}>
           <MainCustomButton
             onClick={() => {
               setSignUpData({
