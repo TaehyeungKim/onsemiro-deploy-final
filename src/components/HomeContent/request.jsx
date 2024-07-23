@@ -2,8 +2,6 @@ import MainIconSection from ".";
 
 import { useState, useEffect, useCallback } from "react";
 
-// import LetterLayout from "layouts/LetterLayout";
-
 import { FloatingLetterOverlay } from "components/Overlay";
 import { useRecoilState } from "recoil";
 import { requestDataState } from "state/state";

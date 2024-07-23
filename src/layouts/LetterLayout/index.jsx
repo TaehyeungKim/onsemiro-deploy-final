@@ -1,7 +1,7 @@
 import IconImage from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
 import Letter from "components/Letter";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   requestMatching,
@@ -9,14 +9,16 @@ import {
   getRequestForMe,
   acceptMatching,
   deleteRecommend,
-  getRestrictedProfile,
   deleteRequestForMe,
 } from "apis/api";
 
 import { recommendDataState, requestDataState } from "state/state";
 import { useSetRecoilState } from "recoil";
-import { MESSAGE_MAP } from "assets/asset";
-import { callRequestForMe } from "components/HomeContent/utils";
+
+import {
+  callRequestForMe,
+  getRecommendation,
+} from "components/HomeContent/utils";
 
 export default function LetterLayout({
   info,
@@ -61,19 +63,7 @@ export default function LetterLayout({
       if (!requestToMe) {
         return deleteRecommend().then(async (res) => {
           if (res) {
-            const recommended = (await getRecommend()).data;
-            if (recommended)
-              await getRestrictedProfile({
-                counter_id: recommended.recommended_user_id,
-              }).then((profile) =>
-                setRecommendData([
-                  {
-                    ...profile.data,
-                    message: MESSAGE_MAP(recommended.matching_type),
-                    matching_type: recommended.matching_type,
-                  },
-                ])
-              );
+            getRecommendation(setRecommendData);
             close();
           }
         });
@@ -107,7 +97,6 @@ export default function LetterLayout({
   }, []);
 
   return (
-    // <div className="fixed w-screen h-screen bg-mask top-0 left-0 z-30 flex items-center justify-center flex-col">
     <>
       <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
         <button className="w-8 absolute top-2 right-2 z-10" onClick={close}>
@@ -139,7 +128,6 @@ export default function LetterLayout({
         ></Indexation>
       ) : null}
     </>
-    // </div>
   );
 }
 

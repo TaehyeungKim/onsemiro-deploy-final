@@ -1,5 +1,5 @@
-import { getRequestForMe } from "apis/api";
-import { REQUEST_MESSAGE_MAP } from "assets/asset";
+import { getRequestForMe, getRecommend, getRestrictedProfile } from "apis/api";
+import { REQUEST_MESSAGE_MAP, RECOMMEND_MESSAGE_MAP } from "assets/asset";
 
 export const callRequestForMe = async (dataSetter) => {
   const { type1, type2 } = (await getRequestForMe()).data;
@@ -38,4 +38,19 @@ export const callRequestForMe = async (dataSetter) => {
     ];
 
   dataSetter([...data.filter((d) => d !== undefined && d !== null)]);
+};
+
+export const getRecommendation = async (dataSetter) => {
+  const recommended = await getRecommend();
+
+  const profile = await getRestrictedProfile({
+    counter_id: recommended.data.recommended_user_id,
+  });
+  dataSetter([
+    {
+      ...profile.data,
+      message: RECOMMEND_MESSAGE_MAP(recommended.data.matching_type),
+      matching_type: recommended.data.matching_type,
+    },
+  ]);
 };

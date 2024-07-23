@@ -1060,7 +1060,7 @@ export const AUTH_UNIV_LIST = [
   "UNIST",
 ];
 
-export const MESSAGE_MAP = (type) => {
+export const RECOMMEND_MESSAGE_MAP = (type) => {
   if (type === 1)
     return (
       <>

@@ -1,14 +1,14 @@
 import MainSection from ".";
 import { LetterArrive, LetterChecked, LetterClosed } from "./cases";
-// import { timeMatch } from "./utils";
-import { useCallback, useEffect, useMemo, useState } from "react";
 
-import LetterLayout from "layouts/LetterLayout";
+import { useCallback, useEffect, useState } from "react";
+
 import { FloatingLetterOverlay } from "components/Overlay";
-import { getRecommend, getRestrictedProfile } from "apis/api";
+
 import { recommendDataState } from "state/state";
 import { useRecoilState } from "recoil";
-import { MESSAGE_MAP } from "assets/asset";
+
+import { getRecommendation } from "./utils";
 
 export default function Recommend() {
   const [recommendData, setRecommendData] = useRecoilState(recommendDataState);
@@ -18,24 +18,23 @@ export default function Recommend() {
     setLetterVisible(false);
   }, []);
 
-  const getRecommendedProfile = async () => {
-    const recommended = await getRecommend();
-    console.log("data", recommended.data.recommended_user_id);
+  // const getRecommendedProfile = async () => {
+  //   const recommended = await getRecommend();
 
-    const profile = await getRestrictedProfile({
-      counter_id: recommended.data.recommended_user_id,
-    });
-    setRecommendData([
-      {
-        ...profile.data,
-        message: MESSAGE_MAP(recommended.data.matching_type),
-        matching_type: recommended.data.matching_type,
-      },
-    ]);
-  };
+  //   const profile = await getRestrictedProfile({
+  //     counter_id: recommended.data.recommended_user_id,
+  //   });
+  //   setRecommendData([
+  //     {
+  //       ...profile.data,
+  //       message: MESSAGE_MAP(recommended.data.matching_type),
+  //       matching_type: recommended.data.matching_type,
+  //     },
+  //   ]);
+  // };
 
   useEffect(() => {
-    getRecommendedProfile();
+    getRecommendation(setRecommendData);
   }, []);
 
   const modeMatch = useCallback((status) => {
@@ -64,9 +63,7 @@ export default function Recommend() {
           info={recommendData}
           close={closeLetter}
         ></FloatingLetterOverlay>
-      ) : // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
-      // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
-      null}
+      ) : null}
     </>
   );
 }
