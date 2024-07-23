@@ -6,31 +6,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import LetterLayout from "layouts/LetterLayout";
 import { FloatingLetterOverlay } from "components/Overlay";
 import { getRecommend, getRestrictedProfile } from "apis/api";
-
-const MESSAGE_MAP = (type) => {
-  if (type === 1)
-    return (
-      <>
-        사진이 등록되지 않은 사용자에요!
-        <br />
-        매칭 수락 여부를 다음 쪽지 시간(17:00)
-        <br />
-        전까지 결정해주세요.
-      </>
-    );
-  return (
-    <>
-      사진이 등록된 사용자에요!
-      <br />
-      사진 요청 여부를 다음 쪽지 시간(17:00)
-      <br />
-      전까지 결정해주세요.
-    </>
-  );
-};
+import { recommendDataState } from "state/state";
+import { useRecoilState } from "recoil";
+import { MESSAGE_MAP } from "assets/asset";
 
 export default function Recommend() {
-  const [recommendInfo, setRecommendInfo] = useState([]);
+  const [recommendData, setRecommendData] = useRecoilState(recommendDataState);
   const [letterVisible, setLetterVisible] = useState(false);
 
   const closeLetter = useCallback(() => {
@@ -44,7 +25,7 @@ export default function Recommend() {
     const profile = await getRestrictedProfile({
       counter_id: recommended.data.recommended_user_id,
     });
-    setRecommendInfo([
+    setRecommendData([
       {
         ...profile.data,
         message: MESSAGE_MAP(recommended.data.matching_type),
@@ -70,29 +51,27 @@ export default function Recommend() {
   });
 
   return (
-    recommendInfo.length > 0 && (
-      <>
-        <div
-          className="cursor-pointer w-full mx-auto"
-          onClick={() => setLetterVisible(true)}
+    <>
+      <div
+        className="cursor-pointer w-full mx-auto"
+        onClick={() => setLetterVisible(true)}
+      >
+        <MainSection
+          // icon={timeInfo.icon}
+          // caption={`${recommendInfo[0].date} ${timeInfo.time} 쪽지 (${recommendInfo[0].time}:00) `}
+          caption={"7/8 밤 쪽지(22:00)"}
         >
-          <MainSection
-            // icon={timeInfo.icon}
-            // caption={`${recommendInfo[0].date} ${timeInfo.time} 쪽지 (${recommendInfo[0].time}:00) `}
-            caption={"7/8 밤 쪽지(22:00)"}
-          >
-            {modeMatch(recommendInfo.status)}
-          </MainSection>
-        </div>
-        {letterVisible ? (
-          <FloatingLetterOverlay
-            info={recommendInfo}
-            close={closeLetter}
-          ></FloatingLetterOverlay>
-        ) : // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
-        // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
-        null}
-      </>
-    )
+          {modeMatch(recommendData.status)}
+        </MainSection>
+      </div>
+      {letterVisible ? (
+        <FloatingLetterOverlay
+          info={recommendData}
+          close={closeLetter}
+        ></FloatingLetterOverlay>
+      ) : // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
+      // <LetterLayout info={recommendInfo} close={closeLetter}></LetterLayout>
+      null}
+    </>
   );
 }

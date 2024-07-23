@@ -93,8 +93,17 @@ export const getRecommend = async () => {
   }
 };
 
+export const deleteRecommend = async () => {
+  const response = await instanceWithToken.delete("/account/recommend/");
+  if (response.status === 204) {
+    console.log(response.data);
+    return true;
+  } else {
+    console.log(response);
+  }
+};
+
 export const getRestrictedProfile = async (data) => {
-  console.log("request", data);
   const response = await instanceWithToken.post(
     "/account/profile/getrp/",
     data

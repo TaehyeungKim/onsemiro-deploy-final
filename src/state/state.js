@@ -27,3 +27,8 @@ export const authSchoolState = atom({
     requested: false,
   },
 });
+
+export const recommendDataState = atom({
+  key: "recommendDataState",
+  default: [],
+});

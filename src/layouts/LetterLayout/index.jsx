@@ -1,14 +1,20 @@
 import IconImage from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
 import Letter from "components/Letter";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 // import { timeMatch } from "../../components/HomeContent/utils";
 import {
   requestMatching,
   getRecommend,
   getRequestForMe,
   acceptMatching,
+  deleteRecommend,
+  getRestrictedProfile,
 } from "apis/api";
+
+import { recommendDataState } from "state/state";
+import { useSetRecoilState } from "recoil";
+import { MESSAGE_MAP } from "assets/asset";
 
 export default function LetterLayout({
   info,
@@ -17,15 +23,16 @@ export default function LetterLayout({
   i = 0,
 }) {
   const [index, setIndex] = useState(i);
-  // const timeInfo = useMemo(
-  //   () => info.length > 0 && timeMatch(info[index].time),
-  //   [info, index]
-  // );
+  const [positiveButtonMessage, setPositiveButtonMessage] = useState("");
+  const [positiveButtonColor, setPositiveButtonColor] = useState("");
+  const [copiedInfo] = useState([...info]);
 
-  const apiCall = useCallback(
+  const setRecommendData = useSetRecoilState(recommendDataState);
+
+  const positiveCall = useCallback(
     async (data) => {
       if (!requestToMe) {
-        if (info[index].matching_type === 1)
+        if (copiedInfo[index].matching_type === 1)
           return requestMatching(data).then((res) => {
             if (res.status === 200 || res.status === 201) {
               getRecommend();
@@ -34,7 +41,7 @@ export default function LetterLayout({
           });
         else return;
       }
-      if (info[index].matching_type === 1)
+      if (copiedInfo[index].matching_type === 1)
         return acceptMatching(data).then((res) => {
           if (res.status === 200 || res.status === 201) {
             getRequestForMe();
@@ -43,18 +50,49 @@ export default function LetterLayout({
         });
       else return;
     },
-    [info, requestToMe, index]
+    [requestToMe, index]
   );
 
-  const buttonMessage = useMemo(() => {
-    if (requestToMe)
-      return info[index].matching_type === 1 ? "매칭 수락" : "사진 공개";
-    else return info[index].matching_type === 1 ? "매칭 요청" : "사진 요청";
-  }, [info, requestToMe, index]);
+  const negativeCall = useCallback(
+    async (data) => {
+      if (!requestToMe) {
+        return deleteRecommend().then(async (res) => {
+          if (res) {
+            const recommended = (await getRecommend()).data;
+            if (recommended)
+              await getRestrictedProfile({
+                counter_id: recommended.recommended_user_id,
+              }).then((profile) =>
+                setRecommendData([
+                  {
+                    ...profile.data,
+                    message: MESSAGE_MAP(recommended.matching_type),
+                    matching_type: recommended.matching_type,
+                  },
+                ])
+              );
+            close();
+          }
+        });
+      }
+    },
+    [requestToMe, index]
+  );
 
-  const buttonColor = useMemo(() => {
-    return info[index].matching_type === 1 ? "bg-main" : "bg-sub";
-  }, [info, index]);
+  useEffect(() => {
+    if (requestToMe)
+      setPositiveButtonMessage(
+        copiedInfo[index]?.matching_type === 1 ? "매칭 수락" : "사진 공개"
+      );
+    else
+      setPositiveButtonMessage(
+        copiedInfo[index]?.matching_type === 1 ? "매칭 요청" : "사진 요청"
+      );
+    setPositiveButtonColor(
+      copiedInfo[index]?.matching_type === 1 ? "bg-main" : "bg-sub"
+    );
+    console.log(copiedInfo[index]);
+  }, []);
 
   return (
     // <div className="fixed w-screen h-screen bg-mask top-0 left-0 z-30 flex items-center justify-center flex-col">
@@ -63,25 +101,28 @@ export default function LetterLayout({
         <button className="w-8 absolute top-2 right-2 z-10" onClick={close}>
           <IconImage src={closeIcon}></IconImage>
         </button>
-        {info.map((i, k) => (
+        {copiedInfo.map((i, k) => (
           <Letter key={k} info={i} index={index}></Letter>
         ))}
       </div>
       <div className="flex flex-row w-letter-width justify-between mt-3">
         <button
-          onClick={() => apiCall({ counter_id: info[index].id })}
-          className={`${buttonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
+          onClick={() => positiveCall({ counter_id: info[index].id })}
+          className={`${positiveButtonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
         >
-          {buttonMessage}
+          {positiveButtonMessage}
         </button>
-        <button className="bg-[#A9A9A9] text-white w-44 p-2 rounded-xl shadow-lg text-lg">
+        <button
+          className="bg-[#A9A9A9] text-white w-44 p-2 rounded-xl shadow-lg text-lg"
+          onClick={() => negativeCall()}
+        >
           거절
         </button>
       </div>
       {info.length > 1 ? (
         <Indexation
           index={index}
-          length={info.length}
+          length={copiedInfo.length}
           handler={setIndex}
         ></Indexation>
       ) : null}
