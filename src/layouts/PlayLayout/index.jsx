@@ -3,8 +3,9 @@ import close from "../../assets/icons/ph_x.png";
 import ProgressBar from "../../components/ProgressBar";
 import { MainCustomButton } from "../../components/CustomButton";
 import { useState, useEffect } from "react";
-import { FloatingCustomAlertLayout } from "components/Overlay";
-
+import { useNavigate } from "react-router-dom";
+import { PLAY_DATA } from "assets/asset";
+import { PlayExitAlert } from "components/Overlay";
 
 export default function PlayLayout({ test, level, total, setter }) {
   const [selectedAnswers, setSelectedAnswers] = useState({});
@@ -44,7 +45,7 @@ export default function PlayLayout({ test, level, total, setter }) {
       setter(level - 1);
     } else {
       alert("첫 번째 질문입니다.");
-      }
+    }
   };
 
   const handleCheckboxChange = (questionId) => {
@@ -55,18 +56,24 @@ export default function PlayLayout({ test, level, total, setter }) {
   };
 
   const handleSelectAll = () => {
-    const newSelectedCheckBoxes = Object.keys(selectedAnswers).reduce((acc, key) => {
-      acc[key] = true;
-      return acc;
-    }, {});
-    setSelectedCheckBoxes(newSelectedCheckBoxes)
+    const newSelectedCheckBoxes = Object.keys(selectedAnswers).reduce(
+      (acc, key) => {
+        acc[key] = true;
+        return acc;
+      },
+      {}
+    );
+    setSelectedCheckBoxes(newSelectedCheckBoxes);
   };
 
   const handleDeselectAll = () => {
-    const newSelectedCheckBoxes = Object.keys(selectedAnswers).reduce((acc, key) => {
-      acc[key] = false;
-      return acc;
-    }, {});
+    const newSelectedCheckBoxes = Object.keys(selectedAnswers).reduce(
+      (acc, key) => {
+        acc[key] = false;
+        return acc;
+      },
+      {}
+    );
     setSelectedCheckBoxes(newSelectedCheckBoxes);
   };
 
@@ -94,12 +101,12 @@ export default function PlayLayout({ test, level, total, setter }) {
     return (
       <div className="flex flex-col h-screen p-5">
         {stopAlertVisible && (
-          <FloatingCustomAlertLayout
+          <PlayExitAlert
             close={() => setStopAlertVisible(false)}
             confirm={confirmClose}
           >
             <h4 className="font-bold">테스트를 종료하시겠습니까?</h4>
-          </FloatingCustomAlertLayout>
+          </PlayExitAlert>
         )}
         <header className="w-full flex justify-end pl-2 pr-2">
           <div className="w-7 cursor-pointer" onClick={handleClose}>
@@ -111,23 +118,24 @@ export default function PlayLayout({ test, level, total, setter }) {
         </header>
         <section className="w-full py-5">
           <h3 className="text-lg text-left">
-            내 프로필에 추가하고 싶은 문항을 선택하세요. <br /> 상대에게 보여줄 수 있습니다.
+            내 프로필에 추가하고 싶은 문항을 선택하세요. <br /> 상대에게 보여줄
+            수 있습니다.
           </h3>
         </section>
         <div className="flex justify-around mb-4">
-            <button
-              className="w-48 mb-4 bg-gray-200 p-2 rounded"
-              onClick={handleSelectAll}
-            >
-              문항 전체 선택
-            </button>
-            <button
-              className="w-48 mb-4 bg-gray-200 p-2 rounded"
-              onClick={handleDeselectAll}
-            >
-              선택 취소
-            </button>
-          </div>
+          <button
+            className="w-48 mb-4 bg-gray-200 p-2 rounded"
+            onClick={handleSelectAll}
+          >
+            문항 전체 선택
+          </button>
+          <button
+            className="w-48 mb-4 bg-gray-200 p-2 rounded"
+            onClick={handleDeselectAll}
+          >
+            선택 취소
+          </button>
+        </div>
         <section className="flex flex-col flex-1 overflow-auto">
           {Object.keys(selectedAnswers).map((questionId) => {
             const answerIndex = selectedAnswers[questionId];
@@ -139,14 +147,15 @@ export default function PlayLayout({ test, level, total, setter }) {
                 key={questionId}
                 onClick={() => handleCheckboxChange(questionId)}
                 className={`w-full flex items-center justify-start mb-4 p-2 border rounded shadow cursor-pointer ${
-                selectedCheckBoxes[questionId] ? "bg-main" : ""}`}
+                  selectedCheckBoxes[questionId] ? "bg-main" : ""
+                }`}
               >
                 <div>
                   <p className="font-bold">Q{parseInt(questionId) + 1}. {question.question}</p>
                   <p>A{parseInt(questionId) + 1}. {answer}</p>
                 </div>
               </div>
-            )
+            );
           })}
         </section>
         <footer className="w-full p-5 flex justify-center">
@@ -164,12 +173,12 @@ export default function PlayLayout({ test, level, total, setter }) {
       return (
         <div className="flex flex-col h-screen">
           {stopAlertVisible && (
-            <FloatingCustomAlertLayout
+            <PlayExitAlert
               close={() => setStopAlertVisible(false)}
               confirm={ confirmClose }
             >
               <h4 className="font-bold text-center">미로플레이 메인 화면으로 돌아가시겠습니까?</h4>
-            </FloatingCustomAlertLayout>
+            </PlayExitAlert>
           )}
           <header className="w-full flex justify-end p-2">
             <div className="w-7 cursor-pointer" onClick={handleClose}>

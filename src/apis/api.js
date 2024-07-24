@@ -128,7 +128,7 @@ export const requestMatching = async (data) => {
 
 const requestKakaoId = async (data) => {
   const response = await instanceWithToken.post(
-    "/account/profile/getkakao",
+    "/account/profile/getkakao/",
     data
   );
 
@@ -165,4 +165,22 @@ export const getRequestForMe = async () => {
     console.log(response.data);
   } else console.log(response);
   return response;
+};
+
+export const deleteRequestForMe = async (data) => {
+  const response = await instanceWithToken.put("/matching/refuse/", data);
+
+  if (response.status === 200) {
+    console.log(response.data);
+    return true;
+  } else console.log(response);
+};
+
+export const getMatchingList = async () => {
+  const response = await instanceWithToken.get("/matching/results/");
+
+  if (response.status === 200) {
+    // console.log(response.data);
+    return response.data;
+  } else console.log(response);
 };

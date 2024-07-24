@@ -1,105 +1,8 @@
+import { getMatchingList } from "apis/api";
 import { MatchMenuOverlay, MatchResultOverlay } from "components/Overlay";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useReducer } from "react";
-
-const dummyDataByDay = [
-  {
-    day: "07.08",
-    profiles: [
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-    ],
-  },
-  {
-    day: "07.08",
-    profiles: [
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-    ],
-  },
-  {
-    day: "07.08",
-    profiles: [
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-      {
-        photo: "",
-        nickname: "닉네임닉네임",
-        age: 26,
-        gender: "남성",
-        univ: "서울대",
-        location: "서울 관악구",
-        mbti: "ENTP",
-      },
-    ],
-  },
-];
+import { cleanMatchList } from "./utils";
 
 function reducer(state, action) {
   return { ...state, ...action };
@@ -107,6 +10,7 @@ function reducer(state, action) {
 
 export default function MatchingSituation({ count }) {
   const [state, dispatch] = useReducer(reducer, { for: "home" });
+  const [matchResultsData, setMatchResultsData] = useState([]);
 
   const MatchOverlay = useCallback(() => {
     switch (state.for) {
@@ -122,13 +26,20 @@ export default function MatchingSituation({ count }) {
         return (
           <MatchResultOverlay
             close={() => dispatch({ for: "menu" })}
-            dataByDay={dummyDataByDay}
+            dataByDay={matchResultsData}
           />
         );
       default:
         return null;
     }
   }, [state]);
+
+  useEffect(() => {
+    cleanMatchList().then((res) => setMatchResultsData(res));
+  }, []);
+  useEffect(() => {
+    console.log(matchResultsData);
+  }, [matchResultsData]);
 
   return (
     <>

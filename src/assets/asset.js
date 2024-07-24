@@ -1340,7 +1340,7 @@ export const AUTH_UNIV_LIST = [
   "UNIST",
 ];
 
-export const MESSAGE_MAP = (type) => {
+export const RECOMMEND_MESSAGE_MAP = (type) => {
   if (type === 1)
     return (
       <>
@@ -1361,3 +1361,42 @@ export const MESSAGE_MAP = (type) => {
     </>
   );
 };
+
+export const REQUEST_MESSAGE_MAP = (type) => {
+  if (type === 1)
+    return (
+      <>
+        사진이 등록되지 않은 사용자에요!
+        <br />
+        매칭 수락 여부를 다음 쪽지 시간(17:00)
+        <br />
+        전까지 결정해주세요.
+      </>
+    );
+  return (
+    <>
+      상대방이 사진 공개를 요청했어요!
+      <br />
+      상대방의 프로필이 마음에 든다면 사진을
+      <br />
+      공개하고 서로의 얼굴을 확인해보세요.
+    </>
+  );
+};
+
+export const MATCH_RESULT_MESSAGE_MAP = (code) => {
+  switch (code) {
+    case 1:
+      return 1;
+    case 2:
+      return 2;
+    case 3:
+      return 3;
+    case 4:
+      return 4;
+    case 5:
+      return 5;
+  }
+};
+
+export const TIME_SECTION_FOR_RECOMMENDATION = [8, 18, 22, 32];
