@@ -160,13 +160,21 @@ function AlertFrame({ children }) {
 
 export function SignUpCancleAlert({ children, close, ...props }) {
   return (
-    <FloatAndShrink Child={SignUpCancleAlertLayout} close={close} {...props}>
+    <FloatAndShrink Child={FloatingCustomAlertLayout} close={close} {...props}>
       {children}
     </FloatAndShrink>
   );
 }
 
-function SignUpCancleAlertLayout({ children, close, ...props }) {
+export function PlayExitAlert({ children, close, ...props }) {
+  return (
+    <FloatAndShrink Child={FloatingCustomAlertLayout} close={close} {...props}>
+      {children}
+    </FloatAndShrink>
+  );
+}
+
+function FloatingCustomAlertLayout({ children, close, ...props }) {
   return (
     <AlertFrame>
       {children}

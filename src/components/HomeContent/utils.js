@@ -74,7 +74,7 @@ export const cleanMatchList = async () => {
     result_matches_1,
     success_matches_1,
   } = list;
-  console.log(list);
+  // console.log(list);
 
   const p1Wh = pending_matches_type1_wh.map((result) => ({
     ...result,
@@ -111,7 +111,7 @@ export const cleanMatchList = async () => {
       }
     });
 
-  console.log(sorted, "sorted");
+  // console.log(sorted, "sorted");
   // clear
 
   let marker = 0;
