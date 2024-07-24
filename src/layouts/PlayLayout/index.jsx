@@ -93,11 +93,9 @@ export default function PlayLayout({ test, level, total, setter }) {
 
   const handleStartTest = () => {
     setStartTest(true);
-  }
+  };
 
-  
-
-  if ( showResults ) {
+  if (showResults) {
     return (
       <div className="flex flex-col h-screen p-5">
         {stopAlertVisible && (
@@ -139,7 +137,9 @@ export default function PlayLayout({ test, level, total, setter }) {
         <section className="flex flex-col flex-1 overflow-auto">
           {Object.keys(selectedAnswers).map((questionId) => {
             const answerIndex = selectedAnswers[questionId];
-            const question = test.questions.find((q) => q.id === parseInt(questionId));
+            const question = test.questions.find(
+              (q) => q.id === parseInt(questionId)
+            );
             const answer = question.answers[answerIndex];
 
             return (
@@ -151,8 +151,12 @@ export default function PlayLayout({ test, level, total, setter }) {
                 }`}
               >
                 <div>
-                  <p className="font-bold">Q{parseInt(questionId) + 1}. {question.question}</p>
-                  <p>A{parseInt(questionId) + 1}. {answer}</p>
+                  <p className="font-bold">
+                    Q{parseInt(questionId) + 1}. {question.question}
+                  </p>
+                  <p>
+                    A{parseInt(questionId) + 1}. {answer}
+                  </p>
                 </div>
               </div>
             );
@@ -161,7 +165,7 @@ export default function PlayLayout({ test, level, total, setter }) {
         <footer className="w-full p-5 flex justify-center">
           <MainCustomButton
             addedStyle={"!w-72"}
-            onClick= { handleCompleteSelection }
+            onClick={handleCompleteSelection}
           >
             선택 완료
           </MainCustomButton>
@@ -169,15 +173,17 @@ export default function PlayLayout({ test, level, total, setter }) {
       </div>
     );
   } else {
-    if ( !startTest ) {
+    if (!startTest) {
       return (
         <div className="flex flex-col h-screen">
           {stopAlertVisible && (
             <PlayExitAlert
               close={() => setStopAlertVisible(false)}
-              confirm={ confirmClose }
+              confirm={confirmClose}
             >
-              <h4 className="font-bold text-center">미로플레이 메인 화면으로 돌아가시겠습니까?</h4>
+              <h4 className="font-bold text-center">
+                미로플레이 메인 화면으로 돌아가시겠습니까?
+              </h4>
             </PlayExitAlert>
           )}
           <header className="w-full flex justify-end p-2">
@@ -193,30 +199,36 @@ export default function PlayLayout({ test, level, total, setter }) {
             <h3 className="pt-2 pb-5 text-3xl font-bold">{test.title}</h3>
             <h5 className="text-md font-light pb-5">{test.comment}</h5>
             <img src={test.image} className="h-80"></img>
-            <p className="text-sm font-extralight text-center">{test.concern}</p>
+            <p className="text-sm font-extralight text-center">
+              {test.concern}
+            </p>
           </main>
           <footer className="w-full p-5">
             <MainCustomButton
               addedStyle={"!w-72 !font-medium !text-2xl"}
-              onClick={ handleStartTest }
+              onClick={handleStartTest}
             >
               START!
             </MainCustomButton>
           </footer>
         </div>
-      )
+      );
     } else {
       const questionIndex = level;
 
       return (
         <div className="flex flex-col h-screen">
           {stopAlertVisible && (
-            <FloatingCustomAlertLayout
+            <PlayExitAlert
               close={() => setStopAlertVisible(false)}
               confirm={confirmClose}
             >
-              <h4 className="font-bold text-center">여기서 테스트를 그만두시면 처음부터 다시 진행해야 해요.<br/>다음에 다시 진행하시겠습니까?</h4>
-            </FloatingCustomAlertLayout>
+              <h4 className="font-bold text-center">
+                여기서 테스트를 그만두시면 처음부터 다시 진행해야 해요.
+                <br />
+                다음에 다시 진행하시겠습니까?
+              </h4>
+            </PlayExitAlert>
           )}
           <header className="w-full flex justify-end p-2">
             <div className="w-7 cursor-pointer" onClick={handleClose}>
@@ -224,19 +236,24 @@ export default function PlayLayout({ test, level, total, setter }) {
             </div>
           </header>
           <section className="w-full p-5">
-            <h1 className="text-3xl font-bold pb-5">Q{level+ 1}</h1>
+            <h1 className="text-3xl font-bold pb-5">Q{level + 1}</h1>
             <h3 className="text-lg">{data.question}</h3>
           </section>
           <section className="flex flex-col flex-1 ml-2 mr-6">
             {data.answers.map((a, i) => (
-              <div className="w-full flex-1 flex items-center justify-center m-2 overflow-hidden rounded-lg shadow-xl" key={i}>
+              <div
+                className="w-full flex-1 flex items-center justify-center m-2 overflow-hidden rounded-lg shadow-xl"
+                key={i}
+              >
                 <input
                   type="radio"
                   name={`answer_${level}`}
                   id={`answer_${level}_${i}`}
                   className="peer"
                   checked={selectedAnswers[`${data.id}-${questionIndex}`] === i}
-                  onChange={() => handleAnswerChange(`${data.id}-${questionIndex}`, i)}
+                  onChange={() =>
+                    handleAnswerChange(`${data.id}-${questionIndex}`, i)
+                  }
                 />
                 <label
                   htmlFor={`answer_${level}_${i}`}
@@ -248,18 +265,20 @@ export default function PlayLayout({ test, level, total, setter }) {
             ))}
           </section>
           <footer className="w-full p-5">
-            <ProgressBar total={total} cur={level+1} />
-            <div className="w-full flex justify-end">{level+1}/{total}</div>
+            <ProgressBar total={total} cur={level + 1} />
+            <div className="w-full flex justify-end">
+              {level + 1}/{total}
+            </div>
             <div className="w-full flex justify-between mt-10">
               <MainCustomButton
                 addedStyle={"!bg-input !w-36 !text-black"}
-                onClick={ handlePrevClick }
+                onClick={handlePrevClick}
               >
                 PREV
               </MainCustomButton>
               <MainCustomButton
                 addedStyle={"bg-main !w-36"}
-                onClick={ handleNextClick }
+                onClick={handleNextClick}
               >
                 NEXT
               </MainCustomButton>
@@ -267,6 +286,6 @@ export default function PlayLayout({ test, level, total, setter }) {
           </footer>
         </div>
       );
-    };
-  };
-};
+    }
+  }
+}
