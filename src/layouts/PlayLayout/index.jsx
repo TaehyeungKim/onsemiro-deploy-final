@@ -7,16 +7,18 @@ import { useNavigate } from "react-router-dom";
 import { PLAY_DATA } from "assets/asset";
 import { PlayExitAlert } from "components/Overlay";
 
-export default function PlayLayout({ data, level, total, setter }) {
+export default function PlayLayout({ test, level, total, setter }) {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [selectedCheckBoxes, setSelectedCheckBoxes] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [stopAlertVisible, setStopAlertVisible] = useState(false);
-  const navigate = useNavigate();
+  const [startTest, setStartTest] = useState(false);
 
   useEffect(() => {
-    console.log(data, level);
-  }, [data]);
+    console.log(test, level);
+  }, [test, level]);
+
+  const data = test.questions[level];
 
   const handleAnswerChange = (questionId, answerIndex) => {
     setSelectedAnswers((prev) => ({
@@ -77,7 +79,8 @@ export default function PlayLayout({ data, level, total, setter }) {
 
   const handleCompleteSelection = () => {
     alert("프로필에 표시할 문항 선택 완료!");
-    navigate("/home");
+    console.log(selectedCheckBoxes);
+    setter(null);
   };
 
   const handleClose = () => {
@@ -85,10 +88,16 @@ export default function PlayLayout({ data, level, total, setter }) {
   };
 
   const confirmClose = () => {
-    navigate("/home");
+    setter(null);
   };
 
-  if (showResults) {
+  const handleStartTest = () => {
+    setStartTest(true);
+  }
+
+  
+
+  if ( showResults ) {
     return (
       <div className="flex flex-col h-screen p-5">
         {stopAlertVisible && (
@@ -96,7 +105,7 @@ export default function PlayLayout({ data, level, total, setter }) {
             close={() => setStopAlertVisible(false)}
             confirm={confirmClose}
           >
-            <h4 className="font-bold">플레이 화면으로 돌아가시겠습니까?</h4>
+            <h4 className="font-bold">테스트를 종료하시겠습니까?</h4>
           </PlayExitAlert>
         )}
         <header className="w-full flex justify-end pl-2 pr-2">
@@ -129,10 +138,9 @@ export default function PlayLayout({ data, level, total, setter }) {
         </div>
         <section className="flex flex-col flex-1 overflow-auto">
           {Object.keys(selectedAnswers).map((questionId) => {
-            const questionIndex = parseInt(questionId, 10);
-            const question = PLAY_DATA[questionIndex];
             const answerIndex = selectedAnswers[questionId];
-            const answer = question?.answers?.[answerIndex];
+            const question = test.questions.find((q) => q.id === parseInt(questionId));
+            const answer = question.answers[answerIndex];
 
             return (
               <div
@@ -143,12 +151,8 @@ export default function PlayLayout({ data, level, total, setter }) {
                 }`}
               >
                 <div>
-                  <p className="font-bold">
-                    Q{parseInt(questionId) + 1}. {question?.question}
-                  </p>
-                  <p>
-                    A{parseInt(questionId) + 1}. {answer}
-                  </p>
+                  <p className="font-bold">Q{parseInt(questionId) + 1}. {question.question}</p>
+                  <p>A{parseInt(questionId) + 1}. {answer}</p>
                 </div>
               </div>
             );
@@ -156,8 +160,8 @@ export default function PlayLayout({ data, level, total, setter }) {
         </section>
         <footer className="w-full p-5 flex justify-center">
           <MainCustomButton
-            addedStyle={"bg-main !w-72"}
-            onClick={handleCompleteSelection}
+            addedStyle={"!w-72"}
+            onClick= { handleCompleteSelection }
           >
             선택 완료
           </MainCustomButton>
@@ -165,73 +169,104 @@ export default function PlayLayout({ data, level, total, setter }) {
       </div>
     );
   } else {
-    return (
-      <div className="flex flex-col h-screen">
-        {stopAlertVisible && (
-          <PlayExitAlert
-            close={() => setStopAlertVisible(false)}
-            confirm={confirmClose}
-          >
-            <h4 className="font-bold text-center">
-              여기서 테스트를 그만두시면 처음부터 다시 진행해야 해요.
-              <br />
-              다음에 다시 진행하시겠습니까?
-            </h4>
-          </PlayExitAlert>
-        )}
-        <header className="w-full flex justify-end p-2">
-          <div className="w-7 cursor-pointer" onClick={handleClose}>
-            <IconImage src={close}></IconImage>
-          </div>
-        </header>
-        <section className="w-full p-5">
-          <h1 className="text-3xl font-bold pb-5">Q{data && data.id + 1}</h1>
-          <h3 className="text-lg">{data && data.question}</h3>
-        </section>
-        <section className="flex flex-col flex-1 ml-2 mr-6">
-          {data?.answers.map((a, i) => (
-            <div
-              className="w-full flex-1 flex items-center justify-center m-2 overflow-hidden rounded-lg shadow-xl"
-              key={i}
+    if ( !startTest ) {
+      return (
+        <div className="flex flex-col h-screen">
+          {stopAlertVisible && (
+            <PlayExitAlert
+              close={() => setStopAlertVisible(false)}
+              confirm={ confirmClose }
             >
-              <input
-                type="radio"
-                name={`answer_${data.id}`}
-                id={`answer_${data.id}_${i}`}
-                className="peer"
-                checked={selectedAnswers[data.id] === i}
-                onChange={() => handleAnswerChange(data.id, i)}
-              />
-              <label
-                htmlFor={`answer_${data.id}_${i}`}
-                className="bg-pale peer-checked:bg-main flex w-full h-full items-center justify-center p-1 text-center"
-              >
-                {a}
-              </label>
+              <h4 className="font-bold text-center">미로플레이 메인 화면으로 돌아가시겠습니까?</h4>
+            </PlayExitAlert>
+          )}
+          <header className="w-full flex justify-end p-2">
+            <div className="w-7 cursor-pointer" onClick={handleClose}>
+              <IconImage src={close}></IconImage>
             </div>
-          ))}
-        </section>
-        <footer className="w-full p-5">
-          <ProgressBar total={total} cur={level + 1} />
-          <div className="w-full flex justify-end">
-            {level + 1}/{total}
-          </div>
-          <div className="w-full flex justify-between mt-10">
+          </header>
+          <main
+            className={
+              "flex flex-col w-full items-center relative justify-between"
+            }
+          >
+            <h3 className="pt-2 pb-5 text-3xl font-bold">{test.title}</h3>
+            <h5 className="text-md font-light pb-5">{test.comment}</h5>
+            <img src={test.image} className="h-80"></img>
+            <p className="text-sm font-extralight text-center">{test.concern}</p>
+          </main>
+          <footer className="w-full p-5">
             <MainCustomButton
-              addedStyle={"!bg-input !w-36 !text-black"}
-              onClick={handlePrevClick}
+              addedStyle={"!w-72 !font-medium !text-2xl"}
+              onClick={ handleStartTest }
             >
-              PREV
+              START!
             </MainCustomButton>
-            <MainCustomButton
-              addedStyle={"bg-main !w-36"}
-              onClick={handleNextClick}
+          </footer>
+        </div>
+      )
+    } else {
+      const questionIndex = level;
+
+      return (
+        <div className="flex flex-col h-screen">
+          {stopAlertVisible && (
+            <FloatingCustomAlertLayout
+              close={() => setStopAlertVisible(false)}
+              confirm={confirmClose}
             >
-              NEXT
-            </MainCustomButton>
-          </div>
-        </footer>
-      </div>
-    );
-  }
-}
+              <h4 className="font-bold text-center">여기서 테스트를 그만두시면 처음부터 다시 진행해야 해요.<br/>다음에 다시 진행하시겠습니까?</h4>
+            </FloatingCustomAlertLayout>
+          )}
+          <header className="w-full flex justify-end p-2">
+            <div className="w-7 cursor-pointer" onClick={handleClose}>
+              <IconImage src={close}></IconImage>
+            </div>
+          </header>
+          <section className="w-full p-5">
+            <h1 className="text-3xl font-bold pb-5">Q{level+ 1}</h1>
+            <h3 className="text-lg">{data.question}</h3>
+          </section>
+          <section className="flex flex-col flex-1 ml-2 mr-6">
+            {data.answers.map((a, i) => (
+              <div className="w-full flex-1 flex items-center justify-center m-2 overflow-hidden rounded-lg shadow-xl" key={i}>
+                <input
+                  type="radio"
+                  name={`answer_${level}`}
+                  id={`answer_${level}_${i}`}
+                  className="peer"
+                  checked={selectedAnswers[`${data.id}-${questionIndex}`] === i}
+                  onChange={() => handleAnswerChange(`${data.id}-${questionIndex}`, i)}
+                />
+                <label
+                  htmlFor={`answer_${level}_${i}`}
+                  className="bg-pale peer-checked:bg-main hover:bg-main flex w-full h-full items-center justify-center p-1 text-center"
+                >
+                  {a}
+                </label>
+              </div>
+            ))}
+          </section>
+          <footer className="w-full p-5">
+            <ProgressBar total={total} cur={level+1} />
+            <div className="w-full flex justify-end">{level+1}/{total}</div>
+            <div className="w-full flex justify-between mt-10">
+              <MainCustomButton
+                addedStyle={"!bg-input !w-36 !text-black"}
+                onClick={ handlePrevClick }
+              >
+                PREV
+              </MainCustomButton>
+              <MainCustomButton
+                addedStyle={"bg-main !w-36"}
+                onClick={ handleNextClick }
+              >
+                NEXT
+              </MainCustomButton>
+            </div>
+          </footer>
+        </div>
+      );
+    };
+  };
+};
