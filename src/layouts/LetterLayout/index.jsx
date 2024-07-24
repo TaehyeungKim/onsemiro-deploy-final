@@ -10,6 +10,7 @@ import {
   acceptMatching,
   deleteRecommend,
   deleteRequestForMe,
+  requestPhoto,
 } from "apis/api";
 
 import { recommendDataState, requestDataState } from "state/state";
@@ -23,6 +24,7 @@ import {
 export default function LetterLayout({
   info,
   close,
+  renderType,
   requestToMe = false,
   i = 0,
 }) {
@@ -44,7 +46,7 @@ export default function LetterLayout({
               close();
             }
           });
-        else return;
+        else requestPhoto(data).then((res) => console.log(res));
       }
       if (copiedInfo[index].matching_type === 1)
         return acceptMatching(data).then((res) => {
@@ -106,20 +108,23 @@ export default function LetterLayout({
           <Letter key={k} info={i} index={index}></Letter>
         ))}
       </div>
-      <div className="flex flex-row w-letter-width justify-between mt-3">
-        <button
-          onClick={() => positiveCall({ counter_id: info[index].id })}
-          className={`${positiveButtonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
-        >
-          {positiveButtonMessage}
-        </button>
-        <button
-          className="bg-[#A9A9A9] text-white w-44 p-2 rounded-xl shadow-lg text-lg"
-          onClick={() => negativeCall()}
-        >
-          거절
-        </button>
-      </div>
+      {!requestToMe && renderType !== 2 ? null : (
+        <div className="flex flex-row w-letter-width justify-between mt-3">
+          <button
+            onClick={() => positiveCall({ counter_id: info[index].id })}
+            className={`${positiveButtonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
+          >
+            {positiveButtonMessage}
+          </button>
+          <button
+            className="bg-[#A9A9A9] text-white w-44 p-2 rounded-xl shadow-lg text-lg"
+            onClick={() => negativeCall()}
+          >
+            거절
+          </button>
+        </div>
+      )}
+
       {info.length > 1 ? (
         <Indexation
           index={index}

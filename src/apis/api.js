@@ -85,6 +85,7 @@ const submitPhoto = async (photo) => {
 
 export const getRecommend = async () => {
   const response = await instanceWithToken.get("/account/recommend/");
+  console.log(response.data, "recommend");
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);
     return response;
@@ -120,6 +121,16 @@ export const requestMatching = async (data) => {
   const response = await instanceWithToken.post("/matching/type1/", data);
 
   if (response.status === 200 || response.status === 201) {
+    console.log(response.data);
+    return response;
+  } else console.log(response);
+  return response;
+};
+
+export const requestPhoto = async (data) => {
+  const response = await instanceWithToken.post("/matching/type2/photo/", data);
+
+  if (response.status === 201) {
     console.log(response.data);
     return response;
   } else console.log(response);
@@ -162,7 +173,7 @@ export const getRequestForMe = async () => {
   const response = await instanceWithToken.get("/matching/request/");
 
   if (response.status === 200) {
-    console.log(response.data);
+    console.log(response.data, "request");
   } else console.log(response);
   return response;
 };

@@ -52,6 +52,12 @@ export const callRequestForMe = async (dataSetter) => {
 export const getRecommendation = async (dataSetter) => {
   const recommended = await getRecommend();
 
+  if (
+    !recommended.data.recommended_user_id ||
+    recommended.data.message_type !== 2
+  )
+    return dataSetter([{ render_type: recommended.data.message_type }]);
+
   const profile = await getRestrictedProfile({
     counter_id: recommended.data.recommended_user_id,
   });
@@ -59,7 +65,7 @@ export const getRecommendation = async (dataSetter) => {
   dataSetter([
     {
       ...profile.data,
-      message: RECOMMEND_MESSAGE_MAP(recommended.data.matching_type),
+      render_type: recommended.data.message_type,
       matching_type: recommended.data.matching_type,
     },
   ]);

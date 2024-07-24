@@ -8,6 +8,7 @@ import AuthLabel from "./authlabel";
 import ProfileLine from "./profileline";
 import { filterValidProfileKey, keyMapWithKorean } from "assets/asset";
 import { messageFrame } from "assets/message/message";
+import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
 
 import "./index.css";
 
@@ -47,7 +48,7 @@ export default function Letter({ info, index }) {
         </h5>
       </header>
       <div className="w-full bg-main text-center rounded-2xl shadow-lg py-2 my-5">
-        {info.message}
+        {RECOMMEND_MESSAGE_MAP(info.render_type, info.matching_type)}
       </div>
       <section className="w-full mb-2">
         <h4 className="text-sm">기본 정보</h4>
