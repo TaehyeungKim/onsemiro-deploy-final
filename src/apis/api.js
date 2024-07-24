@@ -175,3 +175,12 @@ export const deleteRequestForMe = async (data) => {
     return true;
   } else console.log(response);
 };
+
+export const getMatchingList = async () => {
+  const response = await instanceWithToken.get("/matching/results/");
+
+  if (response.status === 200) {
+    // console.log(response.data);
+    return response.data;
+  } else console.log(response);
+};

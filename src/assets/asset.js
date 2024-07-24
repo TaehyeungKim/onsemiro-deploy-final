@@ -1103,3 +1103,20 @@ export const REQUEST_MESSAGE_MAP = (type) => {
     </>
   );
 };
+
+export const MATCH_RESULT_MESSAGE_MAP = (code) => {
+  switch (code) {
+    case 1:
+      return 1;
+    case 2:
+      return 2;
+    case 3:
+      return 3;
+    case 4:
+      return 4;
+    case 5:
+      return 5;
+  }
+};
+
+export const TIME_SECTION_FOR_RECOMMENDATION = [8, 18, 22, 32];

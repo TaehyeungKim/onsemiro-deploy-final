@@ -114,7 +114,7 @@ export function MatchResultOverlay({ close, dataByDay = [] }) {
             {d.day}
           </header>
           <div className="flex flex-col gap-4">
-            {d.profiles.map((profile, p) => (
+            {d.data.map((info, p) => (
               <article
                 key={p}
                 className="flex flex-row w-full box-border rounded-lg border-main border-2 p-2 cursor-pointer"
@@ -123,19 +123,21 @@ export function MatchResultOverlay({ close, dataByDay = [] }) {
                   <IconImage src={testProfile} />
                 </div>
                 <div className="grow flex flex-col justify-between ml-4">
-                  <span className="block font-bold">{profile.nickname}</span>
+                  <span className="block font-bold">
+                    {info.user2_profile.nickname}
+                  </span>
                   <span className="block">
-                    {profile.age}세 {profile.gender}
+                    {info.user2_profile.age}세 {info.user2_profile.gender}
                   </span>
                   <div className="flex w-full gap-2">
                     <span className="bg-main text-white block grow rounded-lg text-center shadow-md">
-                      #{profile.univ}
+                      #{info.user2_profile.univ}
                     </span>
                     <span className="bg-main text-white block grow rounded-lg text-center shadow-md">
-                      #{profile.location}
+                      #{info.user2_profile.location}
                     </span>
                     <span className="bg-main text-white block grow rounded-lg text-center shadow-md">
-                      #{profile.mbti}
+                      #{info.user2_profile.mbti}
                     </span>
                   </div>
                 </div>

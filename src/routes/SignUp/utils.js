@@ -1,5 +1,8 @@
-import { IDEAL_REQ_TYPE } from "assets/asset";
-import { heightRange } from "assets/asset";
+import {
+  IDEAL_REQ_TYPE,
+  heightRange,
+  TIME_SECTION_FOR_RECOMMENDATION,
+} from "assets/asset";
 
 export const signUpPreferenceDataSoap = (key, data) => {
   const target =
@@ -146,4 +149,13 @@ export const executeOnDataFulfilled = (level, data, execute) => {
       execute();
       break;
   }
+};
+
+export const timeForNextRecommendation = () => {
+  const current = new Date();
+  const [curHour, curMin] = [current.getHours(), current.getMinutes()];
+
+  let marker = 0;
+
+  while (marker < TIME_SECTION_FOR_RECOMMENDATION.length) {}
 };
