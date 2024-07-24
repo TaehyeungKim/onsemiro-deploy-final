@@ -18,7 +18,6 @@ export default function Photos() {
 
   const openFileInput = useCallback(
     (fileRef) => {
-      // console.log(fileRef.current);
       return (e) => fileRef.current?.click();
     },
     [photoRef, stdRef]
@@ -43,7 +42,7 @@ export default function Photos() {
           </p>
           <p className="mt-3">사진은 반드시, 얼굴이 나온 사진이어야 해요!</p>
           <button
-            className="flex items-center justify-center bg-input h-11 w-full mt-3 rounded-lg"
+            className="flex items-center justify-center bg-input min-h-11 w-full mt-3 rounded-lg box-border p-2"
             onClick={openFileInput(photoRef)}
           >
             {!photo ? (
@@ -54,7 +53,7 @@ export default function Photos() {
                 업로드하기
               </>
             ) : (
-              photo.name
+              <span className="break-all">{photo.name}</span>
             )}
           </button>
           <input
@@ -72,7 +71,7 @@ export default function Photos() {
         <div className="w-full">
           <SectionTitle>성병 검사지</SectionTitle>
           <button
-            className="flex items-center justify-center bg-input h-11 w-full mt-3 rounded-lg"
+            className="flex items-center justify-center bg-input min-h-11 w-full mt-3 rounded-lg"
             onClick={openFileInput(stdRef)}
           >
             {!std ? (
