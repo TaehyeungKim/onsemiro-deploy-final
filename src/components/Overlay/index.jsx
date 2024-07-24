@@ -188,13 +188,16 @@ function FloatingCustomAlertLayout({ children, close, ...props }) {
   );
 }
 
-function SearchOverlayInputSection({ ...props }) {
+function SearchOverlayInputSection({ setter, ...props }) {
   return (
     <div className="w-full">
       <CustomTextInput
         id={props.id}
         placeholder={props.placeholder}
-        {...props}
+        onChange={(e) => {
+          props.onChange(e);
+          setter(e.target.value);
+        }}
       />
     </div>
   );
@@ -250,11 +253,7 @@ function SearchOverlayContent({ select, ...props }) {
 
   return (
     <>
-      <SearchOverlayInputSection
-        // onChange={(e) => setInput(e.target.value)}
-        event={{ onChange: (univ) => setInput(univ) }}
-        {...props}
-      />
+      <SearchOverlayInputSection setter={setInput} {...props} />
       <SearchOverlayResultsSection results={results} select={select} />
     </>
   );

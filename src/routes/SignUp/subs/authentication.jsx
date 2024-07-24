@@ -147,6 +147,12 @@ export default function AuthenticateSelf() {
             setAuthSchoolInput({ ...authSchoolInput, school_name: univ });
             setUnivSearchVisible(false);
           }}
+          onChange={(e) =>
+            setAuthSchoolInput({
+              ...authSchoolInput,
+              school_name: e.target.value,
+            })
+          }
           placeholder={"대학을 입력하세요. (ex: 서울대학교)"}
           defaultValue={authSchoolInput.school_name}
         />
