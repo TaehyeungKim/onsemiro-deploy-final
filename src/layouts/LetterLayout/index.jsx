@@ -1,7 +1,7 @@
 import IconImage from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
 import Letter from "components/Letter";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 
 import {
   requestMatching,
@@ -20,13 +20,7 @@ import {
   getRecommendation,
 } from "components/HomeContent/utils";
 
-export default function LetterLayout({
-  info,
-  close,
-  renderType,
-  requestToMe = false,
-  i = 0,
-}) {
+export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   const [index, setIndex] = useState(i);
   const [positiveButtonMessage, setPositiveButtonMessage] = useState("");
   const [positiveButtonColor, setPositiveButtonColor] = useState("");
@@ -39,7 +33,7 @@ export default function LetterLayout({
 
   const positiveCall = useCallback(
     async (data) => {
-      if (!requestToMe) {
+      if (mode === "recommend") {
         if (copiedInfo[index].matching_type === 1)
           return requestMatching(data).then((res) => {
             if (res) {
@@ -69,68 +63,76 @@ export default function LetterLayout({
               setActionVisible(false);
             }
           });
+      } else if (mode === "request") {
+        if (copiedInfo[index].matching_type === 1)
+          return acceptMatching(data).then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              close();
+            }
+          });
+        else
+          return acceptPhoto(data).then((res) => {
+            if (res) {
+              close();
+            }
+          });
+        return;
       }
-      if (copiedInfo[index].matching_type === 1)
-        return acceptMatching(data).then((res) => {
-          if (res.status === 200 || res.status === 201) {
-            close();
-          }
-        });
-      else
-        return acceptPhoto(data).then((res) => {
-          if (res) {
-            close();
-          }
-        });
     },
-    [requestToMe, index]
+    [mode, index]
   );
 
   const negativeCall = useCallback(async () => {
-    if (!requestToMe) {
+    if (mode === "recommend") {
       return deleteRecommend().then(async (res) => {
         if (res) {
           setLetterMessage(<>프로필을 거절했어요.</>);
           setActionVisible(false);
         }
       });
+    } else if (mode === "request") {
+      const deleteRes = await deleteRequestForMe({
+        matching_type: copiedInfo[i].matching_type,
+        counter_id: copiedInfo[i].counter_id,
+      });
+      if (deleteRes) {
+        setLetterMessage(<>프로필을 거절했어요.</>);
+        setActionVisible(false);
+      }
     }
-
-    const deleteRes = await deleteRequestForMe({
-      matching_type: copiedInfo[i].matching_type,
-      counter_id: copiedInfo[i].counter_id,
-    });
-    if (deleteRes) {
-      setLetterMessage(<>프로필을 거절했어요.</>);
-      setActionVisible(false);
-    }
-  }, [requestToMe, index]);
+  }, [mode, index]);
 
   useEffect(() => {
-    if (requestToMe)
+    if (mode === "request")
       setPositiveButtonMessage(
         copiedInfo[index]?.matching_type === 1 ? "매칭 수락" : "사진 공개"
       );
-    else
+    else if (mode === "recommend")
       setPositiveButtonMessage(
         copiedInfo[index]?.matching_type === 1 ? "매칭 요청" : "사진 요청"
       );
-    setPositiveButtonColor(
-      copiedInfo[index]?.matching_type === 1 ? "bg-main" : "bg-sub"
-    );
+
+    (mode === "recommend" || mode === "request") &&
+      setPositiveButtonColor(
+        copiedInfo[index]?.matching_type === 1 ? "bg-main" : "bg-sub"
+      );
   }, [index]);
 
   useEffect(() => {
     return () => {
-      if (!requestToMe) {
+      if (mode === "recommend") {
         return getRecommendation(setRecommendData);
-      } else return callRequestForMe(setRequestData);
+      } else if (mode === "request") return callRequestForMe(setRequestData);
     };
   }, []);
 
   useEffect(() => {
     setLetterMessage(copiedInfo[index]?.message);
   }, [copiedInfo, index]);
+
+  useEffect(() => {
+    if (mode === "detail") setActionVisible(false);
+  }, [mode]);
 
   return (
     <>

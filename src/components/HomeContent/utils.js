@@ -3,6 +3,7 @@ import {
   getRecommend,
   getRestrictedProfile,
   getMatchingList,
+  requestKakaoId,
 } from "apis/api";
 import {
   REQUEST_MESSAGE_MAP,
@@ -25,7 +26,9 @@ export const callRequestForMe = async (dataSetter) => {
             ...d.simpleProfile,
             matching_type: d.matching_type,
             matching_id: d.matching_id,
-            time: d.created_at,
+            // created_at: d.created_at,
+            time: timeSection(new Date(d.created_at).getHours()).part,
+            date: dayRender(d.created_at, ".", false),
             message: REQUEST_MESSAGE_MAP(d.matching_type),
             counter_id: d.counter_id,
           };
@@ -41,7 +44,9 @@ export const callRequestForMe = async (dataSetter) => {
             ...d.simpleProfile,
             matching_type: d.matching_type,
             matching_id: d.matching_id,
-            created_at: d.created_at,
+            // created_at: d.created_at,
+            time: timeSection(new Date(d.created_at).getHours()).part,
+            date: dayRender(d.created_at, ".", false),
             message: REQUEST_MESSAGE_MAP(d.matching_type),
             counter_id: d.counter_id,
           };
@@ -86,6 +91,31 @@ export const getRecommendation = async (dataSetter) => {
   ]);
 };
 
+export const soapDetailViewData = async (data, code, time) => {
+  console.log(data.user2_profile);
+  let kakao = "";
+  let photo = "";
+  if ([4, 5, 6, 7].includes(parseInt(code))) {
+    const res = await requestKakaoId({
+      counter_id: data.user2_profile.id,
+    });
+    const { kakao_id } = res.data;
+    kakao = kakao_id;
+  }
+  // const { kakao_id, photo } = data;
+  const message = kakao
+    ? MATCH_RESULT_RENDER_MAP(code, kakao).message
+    : MATCH_RESULT_RENDER_MAP(code).message;
+
+  return {
+    ...data.user2_profile,
+    kakao_id: kakao,
+    photo,
+    message,
+    ...time,
+  };
+};
+
 export const cleanMatchList = async () => {
   const list = await getMatchingList();
   const { results } = list;
@@ -105,6 +135,8 @@ export const cleanMatchList = async () => {
         return {
           ...result,
           matching_request_at: dayRender(result.matching_request_at ?? null),
+          time: timeSection(new Date(result.matching_request_at).getHours())
+            .part,
         };
       }
     });
@@ -135,7 +167,7 @@ export const cleanMatchList = async () => {
   // obj.day = sorted[sorted.length - 1].matching_request_at;
   cleanedList.push(lastObj);
 
-  // console.log(cleanedList);
+  console.log(cleanedList, "cleanedlist");
   return cleanedList;
 };
 
@@ -154,4 +186,13 @@ export const dayRender = (when, splitter, year = true) => {
   let result = whenFormat.replace(/\s/g, "").replace(/\./g, "/");
 
   return result.slice(0, result.length - 1);
+};
+
+const timeSection = (t) => {
+  if (!t) return;
+  if (t >= 6 && t < 12) return { part: "morning", time: t };
+  else if (t >= 12 && t < 17) return { part: "afternoon", time: t };
+  else if (t >= 17 && t < 22) return { part: "evening", time: t };
+  else if (t >= 22 || t < 2) return { part: "night", time: t };
+  else return { part: "dawn", time: t };
 };

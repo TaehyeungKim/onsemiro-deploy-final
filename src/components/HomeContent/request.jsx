@@ -52,7 +52,7 @@ export default function Request() {
             info={requestData}
             close={closeLetter}
             index={requestIndex}
-            requestToMe={true}
+            mode={"request"}
           ></FloatingLetterOverlay>
         ) : null}
       </>

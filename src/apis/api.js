@@ -137,7 +137,7 @@ export const requestPhoto = async (data) => {
   return response;
 };
 
-const requestKakaoId = async (data) => {
+export const requestKakaoId = async (data) => {
   const response = await instanceWithToken.post(
     "/account/profile/getkakao/",
     data
@@ -189,6 +189,18 @@ export const getMatchingList = async () => {
   if (response.status === 200) {
     // console.log(response.data);
     return response.data;
+  } else console.log(response);
+};
+
+export const getDetailedMatchingInfo = async (data) => {
+  console.log(data, "detail");
+  const response = await instanceWithToken.post(
+    "/matching/profile/details/",
+    data
+  );
+
+  if (response.status === 200) {
+    return response;
   } else console.log(response);
 };
 

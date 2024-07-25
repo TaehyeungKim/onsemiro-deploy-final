@@ -10,6 +10,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { AUTH_UNIV_LIST } from "assets/asset";
 import LetterLayout from "layouts/LetterLayout";
+import { getDetailedMatchingInfo } from "apis/api";
+import { soapDetailViewData } from "components/HomeContent/utils";
 // import { createFuzzyMatcher } from "utils/match";
 
 function OverlayBackground({ children }) {
@@ -106,6 +108,22 @@ export function MatchMenuOverlay({ count, close, opener }) {
 }
 
 export function MatchResultOverlay({ close, dataByDay = [] }) {
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [detailInfo, setDetailInfo] = useState(null);
+
+  // useEffect(() => {
+  //   console.log(dataByDay);
+  // }, []);
+
+  if (detailVisible && detailInfo)
+    return (
+      <FloatingLetterOverlay
+        info={[detailInfo]}
+        close={() => setDetailVisible(false)}
+        mode={"detail"}
+      />
+    );
+
   return (
     <OverlayStandard title={"매칭 결과"} close={close}>
       {dataByDay.map((d, i) => (
@@ -120,6 +138,28 @@ export function MatchResultOverlay({ close, dataByDay = [] }) {
                 className={`flex flex-row w-full box-border rounded-lg border-main border-2 p-2 cursor-pointer ${
                   info.active ? "bg-main bg-opacity-30" : ""
                 }`}
+                onClick={async () => {
+                  const res = await getDetailedMatchingInfo({
+                    matching_num: info.matching_num,
+                    matching_index: info.matching_index,
+                  });
+                  // console.log("index", info.matching_index);
+                  // console.log("num", info.matching_num);
+                  // console.log("data", res.data);
+
+                  if (res.status === 200) {
+                    setDetailVisible(true);
+                    const data = await soapDetailViewData(
+                      res.data,
+                      info.matching_index,
+                      {
+                        date: info.matching_request_at,
+                        time: info.time,
+                      }
+                    );
+                    setDetailInfo(data);
+                  }
+                }}
               >
                 <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
                   <IconImage src={testProfile} />

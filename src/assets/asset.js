@@ -452,7 +452,9 @@ export const filterValidProfileKey = (info) =>
       key !== "time" &&
       key !== "created_at" &&
       key !== "counter_id" &&
-      key !== "render_type"
+      key !== "render_type" &&
+      key !== "matching_request_at" &&
+      key !== "date"
   );
 
 export const keyMapWithKorean = {
@@ -1529,8 +1531,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
         active: true,
         message: (
           <>
-            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
-      상대방의 카톡 아이디는 ${added} 입니다.`}
+            축하드립니다! 매칭에 성공하셨습니다.
+            <br />
+            {`상대방의 카톡 아이디는 ${added} 입니다.`}
           </>
         ),
       };
@@ -1539,8 +1542,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
         active: true,
         message: (
           <>
-            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
-        상대방의 카톡 아이디는 ${added} 입니다.`}
+            축하드립니다! 매칭에 성공하셨습니다.
+            <br />
+            {`상대방의 카톡 아이디는 ${added} 입니다.`}
           </>
         ),
       };
@@ -1549,8 +1553,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
         active: true,
         message: (
           <>
-            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
-        상대방의 카톡 아이디는 ${added} 입니다.`}
+            축하드립니다! 매칭에 성공하셨습니다.
+            <br />
+            {`상대방의 카톡 아이디는 ${added} 입니다.`}
           </>
         ),
       };
@@ -1559,8 +1564,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
         active: false,
         message: (
           <>
-            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
-        상대방의 카톡 아이디는 ${added} 입니다.`}
+            축하드립니다! 매칭에 성공하셨습니다.
+            <br />
+            {`상대방의 카톡 아이디는 ${added} 입니다.`}
           </>
         ),
       };
@@ -1596,10 +1602,15 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
 
 export const TIME_SECTION_FOR_RECOMMENDATION = [8, 18, 22, 32];
 
-export const TIME_MAP_FOR_RECOMMENDATION = {
+export const TIME_MAP = {
   morning: {
     time: "08:00시",
     label: "아침",
+  },
+
+  afternoon: {
+    time: "12:00시",
+    label: "오후",
   },
 
   evening: {
@@ -1610,5 +1621,10 @@ export const TIME_MAP_FOR_RECOMMENDATION = {
   night: {
     time: "23:00시",
     label: "밤",
+  },
+
+  dawn: {
+    time: "02:00시",
+    label: "새벽",
   },
 };

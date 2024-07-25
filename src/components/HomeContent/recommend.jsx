@@ -8,7 +8,7 @@ import { recommendDataState } from "state/state";
 import { useRecoilState } from "recoil";
 
 import { getRecommendation, dayRender } from "./utils";
-import { TIME_MAP_FOR_RECOMMENDATION } from "assets/asset";
+import { TIME_MAP } from "assets/asset";
 
 function RecommendButtonMessage({ type }) {
   switch (type) {
@@ -75,8 +75,8 @@ export default function Recommend() {
       >
         <MainSection
           caption={`${dayRender(recommendData[0].date, "/", false)} ${
-            TIME_MAP_FOR_RECOMMENDATION[recommendData[0].time].label
-          } 쪽지 (${TIME_MAP_FOR_RECOMMENDATION[recommendData[0].time].time})`}
+            TIME_MAP[recommendData[0].time].label
+          } 쪽지 (${TIME_MAP[recommendData[0].time].time})`}
         >
           {recommendData[0] && (
             <RecommendButtonMessage type={recommendData[0].render_type} />
@@ -88,6 +88,7 @@ export default function Recommend() {
           info={recommendData}
           close={closeLetter}
           renderType={recommendData[0].render_type}
+          mode={"recommend"}
         ></FloatingLetterOverlay>
       ) : null}
     </>
