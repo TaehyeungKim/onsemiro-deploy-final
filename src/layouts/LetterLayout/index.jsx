@@ -5,8 +5,6 @@ import { useCallback, useEffect, useState } from "react";
 
 import {
   requestMatching,
-  getRecommend,
-  getRequestForMe,
   acceptMatching,
   deleteRecommend,
   deleteRequestForMe,
@@ -42,31 +40,22 @@ export default function LetterLayout({
       if (!requestToMe) {
         if (copiedInfo[index].matching_type === 1)
           return requestMatching(data).then((res) => {
-            if (res) {
-              getRecommendation(setRecommendData);
-              close();
-            }
+            if (res) close();
           });
         else
           return requestPhoto(data).then((res) => {
-            if (res) {
-              getRecommendation(setRecommendData);
-              close();
-            }
+            if (res) close();
           });
       }
       if (copiedInfo[index].matching_type === 1)
         return acceptMatching(data).then((res) => {
           if (res.status === 200 || res.status === 201) {
-            getRequestForMe();
             close();
           }
         });
-      // else acceptPhoto;
       else
         return acceptPhoto(data).then((res) => {
           if (res) {
-            getRequestForMe();
             close();
           }
         });
@@ -74,28 +63,23 @@ export default function LetterLayout({
     [requestToMe, index]
   );
 
-  const negativeCall = useCallback(
-    async (data) => {
-      if (!requestToMe) {
-        return deleteRecommend().then(async (res) => {
-          if (res) {
-            getRecommendation(setRecommendData);
-            close();
-          }
-        });
-      }
-      // console.log(copiedInfo[i]);
-      const deleteRes = await deleteRequestForMe({
-        matching_type: copiedInfo[i].matching_type,
-        counter_id: copiedInfo[i].counter_id,
+  const negativeCall = useCallback(async () => {
+    if (!requestToMe) {
+      return deleteRecommend().then(async (res) => {
+        if (res) {
+          close();
+        }
       });
-      if (deleteRes) {
-        callRequestForMe(setRequestData);
-        close();
-      }
-    },
-    [requestToMe, index]
-  );
+    }
+
+    const deleteRes = await deleteRequestForMe({
+      matching_type: copiedInfo[i].matching_type,
+      counter_id: copiedInfo[i].counter_id,
+    });
+    if (deleteRes) {
+      close();
+    }
+  }, [requestToMe, index]);
 
   useEffect(() => {
     if (requestToMe)
@@ -109,11 +93,14 @@ export default function LetterLayout({
     setPositiveButtonColor(
       copiedInfo[index]?.matching_type === 1 ? "bg-main" : "bg-sub"
     );
-    console.log(copiedInfo[index]);
   }, [index]);
 
   useEffect(() => {
-    console.log(info);
+    return () => {
+      if (!requestToMe) {
+        return getRecommendation(setRecommendData);
+      } else return callRequestForMe(setRequestData);
+    };
   }, []);
 
   return (

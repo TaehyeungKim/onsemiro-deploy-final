@@ -154,19 +154,15 @@ export const acceptMatching = async (data) => {
   const response = await instanceWithToken.put("/matching/type1/", data);
 
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
     const kakaoResponse = await requestKakaoId({
       counter_id: response.data.counter_id,
     });
     if (kakaoResponse.status === 200 || kakaoResponse.status === 201) {
-      console.log(kakaoResponse.data);
       return kakaoResponse;
     } else {
-      console.log(kakaoResponse);
       return kakaoResponse;
     }
   } else console.log(response);
-  return response;
 };
 
 export const getRequestForMe = async () => {

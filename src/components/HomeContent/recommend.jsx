@@ -1,5 +1,4 @@
 import MainSection from ".";
-import { LetterArrive, LetterChecked, LetterClosed } from "./cases";
 
 import { useCallback, useEffect, useState } from "react";
 
@@ -46,6 +45,8 @@ function RecommendButtonMessage({ type }) {
           새로운 쪽지를 받아볼 수 있어요.
         </h5>
       );
+    default:
+      return;
   }
 }
 
@@ -65,7 +66,9 @@ export default function Recommend() {
     <>
       <div
         className="cursor-pointer w-full mx-auto"
-        onClick={() => setLetterVisible(true)}
+        onClick={() => {
+          recommendData[0].render_type === 2 && setLetterVisible(true);
+        }}
       >
         <MainSection caption={"7/8 밤 쪽지(22:00)"}>
           {recommendData[0] && (
@@ -73,7 +76,7 @@ export default function Recommend() {
           )}
         </MainSection>
       </div>
-      {recommendData[0]?.render_type === 2 && letterVisible ? (
+      {letterVisible ? (
         <FloatingLetterOverlay
           info={recommendData}
           close={closeLetter}

@@ -15,6 +15,8 @@ export const callRequestForMe = async (dataSetter) => {
 
   let data = [];
 
+  console.log(type1, type2);
+
   if (type1)
     data = [
       ...type1?.map((d) => {
@@ -45,6 +47,7 @@ export const callRequestForMe = async (dataSetter) => {
           };
       }),
     ];
+  console.log(data);
 
   dataSetter([...data.filter((d) => d !== undefined && d !== null)]);
 };

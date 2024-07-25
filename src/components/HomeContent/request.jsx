@@ -39,7 +39,9 @@ export default function Request() {
       <>
         <div
           className="cursor-pointer w-full mx-auto"
-          onClick={() => setLetterVisible(true)}
+          onClick={() => {
+            requestData.length !== 0 && setLetterVisible(true);
+          }}
         >
           <MainIconSection caption={"나에게 온 요청"}>
             <RequestHold count={requestData.length}></RequestHold>
