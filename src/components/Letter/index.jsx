@@ -12,7 +12,7 @@ import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
 
 import "./index.css";
 
-export default function Letter({ info, index }) {
+export default function Letter({ info, index, message }) {
   const keys = useMemo(() => filterValidProfileKey(info), [info]);
 
   const date = useMemo(
@@ -50,7 +50,7 @@ export default function Letter({ info, index }) {
         </h5>
       </header>
       <div className="w-full bg-main text-center rounded-2xl shadow-lg py-2 my-5">
-        {info.message}
+        <p className="w-full">{message}</p>
       </div>
       <section className="w-full mb-2">
         <h4 className="text-sm">기본 정보</h4>

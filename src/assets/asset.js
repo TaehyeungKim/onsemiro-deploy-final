@@ -451,7 +451,8 @@ export const filterValidProfileKey = (info) =>
       key !== "matching_id" &&
       key !== "time" &&
       key !== "created_at" &&
-      key !== "counter_id"
+      key !== "counter_id" &&
+      key !== "render_type"
   );
 
 export const keyMapWithKorean = {

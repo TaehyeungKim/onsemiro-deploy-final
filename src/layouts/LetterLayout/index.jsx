@@ -31,6 +31,8 @@ export default function LetterLayout({
   const [positiveButtonMessage, setPositiveButtonMessage] = useState("");
   const [positiveButtonColor, setPositiveButtonColor] = useState("");
   const [copiedInfo] = useState([...info]);
+  const [letterMessage, setLetterMessage] = useState(null);
+  const [actionVisible, setActionVisible] = useState(true);
 
   const setRecommendData = useSetRecoilState(recommendDataState);
   const setRequestData = useSetRecoilState(requestDataState);
@@ -40,11 +42,32 @@ export default function LetterLayout({
       if (!requestToMe) {
         if (copiedInfo[index].matching_type === 1)
           return requestMatching(data).then((res) => {
-            if (res) close();
+            if (res) {
+              setLetterMessage(
+                <>
+                  사진을 요청했어요!
+                  <br />
+                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서
+                  <br />
+                  확인할 수 있어요.
+                </>
+              );
+              setActionVisible(false);
+            }
           });
         else
           return requestPhoto(data).then((res) => {
-            if (res) close();
+            if (res) {
+              setLetterMessage(
+                <>
+                  사진을 요청했어요!
+                  <br />
+                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서 <br />
+                  확인할 수 있어요.
+                </>
+              );
+              setActionVisible(false);
+            }
           });
       }
       if (copiedInfo[index].matching_type === 1)
@@ -67,7 +90,8 @@ export default function LetterLayout({
     if (!requestToMe) {
       return deleteRecommend().then(async (res) => {
         if (res) {
-          close();
+          setLetterMessage(<>프로필을 거절했어요.</>);
+          setActionVisible(false);
         }
       });
     }
@@ -77,7 +101,8 @@ export default function LetterLayout({
       counter_id: copiedInfo[i].counter_id,
     });
     if (deleteRes) {
-      close();
+      setLetterMessage(<>프로필을 거절했어요.</>);
+      setActionVisible(false);
     }
   }, [requestToMe, index]);
 
@@ -103,6 +128,10 @@ export default function LetterLayout({
     };
   }, []);
 
+  useEffect(() => {
+    setLetterMessage(copiedInfo[index]?.message);
+  }, [copiedInfo, index]);
+
   return (
     <>
       <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
@@ -110,10 +139,16 @@ export default function LetterLayout({
           <IconImage src={closeIcon}></IconImage>
         </button>
         {copiedInfo.map((i, k) => (
-          <Letter key={k} info={i} index={index}></Letter>
+          <Letter
+            key={k}
+            info={i}
+            index={index}
+            message={letterMessage}
+          ></Letter>
         ))}
       </div>
-      {!requestToMe && renderType !== 2 ? null : (
+
+      {actionVisible && (
         <div className="flex flex-row w-letter-width justify-between mt-3">
           <button
             onClick={() => positiveCall({ counter_id: info[index].id })}
