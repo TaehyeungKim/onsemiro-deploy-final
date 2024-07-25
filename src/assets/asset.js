@@ -449,7 +449,9 @@ export const filterValidProfileKey = (info) =>
       key !== "message" &&
       key !== "matching_type" &&
       key !== "matching_id" &&
-      key !== "time"
+      key !== "time" &&
+      key !== "created_at" &&
+      key !== "counter_id"
   );
 
 export const keyMapWithKorean = {

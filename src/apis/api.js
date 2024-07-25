@@ -85,9 +85,9 @@ const submitPhoto = async (photo) => {
 
 export const getRecommend = async () => {
   const response = await instanceWithToken.get("/account/recommend/");
-  console.log(response.data, "recommend");
+
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
+    console.log(response.data, "recommend");
     return response;
   } else {
     console.log(response);
@@ -110,7 +110,7 @@ export const getRestrictedProfile = async (data) => {
     data
   );
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
+    console.log(response.data, "profiles");
     return response;
   } else {
     console.log(response);
@@ -122,7 +122,7 @@ export const requestMatching = async (data) => {
 
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);
-    return response;
+    return true;
   } else console.log(response);
   return response;
 };
@@ -132,7 +132,7 @@ export const requestPhoto = async (data) => {
 
   if (response.status === 201) {
     console.log(response.data);
-    return response;
+    return true;
   } else console.log(response);
   return response;
 };
@@ -194,4 +194,15 @@ export const getMatchingList = async () => {
     // console.log(response.data);
     return response.data;
   } else console.log(response);
+};
+
+export const acceptPhoto = async (data) => {
+  const response = await instanceWithToken.put("/matching/type2/photo/", data);
+
+  if (response.status === 200) {
+    return true;
+  } else {
+    console.log(response);
+    return false;
+  }
 };

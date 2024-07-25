@@ -40,7 +40,7 @@ export const callRequestForMe = async (dataSetter) => {
             matching_type: d.matching_type,
             matching_id: d.matching_id,
             created_at: d.created_at,
-            messsage: REQUEST_MESSAGE_MAP(d.matching_type),
+            message: REQUEST_MESSAGE_MAP(d.matching_type),
             counter_id: d.counter_id,
           };
       }),
@@ -61,12 +61,16 @@ export const getRecommendation = async (dataSetter) => {
   const profile = await getRestrictedProfile({
     counter_id: recommended.data.recommended_user_id,
   });
-  console.log(recommended.data, profile.data);
+  // console.log(recommended.data, profile.data);
   dataSetter([
     {
       ...profile.data,
       render_type: recommended.data.message_type,
       matching_type: recommended.data.matching_type,
+      message: RECOMMEND_MESSAGE_MAP(
+        recommended.data.message_type,
+        recommended.data.matching_type
+      ),
     },
   ]);
 };

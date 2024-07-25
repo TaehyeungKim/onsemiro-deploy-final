@@ -11,10 +11,6 @@ import { useRecoilState } from "recoil";
 import { getRecommendation } from "./utils";
 
 function RecommendButtonMessage({ type }) {
-  useEffect(() => {
-    console.log(type);
-  }, []);
-
   switch (type) {
     case 1:
       return (

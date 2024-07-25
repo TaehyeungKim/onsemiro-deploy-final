@@ -1,5 +1,5 @@
 import IconImage from "../IconImage";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import ProfileWOPhoto from "assets/profile1.png";
 import ProfileWPhoto from "assets/profile2.png";
 
@@ -37,6 +37,8 @@ export default function Letter({ info, index }) {
     else return { part: "새벽", time: t };
   }, [info]);
 
+  useEffect(() => console.log(info), []);
+
   return (
     <div
       className="letterFrame flex flex-col items-center w-full shrink-0 px-3"
@@ -48,7 +50,7 @@ export default function Letter({ info, index }) {
         </h5>
       </header>
       <div className="w-full bg-main text-center rounded-2xl shadow-lg py-2 my-5">
-        {RECOMMEND_MESSAGE_MAP(info.render_type, info.matching_type)}
+        {info.message}
       </div>
       <section className="w-full mb-2">
         <h4 className="text-sm">기본 정보</h4>

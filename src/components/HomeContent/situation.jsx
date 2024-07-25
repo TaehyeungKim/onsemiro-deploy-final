@@ -37,9 +37,6 @@ export default function MatchingSituation({ count }) {
   useEffect(() => {
     cleanMatchList().then((res) => setMatchResultsData(res));
   }, []);
-  useEffect(() => {
-    console.log(matchResultsData);
-  }, [matchResultsData]);
 
   return (
     <>

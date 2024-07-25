@@ -10,7 +10,6 @@ export default function Photos() {
   const photoRef = useRef(null);
   const stdRef = useRef(null);
 
-  // const dataContext = useContext(DataContext);
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [photo, setPhoto] = useState(signUpData.photo ?? null);

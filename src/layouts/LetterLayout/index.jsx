@@ -11,6 +11,7 @@ import {
   deleteRecommend,
   deleteRequestForMe,
   requestPhoto,
+  acceptPhoto,
 } from "apis/api";
 
 import { recommendDataState, requestDataState } from "state/state";
@@ -41,12 +42,18 @@ export default function LetterLayout({
       if (!requestToMe) {
         if (copiedInfo[index].matching_type === 1)
           return requestMatching(data).then((res) => {
-            if (res.status === 200 || res.status === 201) {
-              getRecommend();
+            if (res) {
+              getRecommendation(setRecommendData);
               close();
             }
           });
-        else requestPhoto(data).then((res) => console.log(res));
+        else
+          return requestPhoto(data).then((res) => {
+            if (res) {
+              getRecommendation(setRecommendData);
+              close();
+            }
+          });
       }
       if (copiedInfo[index].matching_type === 1)
         return acceptMatching(data).then((res) => {
@@ -55,7 +62,14 @@ export default function LetterLayout({
             close();
           }
         });
-      else return;
+      // else acceptPhoto;
+      else
+        return acceptPhoto(data).then((res) => {
+          if (res) {
+            getRequestForMe();
+            close();
+          }
+        });
     },
     [requestToMe, index]
   );
@@ -96,6 +110,10 @@ export default function LetterLayout({
       copiedInfo[index]?.matching_type === 1 ? "bg-main" : "bg-sub"
     );
     console.log(copiedInfo[index]);
+  }, [index]);
+
+  useEffect(() => {
+    console.log(info);
   }, []);
 
   return (
