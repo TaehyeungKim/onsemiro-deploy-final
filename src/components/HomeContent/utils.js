@@ -7,7 +7,7 @@ import {
 import {
   REQUEST_MESSAGE_MAP,
   RECOMMEND_MESSAGE_MAP,
-  MATCH_RESULT_MESSAGE_MAP,
+  MATCH_RESULT_RENDER_MAP,
 } from "assets/asset";
 
 export const callRequestForMe = async (dataSetter) => {
@@ -59,7 +59,13 @@ export const getRecommendation = async (dataSetter) => {
     !recommended.data.recommended_user_id ||
     recommended.data.message_type !== 2
   )
-    return dataSetter([{ render_type: recommended.data.message_type }]);
+    return dataSetter([
+      {
+        render_type: recommended.data.message_type,
+        time: recommended.data.time,
+        date: recommended.data.date,
+      },
+    ]);
 
   const profile = await getRestrictedProfile({
     counter_id: recommended.data.recommended_user_id,
@@ -74,42 +80,22 @@ export const getRecommendation = async (dataSetter) => {
         recommended.data.message_type,
         recommended.data.matching_type
       ),
+      time: recommended.data.time,
+      date: recommended.data.date,
     },
   ]);
 };
 
 export const cleanMatchList = async () => {
   const list = await getMatchingList();
-  const {
-    pending_matches_type1_wh,
-    pending_matches_type2_pur,
-    pending_matches_type2_wh,
-    result_matches_1,
-    success_matches_1,
-  } = list;
+  const { results } = list;
 
-  const p1Wh = pending_matches_type1_wh.map((result) => ({
-    ...result,
-    message: MATCH_RESULT_MESSAGE_MAP(1),
-  }));
-  const p2Pur = pending_matches_type2_pur.map((result) => ({
-    ...result,
-    message: MATCH_RESULT_MESSAGE_MAP(2),
-  }));
-  const p2Wh = pending_matches_type2_wh.map((result) => ({
-    ...result,
-    message: MATCH_RESULT_MESSAGE_MAP(3),
-  }));
-  const resultPur = result_matches_1.map((result) => ({
-    ...result,
-    message: MATCH_RESULT_MESSAGE_MAP(4),
-  }));
-  const successWh = success_matches_1.map((result) => ({
-    ...result,
-    message: MATCH_RESULT_MESSAGE_MAP(5),
+  const l = results.map((e) => ({
+    ...e,
+    ...MATCH_RESULT_RENDER_MAP(e.matching_num),
   }));
 
-  const sorted = [...p1Wh, ...p2Pur, ...p2Wh, ...resultPur, ...successWh]
+  const sorted = [...l]
     .sort(
       (a, b) =>
         new Date(b.matching_request_at) - new Date(a.matching_request_at)
@@ -153,12 +139,19 @@ export const cleanMatchList = async () => {
   return cleanedList;
 };
 
-export const dayRender = (when) => {
-  const whenFormat = new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date(when));
+export const dayRender = (when, splitter, year = true) => {
+  const options = year
+    ? {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }
+    : { month: "2-digit", day: "2-digit" };
+  const whenFormat = new Intl.DateTimeFormat("ko-KR", options).format(
+    new Date(when)
+  );
 
-  return whenFormat.replace(/\s/g, "");
+  let result = whenFormat.replace(/\s/g, "").replace(/\./g, "/");
+
+  return result.slice(0, result.length - 1);
 };

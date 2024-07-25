@@ -7,7 +7,8 @@ import { FloatingLetterOverlay } from "components/Overlay";
 import { recommendDataState } from "state/state";
 import { useRecoilState } from "recoil";
 
-import { getRecommendation } from "./utils";
+import { getRecommendation, dayRender } from "./utils";
+import { TIME_MAP_FOR_RECOMMENDATION } from "assets/asset";
 
 function RecommendButtonMessage({ type }) {
   switch (type) {
@@ -62,6 +63,8 @@ export default function Recommend() {
     getRecommendation(setRecommendData);
   }, []);
 
+  if (!recommendData[0]) return;
+
   return (
     <>
       <div
@@ -70,7 +73,11 @@ export default function Recommend() {
           recommendData[0].render_type === 2 && setLetterVisible(true);
         }}
       >
-        <MainSection caption={"7/8 밤 쪽지(22:00)"}>
+        <MainSection
+          caption={`${dayRender(recommendData[0].date, "/", false)} ${
+            TIME_MAP_FOR_RECOMMENDATION[recommendData[0].time].label
+          } 쪽지 (${TIME_MAP_FOR_RECOMMENDATION[recommendData[0].time].time})`}
+        >
           {recommendData[0] && (
             <RecommendButtonMessage type={recommendData[0].render_type} />
           )}

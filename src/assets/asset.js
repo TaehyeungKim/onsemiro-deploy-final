@@ -1489,19 +1489,126 @@ export const REQUEST_MESSAGE_MAP = (type) => {
   );
 };
 
-export const MATCH_RESULT_MESSAGE_MAP = (code) => {
+export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
   switch (code) {
     case 1:
-      return 1;
+      return {
+        active: true,
+        message: (
+          <>
+            매칭 요청을 보냈습니다.
+            <br />
+            상대방의 매칭 수락 여부가 24시간 내에 결정돼요.
+          </>
+        ),
+      };
     case 2:
-      return 2;
+      return {
+        active: true,
+        message: (
+          <>
+            사진이 공개됐어요!
+            <br />
+            매칭 수락 여부를 24시간 내에 결정해주세요.
+          </>
+        ),
+      };
     case 3:
-      return 3;
+      return {
+        active: false,
+        message: (
+          <>
+            매칭을 수락했어요!
+            <br />
+            상대방의 매칭 수락 여부가 24시간 내에 결정돼요.
+          </>
+        ),
+      };
     case 4:
-      return 4;
+      return {
+        active: true,
+        message: (
+          <>
+            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
+      상대방의 카톡 아이디는 ${added} 입니다.`}
+          </>
+        ),
+      };
     case 5:
-      return 5;
+      return {
+        active: true,
+        message: (
+          <>
+            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
+        상대방의 카톡 아이디는 ${added} 입니다.`}
+          </>
+        ),
+      };
+    case 6:
+      return {
+        active: true,
+        message: (
+          <>
+            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
+        상대방의 카톡 아이디는 ${added} 입니다.`}
+          </>
+        ),
+      };
+    case 7:
+      return {
+        active: false,
+        message: (
+          <>
+            {`축하드립니다! 매칭에 성공하셨습니다.${(<br />)}
+        상대방의 카톡 아이디는 ${added} 입니다.`}
+          </>
+        ),
+      };
+    case 9:
+      return {
+        active: true,
+        message: (
+          <>
+            사진 요청을 보냈어요!
+            <br />
+            상대방이 수락한 요청은 24시간 내에 표시돼요.
+          </>
+        ),
+      };
+    case 10:
+    case 11:
+      return {
+        active: true,
+        message: (
+          <>
+            상호 의견이 달라 매칭에 실패하였습니다.
+            <br />
+            창을 닫으면 더 이상 프로필을 볼 수 없습니다.
+            <br />
+            다음 매칭을 기대해 주세요.
+          </>
+        ),
+      };
+    default:
+      return;
   }
 };
 
 export const TIME_SECTION_FOR_RECOMMENDATION = [8, 18, 22, 32];
+
+export const TIME_MAP_FOR_RECOMMENDATION = {
+  morning: {
+    time: "08:00시",
+    label: "아침",
+  },
+
+  evening: {
+    time: "17:00시",
+    label: "저녁",
+  },
+
+  night: {
+    time: "23:00시",
+    label: "밤",
+  },
+};

@@ -117,10 +117,13 @@ export function MatchResultOverlay({ close, dataByDay = [] }) {
             {d.data.map((info, p) => (
               <article
                 key={p}
-                className="flex flex-row w-full box-border rounded-lg border-main border-2 p-2 cursor-pointer"
+                className={`flex flex-row w-full box-border rounded-lg border-main border-2 p-2 cursor-pointer ${
+                  info.active ? "bg-main bg-opacity-30" : ""
+                }`}
               >
                 <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
                   <IconImage src={testProfile} />
+                  {console.log(info.matching_num)}
                 </div>
                 <div className="grow flex flex-col justify-between ml-4">
                   <span className="block font-bold">
