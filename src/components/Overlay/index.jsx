@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { AUTH_UNIV_LIST } from "assets/asset";
 import LetterLayout from "layouts/LetterLayout";
-import { getDetailedMatchingInfo } from "apis/api";
+import { getDetailedInfo } from "apis/api";
 import { soapDetailViewData } from "components/HomeContent/utils";
 // import { createFuzzyMatcher } from "utils/match";
 
@@ -99,6 +99,7 @@ export function MatchMenuOverlay({ count, close, opener }) {
         <CustomButtonWithCount
           count={count.photo}
           addedStyle="!bg-mint !text-black"
+          onClick={() => opener({ for: "photo" })}
         >
           사진 요청 결과
         </CustomButtonWithCount>
@@ -107,13 +108,9 @@ export function MatchMenuOverlay({ count, close, opener }) {
   );
 }
 
-export function MatchResultOverlay({ close, dataByDay = [] }) {
+export function ResultListOverlay({ close, dataByDay = [] }) {
   const [detailVisible, setDetailVisible] = useState(false);
   const [detailInfo, setDetailInfo] = useState(null);
-
-  // useEffect(() => {
-  //   console.log(dataByDay);
-  // }, []);
 
   if (detailVisible && detailInfo)
     return (
@@ -139,7 +136,7 @@ export function MatchResultOverlay({ close, dataByDay = [] }) {
                   info.active ? "bg-main bg-opacity-30" : ""
                 }`}
                 onClick={async () => {
-                  const res = await getDetailedMatchingInfo({
+                  const res = await getDetailedInfo({
                     matching_num: info.matching_num,
                     matching_index: info.matching_index,
                   });

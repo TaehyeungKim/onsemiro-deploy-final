@@ -116,8 +116,8 @@ export const soapDetailViewData = async (data, code, time) => {
   };
 };
 
-export const cleanMatchList = async () => {
-  const list = await getMatchingList();
+export const cleanMatchList = async (listGetter) => {
+  const list = await listGetter();
   const { results } = list;
 
   const l = results.map((e) => ({

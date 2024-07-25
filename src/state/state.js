@@ -37,3 +37,13 @@ export const requestDataState = atom({
   key: "requestDataState",
   default: [],
 });
+
+export const matchDataState = atom({
+  key: "matchDataState",
+  default: [],
+});
+
+export const photoDataState = atom({
+  key: "photoDataState",
+  default: [],
+});

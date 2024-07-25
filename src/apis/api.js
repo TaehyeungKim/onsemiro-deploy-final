@@ -192,7 +192,7 @@ export const getMatchingList = async () => {
   } else console.log(response);
 };
 
-export const getDetailedMatchingInfo = async (data) => {
+export const getDetailedInfo = async (data) => {
   console.log(data, "detail");
   const response = await instanceWithToken.post(
     "/matching/profile/details/",
@@ -213,4 +213,13 @@ export const acceptPhoto = async (data) => {
     console.log(response);
     return false;
   }
+};
+
+export const getPhotoResults = async () => {
+  const response = await instanceWithToken.get("/matching/photo_results/");
+
+  if (response.status === 200) return response.data;
+  // console.log(response, "photo_result");
+
+  return response;
 };
