@@ -6,6 +6,7 @@ import Request from "components/HomeContent/request";
 import { useRecoilValue } from "recoil";
 import { matchDataState, photoDataState } from "state/state";
 import { useEffect } from "react";
+import { PlayButtonArea } from "components/PlayRelated";
 
 export default function HomePage() {
   const matchResults = useRecoilValue(matchDataState);
@@ -27,7 +28,7 @@ export default function HomePage() {
         <div className="flex flex-row items-center justify-end fixed top-header-height w-main-frame py-4 px-2 z-10">
           <ActiveMode />
         </div>
-        <section className="mt-28 px-6 flex flex-col items-center justify-center grow">
+        <section className="px-6 flex flex-col items-center justify-center grow">
           <MatchingSituation
             count={{
               matching: matchResults.reduce(
@@ -42,6 +43,7 @@ export default function HomePage() {
           />
           <Recommend></Recommend>
           <Request></Request>
+          <PlayButtonArea />
         </section>
       </main>
     </div>
