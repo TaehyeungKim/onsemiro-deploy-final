@@ -10,17 +10,22 @@ import AuthLabel from "./authlabel";
 import ProfileLine from "./profileline";
 import {
   filterValidProfileKey,
+  HeightRange,
   keyMapWithKorean,
   TIME_MAP,
 } from "assets/asset";
 import messageFrom from "assets/message/message.png";
 import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
+
 import { TARGET } from "apis/api";
+
 
 import "./index.css";
 
 export default function Letter({ info, index, message, close }) {
   const keys = useMemo(() => filterValidProfileKey(info), [info]);
+
+  const visibleInfoContext = useContext(VisibleInfoContext);
 
   useEffect(() => console.log(info), []);
 
@@ -37,7 +42,7 @@ export default function Letter({ info, index, message, close }) {
           <IconImage src={closeIcon}></IconImage>
         </button>
       </header>
-      <div className="px-5 bg-main text-center rounded-2xl shadow-lg py-2 my-5">
+      <div className="px-10 mx-3 bg-main text-center rounded-2xl shadow-lg py-2 my-5">
         <p className="w-full">{info.message}</p>
       </div>
       <section className="px-5 w-full mb-2">
@@ -109,7 +114,14 @@ export default function Letter({ info, index, message, close }) {
                   key === "appearance"
                     ? info[key] &&
                       `${info[key]} ${info["eyelid"] && info["eyelid"]}`
-                    : info[key] ?? null
+                    : key === "height"
+                      ? info[key] &&
+                        HeightRange[info[key]]
+                      : key === "meeting_frequency"
+                        ? info[key] &&
+                          `주 ${info[key]}회`
+                          :
+                    info[key] ?? null
                 }
                 key={key}
               ></ProfileLine>
