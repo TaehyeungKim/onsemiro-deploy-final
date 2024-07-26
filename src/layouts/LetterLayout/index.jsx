@@ -4,9 +4,10 @@ import Letter from "components/Letter";
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useState,
+  useContext,
+  createContext,
 } from "react";
 
 import {
@@ -28,6 +29,8 @@ import {
   callRequestForMe,
   getRecommendation,
 } from "components/HomeContent/utils";
+
+export const VisibleInfoContext = createContext(null);
 
 function PositiveButton({ info, mode, afterAction }) {
   const positiveCall = useCallback(
@@ -81,6 +84,7 @@ function PositiveButton({ info, mode, afterAction }) {
         else
           return acceptPhoto(data).then(async (res) => {
             const photoResponse = await getPhotoData({ counter_id: info.id });
+            info.photo = photoResponse.photo_url;
 
             if (res) {
               afterAction(
@@ -144,7 +148,8 @@ function PositiveButton({ info, mode, afterAction }) {
 export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   const [index, setIndex] = useState(i);
 
-  const [copiedInfo] = useState([...info]);
+  const [copiedInfo, setCopiedInfo] = useState([...info]);
+
   const [letterMessage, setLetterMessage] = useState(null);
   const [actionVisible, setActionVisible] = useState(true);
 
@@ -181,7 +186,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
   useEffect(() => {
     setLetterMessage(copiedInfo[index]?.message);
-    console.log(copiedInfo[index], "info");
   }, [copiedInfo, index]);
 
   useEffect(() => {
@@ -194,7 +198,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   }, [mode, info]);
 
   return (
-    <>
+    <VisibleInfoContext.Provider value={copiedInfo[index]}>
       <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
         <button className="w-8 absolute top-2 right-2 z-10" onClick={close}>
           <IconImage src={closeIcon}></IconImage>
@@ -211,19 +215,13 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
       {actionVisible && (
         <div className="flex flex-row w-letter-width justify-between mt-3">
-          {/* <button
-            onClick={() => positiveCall({ counter_id: info[index].id })}
-            className={`${positiveButtonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
-          >
-            {positiveButtonMessage}
-          </button>
-           */}
           <PositiveButton
             info={copiedInfo[index]}
             mode={mode}
             afterAction={(message, visible) => {
               setLetterMessage(message);
               setActionVisible(visible);
+              setCopiedInfo([...copiedInfo]);
             }}
           />
           <button
@@ -242,7 +240,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
           handler={setIndex}
         ></Indexation>
       ) : null}
-    </>
+    </VisibleInfoContext.Provider>
   );
 }
 

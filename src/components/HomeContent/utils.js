@@ -12,11 +12,12 @@ import {
 } from "assets/asset";
 
 export const callRequestForMe = async (dataSetter) => {
-  const { type1, type2 } = (await getRequestForMe()).data;
+  const res = await getRequestForMe();
+  const { type1, type2 } = res.data;
 
   let data = [];
 
-  console.log(type1, type2);
+  console.log(type1, type2, "request");
 
   if (type1)
     data = [
@@ -52,15 +53,13 @@ export const callRequestForMe = async (dataSetter) => {
           };
       }),
     ];
-  console.log(data);
+  // console.log(data, "cleaned data");
 
   dataSetter([...data.filter((d) => d !== undefined && d !== null)]);
 };
 
 export const getRecommendation = async (dataSetter) => {
   const recommended = await getRecommend();
-
-  console.log(recommended.data, "active recommend");
 
   if (
     !recommended.data.recommended_user_id ||
@@ -193,7 +192,7 @@ export const dayRender = (when, splitter, year = true) => {
 };
 
 const timeSection = (t) => {
-  if (!t) return;
+  if (t === undefined || t === null) return;
   if (t >= 6 && t < 12) return { part: "morning", time: t };
   else if (t >= 12 && t < 17) return { part: "afternoon", time: t };
   else if (t >= 17 && t < 22) return { part: "evening", time: t };
