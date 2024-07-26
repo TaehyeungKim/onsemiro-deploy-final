@@ -81,6 +81,7 @@ export default function Recommend() {
 
   const closeLetter = useCallback(() => {
     setLetterVisible(false);
+    getRecommendation(setRecommendData);
   }, []);
 
   useEffect(() => {

@@ -4,15 +4,25 @@ import {
   CustomButtonWithCount,
   MainCustomButton,
 } from "components/CustomButton";
-import testProfile from "assets/testProfile.png";
+
 import styles from "./styles.module.scss";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { AUTH_UNIV_LIST } from "assets/asset";
 import LetterLayout from "layouts/LetterLayout";
-import { getDetailedInfo, TARGET } from "apis/api";
-import { soapDetailViewData } from "components/HomeContent/utils";
+import {
+  getDetailedInfo,
+  getMatchingList,
+  getPhotoResults,
+  TARGET,
+} from "apis/api";
+import {
+  cleanMatchList,
+  soapDetailViewData,
+} from "components/HomeContent/utils";
 import ProfileWOPhoto from "assets/profile1.png";
+import { matchDataState, photoDataState } from "state/state";
+import { useRecoilState } from "recoil";
 
 // import { createFuzzyMatcher } from "utils/match";
 
@@ -113,6 +123,8 @@ export function MatchMenuOverlay({ count, close, opener }) {
 export function ResultListOverlay({ close, dataByDay = [] }) {
   const [detailVisible, setDetailVisible] = useState(false);
   const [detailInfo, setDetailInfo] = useState(null);
+  const [resultsState, setResultsState] = useRecoilState(matchDataState);
+  const [photoState, setPhotoState] = useRecoilState(photoDataState);
 
   if (detailVisible && detailInfo)
     return (
@@ -121,6 +133,8 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
         close={() => {
           setDetailVisible(false);
           setDetailInfo(null);
+          cleanMatchList(getMatchingList).then((res) => setResultsState(res));
+          cleanMatchList(getPhotoResults).then((res) => setPhotoState(res));
         }}
         mode={"detail"}
       />
@@ -167,7 +181,6 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                       info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto
                     }
                   />
-              
                 </div>
                 <div className="grow flex flex-col justify-between ml-4">
                   <span className="block font-bold">
