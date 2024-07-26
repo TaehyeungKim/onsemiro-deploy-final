@@ -35,7 +35,7 @@ export default function Letter({ info, index, message }) {
         </h5>
       </header>
       <div className="w-full bg-main text-center rounded-2xl shadow-lg py-2 my-5">
-        <p className="w-full">{message}</p>
+        <p className="w-full">{info.message}</p>
       </div>
       <section className="w-full mb-2">
         <h4 className="text-sm">기본 정보</h4>
@@ -57,7 +57,7 @@ export default function Letter({ info, index, message }) {
         <div className="w-1/4 m-auto">
           <IconImage src={info.photo ?? ProfileWOPhoto} />
         </div>
-        {info.approval?.std_test_approval_status ? (
+        {info.std_test_approval_status ? (
           <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
             <div className="w-4 mr-2">
               <IconImage src={check}></IconImage>
