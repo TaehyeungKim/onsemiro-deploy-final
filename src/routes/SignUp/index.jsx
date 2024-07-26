@@ -29,7 +29,7 @@ import { FloatAndShrinkElement, FloatingElement } from "components/Floating";
 export default function SignUpPage() {
   const TOTAL_LEVEL_COUNT = 14;
 
-  const [curLevel, setCurLevel] = useState(9);
+  const [curLevel, setCurLevel] = useState(0);
 
   const idealChoiceVisible = useRecoilValue(idealChoiceVisibleState);
 

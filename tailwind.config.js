@@ -1,15 +1,18 @@
 /** @type {import('tailwindcss').Config} */
+const headerHeight = 75
+
 module.exports = {
   content: ["./src/**/*.{html,js,jsx}"],
   theme: {
     extend: {
       spacing: {
-        "main-frame": "473px",
+        "main-frame": `calc(100vh * (473/919))`,
 
         "letter-width": "calc(473px * 0.8)",
         "letter-height": "calc(473px * 0.8 * 1.7)",
         "overflow-test": "200vh",
-        "header-height": "75px",
+        "header-height": `${headerHeight}px`,
+        "landing-height": `calc(100vh - ${headerHeight}px)`,
         "main-isection-height": "320px",
         "overlay-search": "600px",
       },
