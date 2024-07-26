@@ -46,7 +46,7 @@ export const submitSignUpData = async (profile, photo) => {
     const photoResponse = await submitPhoto(photo);
     if (photoResponse.status === 200 || photoResponse.status === 201) {
       console.log("signUpSuccess");
-      // window.location.href = "/home";
+      window.location.href = "/home";
     } else console.log("error");
   }
 };

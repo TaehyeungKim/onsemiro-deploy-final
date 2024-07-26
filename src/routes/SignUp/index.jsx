@@ -61,8 +61,8 @@ function SignUpMain({ curLevel, levelSetter, total }) {
     executeOnDataFulfilled(curLevel, signUpData, () => {
       if (curLevel === 13) {
         const data = dataSoapBeforeSubmit(signUpData);
-        console.log(data);
-          submitSignUpData(data, {
+
+        submitSignUpData(data, {
           photo: signUpData.photo,
           std_test_report: signUpData.std,
         });
@@ -91,12 +91,10 @@ function SignUpMain({ curLevel, levelSetter, total }) {
   useEffect(() => {
     executeOnDataFulfilled(curLevel, signUpData, () => {
       if (isLayoutFloatingEnd) {
-        console.log("float");
         setTransitionAbleState(true);
       }
     });
     return () => {
-      // buttonArea.current?.setAttribute("style", "display: none");
       setTransitionAbleState(false);
     };
   }, [signUpData, isLayoutFloatingEnd, authSchool]);
@@ -168,26 +166,6 @@ function SignUpMain({ curLevel, levelSetter, total }) {
 
       <FloatingElement condition={transitionAbleState}>
         {buttonElements}
-        {/* <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
-          {curLevel === 13 ? (
-            <MainCustomButton
-              addedStyle="!bg-background !text-black !mx-0 grow"
-              onClick={() => {
-                setSignUpData({ ...signUpData, preference: undefined });
-                console.log(signUpData);
-              }}
-            >
-              SKIP
-            </MainCustomButton>
-          ) : null}
-
-          <MainCustomButton
-            onClick={() => changeLevel()}
-            addedStyle={curLevel === 13 ? "!mx-0 grow" : null}
-          >
-            {buttonActionPerLevel().message}
-          </MainCustomButton>
-        </div> */}
       </FloatingElement>
     </div>
   );

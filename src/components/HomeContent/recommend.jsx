@@ -4,11 +4,22 @@ import { useCallback, useEffect, useState } from "react";
 
 import { FloatingLetterOverlay } from "components/Overlay";
 
-import { recommendDataState, activeState } from "state/state";
-import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  recommendDataState,
+  activeState,
+  matchDataState,
+  photoDataState,
+} from "state/state";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { getRecommendation, dayRender, timeCalculate } from "./utils";
+import {
+  getRecommendation,
+  dayRender,
+  timeCalculate,
+  cleanMatchList,
+} from "./utils";
 import { TIME_MAP } from "assets/asset";
+import { getMatchingList, getPhotoData, getPhotoResults } from "apis/api";
 
 function RecommendButtonMessage({ type }) {
   const [timeMessage, setTimeMessage] = useState("");
@@ -76,12 +87,17 @@ function RecommendButtonMessage({ type }) {
 
 export default function Recommend() {
   const [recommendData, setRecommendData] = useRecoilState(recommendDataState);
+  const setResultsData = useSetRecoilState(matchDataState);
+  const setPhotoData = useSetRecoilState(photoDataState);
+
   const [letterVisible, setLetterVisible] = useState(false);
   const active = useRecoilValue(activeState);
 
   const closeLetter = useCallback(() => {
     setLetterVisible(false);
     getRecommendation(setRecommendData);
+    cleanMatchList(getMatchingList).then((res) => setResultsData(res));
+    cleanMatchList(getPhotoResults).then((res) => setPhotoData(res));
   }, []);
 
   useEffect(() => {
