@@ -12,6 +12,7 @@ import { AUTH_UNIV_LIST } from "assets/asset";
 import LetterLayout from "layouts/LetterLayout";
 import { getDetailedInfo } from "apis/api";
 import { soapDetailViewData } from "components/HomeContent/utils";
+
 // import { createFuzzyMatcher } from "utils/match";
 
 function OverlayBackground({ children }) {
@@ -111,12 +112,17 @@ export function MatchMenuOverlay({ count, close, opener }) {
 export function ResultListOverlay({ close, dataByDay = [] }) {
   const [detailVisible, setDetailVisible] = useState(false);
   const [detailInfo, setDetailInfo] = useState(null);
+  // const [matchResultsData, setMatchResultsData] =
+  //   useRecoilState(matchDataState);
+  // const []
 
   if (detailVisible && detailInfo)
     return (
       <FloatingLetterOverlay
         info={[detailInfo]}
-        close={() => setDetailVisible(false)}
+        close={() => {
+          setDetailVisible(false);
+        }}
         mode={"detail"}
       />
     );

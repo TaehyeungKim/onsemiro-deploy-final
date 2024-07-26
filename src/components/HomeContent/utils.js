@@ -115,16 +115,18 @@ export const soapDetailViewData = async (data, code, time) => {
     photo,
     message,
     ...time,
+    code,
   };
 };
 
 export const cleanMatchList = async (listGetter) => {
   const list = await listGetter();
+
   const { results } = list;
 
   const l = results.map((e) => ({
     ...e,
-    ...MATCH_RESULT_RENDER_MAP(e.matching_num),
+    ...MATCH_RESULT_RENDER_MAP(e.matching_index),
   }));
 
   const sorted = [...l]
