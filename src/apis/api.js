@@ -87,7 +87,7 @@ export const getRecommend = async () => {
   const response = await instanceWithToken.get("/account/recommend/");
 
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data, "recommend");
+    console.log("getRecommend success");
     return response;
   } else {
     console.log(response);
@@ -110,7 +110,6 @@ export const getRestrictedProfile = async (data) => {
     data
   );
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data, "profiles");
     return response;
   } else {
     console.log(response);
@@ -187,7 +186,6 @@ export const getRequestForMe = async () => {
   const response = await instanceWithToken.get("/matching/request/");
 
   if (response.status === 200) {
-    console.log(response.data, "request");
   } else console.log(response);
   return response;
 };

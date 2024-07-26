@@ -4,9 +4,10 @@ import Letter from "components/Letter";
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useState,
+  useContext,
+  createContext,
 } from "react";
 
 import {
@@ -28,6 +29,8 @@ import {
   callRequestForMe,
   getRecommendation,
 } from "components/HomeContent/utils";
+
+export const VisibleInfoContext = createContext(null);
 
 function PositiveButton({ info, mode, afterAction }) {
   const positiveCall = useCallback(
@@ -81,14 +84,17 @@ function PositiveButton({ info, mode, afterAction }) {
         else
           return acceptPhoto(data).then(async (res) => {
             const photoResponse = await getPhotoData({ counter_id: info.id });
-            console.log(photoResponse.data);
+            info.photo = photoResponse.photo_url;
 
             if (res) {
-              <>
-                사진이 공개됐어요!
-                <br />
-                매칭 수락 여부를 24시간 내에 결정해주세요.
-              </>;
+              afterAction(
+                <>
+                  사진이 공개됐어요!
+                  <br />
+                  매칭 수락 여부를 24시간 내에 결정해주세요.
+                </>,
+                false
+              );
             }
           });
       }
@@ -141,65 +147,14 @@ function PositiveButton({ info, mode, afterAction }) {
 
 export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   const [index, setIndex] = useState(i);
-  const [positiveButtonMessage, setPositiveButtonMessage] = useState("");
-  const [positiveButtonColor, setPositiveButtonColor] = useState("");
-  const [copiedInfo] = useState([...info]);
+
+  const [copiedInfo, setCopiedInfo] = useState([...info]);
+
   const [letterMessage, setLetterMessage] = useState(null);
   const [actionVisible, setActionVisible] = useState(true);
 
   const setRecommendData = useSetRecoilState(recommendDataState);
   const setRequestData = useSetRecoilState(requestDataState);
-
-  const positiveCall = useCallback(
-    async (data) => {
-      if (mode === "recommend") {
-        if (copiedInfo[index].matching_type === 1)
-          return requestMatching(data).then((res) => {
-            if (res) {
-              setLetterMessage(
-                <>
-                  사진을 요청했어요!
-                  <br />
-                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서
-                  <br />
-                  확인할 수 있어요.
-                </>
-              );
-              setActionVisible(false);
-            }
-          });
-        else
-          return requestPhoto(data).then((res) => {
-            if (res) {
-              setLetterMessage(
-                <>
-                  사진을 요청했어요!
-                  <br />
-                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서 <br />
-                  확인할 수 있어요.
-                </>
-              );
-              setActionVisible(false);
-            }
-          });
-      } else if (mode === "request") {
-        if (copiedInfo[index].matching_type === 1)
-          return acceptMatching(data).then((res) => {
-            if (res.status === 200 || res.status === 201) {
-              close();
-            }
-          });
-        else
-          return acceptPhoto(data).then((res) => {
-            if (res) {
-              close();
-            }
-          });
-        return;
-      }
-    },
-    [mode, index]
-  );
 
   const negativeCall = useCallback(async () => {
     if (mode === "recommend") {
@@ -222,22 +177,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   }, [mode, index]);
 
   useEffect(() => {
-    if (mode === "request")
-      setPositiveButtonMessage(
-        copiedInfo[index]?.matching_type === 1 ? "매칭 수락" : "사진 공개"
-      );
-    else if (mode === "recommend")
-      setPositiveButtonMessage(
-        copiedInfo[index]?.matching_type === 1 ? "매칭 요청" : "사진 요청"
-      );
-
-    (mode === "recommend" || mode === "request") &&
-      setPositiveButtonColor(
-        copiedInfo[index]?.matching_type === 1 ? "bg-main" : "bg-sub"
-      );
-  }, [index]);
-
-  useEffect(() => {
     return () => {
       if (mode === "recommend") {
         return getRecommendation(setRecommendData);
@@ -247,24 +186,19 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
   useEffect(() => {
     setLetterMessage(copiedInfo[index]?.message);
-    console.log(copiedInfo[index], "info");
   }, [copiedInfo, index]);
 
   useEffect(() => {
     if (
       mode === "detail" &&
-      [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(info.code)
+      [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(copiedInfo[index].code)
     ) {
       setActionVisible(false);
     }
-  }, [mode]);
-
-  useEffect(() => {
-    console.log(info);
-  }, []);
+  }, [mode, info]);
 
   return (
-    <>
+    <VisibleInfoContext.Provider value={copiedInfo[index]}>
       <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
         <button className="w-8 absolute top-2 right-2 z-10" onClick={close}>
           <IconImage src={closeIcon}></IconImage>
@@ -281,19 +215,13 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
       {actionVisible && (
         <div className="flex flex-row w-letter-width justify-between mt-3">
-          {/* <button
-            onClick={() => positiveCall({ counter_id: info[index].id })}
-            className={`${positiveButtonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
-          >
-            {positiveButtonMessage}
-          </button>
-           */}
           <PositiveButton
             info={copiedInfo[index]}
             mode={mode}
             afterAction={(message, visible) => {
               setLetterMessage(message);
               setActionVisible(visible);
+              setCopiedInfo([...copiedInfo]);
             }}
           />
           <button
@@ -312,7 +240,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
           handler={setIndex}
         ></Indexation>
       ) : null}
-    </>
+    </VisibleInfoContext.Provider>
   );
 }
 

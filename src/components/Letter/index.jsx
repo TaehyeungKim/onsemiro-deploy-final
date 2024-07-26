@@ -1,5 +1,6 @@
 import IconImage from "../IconImage";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useContext } from "react";
+import { VisibleInfoContext } from "layouts/LetterLayout";
 import ProfileWOPhoto from "assets/profile1.png";
 import ProfileWPhoto from "assets/profile2.png";
 
@@ -18,6 +19,8 @@ import "./index.css";
 
 export default function Letter({ info, index, message }) {
   const keys = useMemo(() => filterValidProfileKey(info), [info]);
+
+  const visibleInfoContext = useContext(VisibleInfoContext);
 
   useEffect(() => console.log(info), []);
 
@@ -52,14 +55,7 @@ export default function Letter({ info, index, message }) {
       </section>
       <div className="w-full mt-3 relative">
         <div className="w-1/4 m-auto">
-          <IconImage
-            src={
-              info.photo ??
-              (info.approval?.photo_approval_status
-                ? ProfileWPhoto
-                : ProfileWOPhoto)
-            }
-          />
+          <IconImage src={info.photo ?? ProfileWOPhoto} />
         </div>
         {info.approval?.std_test_approval_status ? (
           <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
