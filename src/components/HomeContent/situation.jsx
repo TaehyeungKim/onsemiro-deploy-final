@@ -30,14 +30,24 @@ export default function MatchingSituation({ count }) {
       case "result":
         return (
           <ResultListOverlay
-            close={() => dispatch({ for: "menu" })}
+            close={() => {
+              dispatch({ for: "menu" });
+              cleanMatchList(getMatchingList).then((res) =>
+                setMatchResultsData(res)
+              );
+            }}
             dataByDay={matchResultsData}
           />
         );
       case "photo":
         return (
           <ResultListOverlay
-            close={() => dispatch({ for: "menu" })}
+            close={() => {
+              dispatch({ for: "menu" });
+              cleanMatchList(getPhotoResults).then((res) =>
+                setPhotoResultsData(res)
+              );
+            }}
             dataByDay={photoResultsData}
           />
         );

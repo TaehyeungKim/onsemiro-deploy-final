@@ -1495,7 +1495,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
   switch (code) {
     case 1:
       return {
-        active: true,
+        active: false,
         message: (
           <>
             매칭 요청을 보냈습니다.
@@ -1539,7 +1539,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
       };
     case 5:
       return {
-        active: true,
+        active: false,
         message: (
           <>
             축하드립니다! 매칭에 성공하셨습니다.
@@ -1570,9 +1570,22 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           </>
         ),
       };
-    case 9:
+    case 8:
       return {
         active: true,
+        message: (
+          <>
+            <>
+              사진이 공개됐어요!
+              <br />
+              매칭 수락 여부를 24시간 내에 결정해주세요.
+            </>
+          </>
+        ),
+      };
+    case 9:
+      return {
+        active: false,
         message: (
           <>
             사진 요청을 보냈어요!

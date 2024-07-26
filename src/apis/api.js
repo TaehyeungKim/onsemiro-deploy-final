@@ -137,6 +137,18 @@ export const requestPhoto = async (data) => {
   return response;
 };
 
+export const getPhotoData = async (data) => {
+  const response = await instanceWithToken.post(
+    "/account/profile/getphoto/",
+    data
+  );
+
+  if (response.status === 200) {
+    console.log("photo get success");
+    return response.data;
+  }
+};
+
 export const requestKakaoId = async (data) => {
   const response = await instanceWithToken.post(
     "/account/profile/getkakao/",
@@ -163,6 +175,12 @@ export const acceptMatching = async (data) => {
       return kakaoResponse;
     }
   } else console.log(response);
+};
+
+export const acceptMatchingAfterPhoto = async (data) => {
+  const response = await instanceWithToken.put("/matching/type2/final/", data);
+
+  return response;
 };
 
 export const getRequestForMe = async () => {

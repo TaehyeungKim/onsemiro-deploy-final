@@ -1,7 +1,13 @@
 import IconImage from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
 import Letter from "components/Letter";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import {
   requestMatching,
@@ -10,6 +16,9 @@ import {
   deleteRequestForMe,
   requestPhoto,
   acceptPhoto,
+  requestKakaoId,
+  getPhotoData,
+  acceptMatchingAfterPhoto,
 } from "apis/api";
 
 import { recommendDataState, requestDataState } from "state/state";
@@ -19,6 +28,116 @@ import {
   callRequestForMe,
   getRecommendation,
 } from "components/HomeContent/utils";
+
+function PositiveButton({ info, mode, afterAction }) {
+  const positiveCall = useCallback(
+    async (data) => {
+      if (mode === "recommend") {
+        if (info.matching_type === 1)
+          return requestMatching(data).then((res) => {
+            if (res) {
+              afterAction(
+                <>
+                  사진을 요청했어요!
+                  <br />
+                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서
+                  <br />
+                  확인할 수 있어요.
+                </>,
+                false
+              );
+            }
+          });
+        else
+          return requestPhoto(data).then((res) => {
+            if (res) {
+              afterAction(
+                <>
+                  사진을 요청했어요!
+                  <br />
+                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서 <br />
+                  확인할 수 있어요.
+                </>,
+                false
+              );
+            }
+          });
+      } else if (mode === "request") {
+        if (info.matching_type === 1)
+          return acceptMatching(data).then(async (res) => {
+            if (res.status === 200 || res.status === 201) {
+              const { counter_id } = res.data;
+              const response = await requestKakaoId({ counter_id });
+              afterAction(
+                <>
+                  축하드립니다! 매칭에 성공하셨습니다.
+                  <br />
+                  {`상대방의 카톡 아이디는 ${response.data.kakao_id}입니다.`}
+                </>,
+                false
+              );
+            }
+          });
+        else
+          return acceptPhoto(data).then(async (res) => {
+            const photoResponse = await getPhotoData({ counter_id: info.id });
+            console.log(photoResponse.data);
+
+            if (res) {
+              <>
+                사진이 공개됐어요!
+                <br />
+                매칭 수락 여부를 24시간 내에 결정해주세요.
+              </>;
+            }
+          });
+      }
+      if (info.code === 2) {
+        return acceptMatchingAfterPhoto(data).then(async (res) => {
+          if (res.status === 200 || res.status === 201) {
+            const { counter_id } = res.data;
+            const response = await requestKakaoId({ counter_id: info.id });
+            afterAction(
+              <>
+                축하드립니다! 매칭에 성공하셨습니다.
+                <br />
+                {`상대방의 카톡 아이디는 ${response.data.kakao_id}입니다.`}
+              </>,
+              false
+            );
+          }
+        });
+      }
+    },
+    [mode, info]
+  );
+
+  const buttonMessage = useMemo(() => {
+    if (mode === "detail" && info.code === 2) return "매칭 수락";
+
+    if (info.matching_type === 1) {
+      return mode === "recommend" ? "매칭 요청" : "매칭 수락";
+    } else if (info.matching_type === 2) {
+      return mode === "recommend" ? "사진 요청" : "사진 공개";
+    }
+  }, [mode, info]);
+
+  const buttonColor = useMemo(() => {
+    if (info.matching_type === 2) return false;
+    return true;
+  }, [mode, info]);
+
+  return (
+    <button
+      onClick={() => positiveCall({ counter_id: info.id })}
+      className={`${
+        buttonColor ? "bg-main" : "bg-sub"
+      } text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
+    >
+      {buttonMessage}
+    </button>
+  );
+}
 
 export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   const [index, setIndex] = useState(i);
@@ -128,11 +247,21 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
   useEffect(() => {
     setLetterMessage(copiedInfo[index]?.message);
+    console.log(copiedInfo[index], "info");
   }, [copiedInfo, index]);
 
   useEffect(() => {
-    if (mode === "detail") setActionVisible(false);
+    if (
+      mode === "detail" &&
+      [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(info.code)
+    ) {
+      setActionVisible(false);
+    }
   }, [mode]);
+
+  useEffect(() => {
+    console.log(info);
+  }, []);
 
   return (
     <>
@@ -152,12 +281,21 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
       {actionVisible && (
         <div className="flex flex-row w-letter-width justify-between mt-3">
-          <button
+          {/* <button
             onClick={() => positiveCall({ counter_id: info[index].id })}
             className={`${positiveButtonColor} text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
           >
             {positiveButtonMessage}
           </button>
+           */}
+          <PositiveButton
+            info={copiedInfo[index]}
+            mode={mode}
+            afterAction={(message, visible) => {
+              setLetterMessage(message);
+              setActionVisible(visible);
+            }}
+          />
           <button
             className="bg-[#A9A9A9] text-white w-44 p-2 rounded-xl shadow-lg text-lg"
             onClick={() => negativeCall()}
