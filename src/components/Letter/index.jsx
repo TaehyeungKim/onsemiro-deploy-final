@@ -26,7 +26,7 @@ export default function Letter({ info, index, message }) {
 
   return (
     <div
-      className="letterFrame flex flex-col items-center w-full shrink-0 px-3"
+      className="letterFrame flex flex-col items-center w-full shrink-0 px-5"
       style={{ transform: `translateX(-${index * 100}%)` }}
     >
       <header className="top-0 w-4/5 flex flex-row items-center justify-center py-3 border-b-2 ">
@@ -38,8 +38,8 @@ export default function Letter({ info, index, message }) {
         <p className="w-full">{message}</p>
       </div>
       <section className="w-full mb-2">
-        <h4 className="text-sm">기본 정보</h4>
-        <div className="rounded-lg border-slate-400 border-2 p-1">
+        <h4 className="text-sm mb-1">기본 정보</h4>
+        <div className="rounded-lg border-slate-400 border-2 p-2 flex flex-col gap-y-2">
           <div className="flex flex-row">
             {info.approval?.photo_approval_status ? (
               <AuthLabel>본인 인증</AuthLabel>

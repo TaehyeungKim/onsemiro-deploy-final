@@ -199,7 +199,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
   return (
     <VisibleInfoContext.Provider value={copiedInfo[index]}>
-      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-letter bg-cover bg-center bg-no-repeat rounded-xl relative pb-2 shadow-md">
+      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-background rounded-xl relative pb-2 shadow-md">
         <button className="w-8 absolute top-2 right-2 z-10" onClick={close}>
           <IconImage src={closeIcon}></IconImage>
         </button>

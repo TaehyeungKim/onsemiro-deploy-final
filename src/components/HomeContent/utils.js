@@ -199,3 +199,18 @@ const timeSection = (t) => {
   else if (t >= 22 || t < 2) return { part: "night", time: t };
   else return { part: "dawn", time: t };
 };
+
+export const timeCalculate = (hour, minute) => {
+  const timeMultiply = hour*60 + minute
+  if (timeMultiply < 8*60) return { remainhour: ((8*60 - timeMultiply) - ((8*60 - timeMultiply)%60))/60, remainminute: (8*60 - timeMultiply)%60 };
+  else if (timeMultiply >= 8*60 && timeMultiply < 17*60) return { remainhour: ((17*60 - timeMultiply) - ((17*60 - timeMultiply)%60))/60, remainminute: (17*60 - timeMultiply)%60 };
+  else if (timeMultiply >= 17*60 && timeMultiply < 23*60) return { remainhour: ((23*60 - timeMultiply) - ((23*60 - timeMultiply)%60))/60, remainminute: (23*60 - timeMultiply)%60 };
+  else if (timeMultiply >= 23*60 && timeMultiply < 24*60) return { remainhour: ((32*60 - timeMultiply) - ((32*60 - timeMultiply)%60))/60, remainminute: (32*60 - timeMultiply)%60 };
+}
+
+export const nextLetter = (t) => {
+  if (t < 8) return { nextTime: "8:00" };
+  else if (t >= 8 && t < 17) return { nextTime: "17:00" };
+  else if (t >= 17 && t < 23) return { nextTime: "23:00"};
+  else return { nextTime: "8:00" };
+};

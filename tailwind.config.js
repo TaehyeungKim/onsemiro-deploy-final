@@ -21,7 +21,7 @@ module.exports = {
         "background-darker": "#EAEAEA",
         mathing_count: "#F35757",
         main: "#BEAEE2",
-        sub: "#F7DBF0",
+        sub: "#ffa5c7",
         auth: "#ECA496",
         "main-icon-section": "#D9D9D9",
         mask: "rgba(0,0,0,0.54)",

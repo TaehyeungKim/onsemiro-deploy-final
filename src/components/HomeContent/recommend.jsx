@@ -7,10 +7,20 @@ import { FloatingLetterOverlay } from "components/Overlay";
 import { recommendDataState, activeState } from "state/state";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { getRecommendation, dayRender } from "./utils";
+import { getRecommendation, dayRender, timeCalculate } from "./utils";
 import { TIME_MAP } from "assets/asset";
 
+
 function RecommendButtonMessage({ type }) {
+
+  const [timeMessage, setTimeMessage] = useState("");
+
+  useEffect(()=>{
+    setTimeMessage(`${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainhour}시간 ${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainminute}분`)
+    const timeOut = setInterval(()=>{
+      setTimeMessage(`${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainhour}시간 ${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainminute}분`)
+    },60000)
+  },[])
   switch (type) {
     case 1:
       return (
@@ -41,7 +51,7 @@ function RecommendButtonMessage({ type }) {
     case 5:
       return (
         <h5 className="bg-sub-pale py-6 w-full text-center">
-          ~~시간 ~분 후에
+          {timeMessage} 후에
           <br />
           새로운 쪽지를 받아볼 수 있어요.
         </h5>
