@@ -143,7 +143,7 @@ export const getPhotoData = async (data) => {
   );
 
   if (response.status === 200) {
-    console.log("photo get success");
+    console.log("photo get success", response.data);
     return response.data;
   }
 };
@@ -257,3 +257,5 @@ export const getActiveMode = async () => {
     return false;
   }
 };
+
+export const TARGET = "http://localhost:8000";

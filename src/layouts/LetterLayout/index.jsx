@@ -6,7 +6,6 @@ import {
   useEffect,
   useMemo,
   useState,
-  useContext,
   createContext,
 } from "react";
 
@@ -29,6 +28,9 @@ import {
   callRequestForMe,
   getRecommendation,
 } from "components/HomeContent/utils";
+
+import { TARGET } from "apis/api";
+import { updateLetterMessage } from "./utils";
 
 export const VisibleInfoContext = createContext(null);
 
@@ -84,7 +86,6 @@ function PositiveButton({ info, mode, afterAction }) {
         else
           return acceptPhoto(data).then(async (res) => {
             const photoResponse = await getPhotoData({ counter_id: info.id });
-            info.photo = photoResponse.photo_url;
 
             if (res) {
               afterAction(
@@ -93,7 +94,8 @@ function PositiveButton({ info, mode, afterAction }) {
                   <br />
                   매칭 수락 여부를 24시간 내에 결정해주세요.
                 </>,
-                false
+                false,
+                photoResponse.photo_url
               );
             }
           });
@@ -160,17 +162,28 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
     if (mode === "recommend") {
       return deleteRecommend().then(async (res) => {
         if (res) {
-          setLetterMessage(<>프로필을 거절했어요.</>);
+          updateLetterMessage(
+            copiedInfo,
+            setCopiedInfo,
+            index,
+            <>프로필을 거절했어요.</>
+          );
           setActionVisible(false);
         }
       });
-    } else if (mode === "request") {
+    } else if (mode === "request" || mode === "detail") {
       const deleteRes = await deleteRequestForMe({
         matching_type: copiedInfo[i].matching_type,
         counter_id: copiedInfo[i].counter_id,
       });
       if (deleteRes) {
-        setLetterMessage(<>프로필을 거절했어요.</>);
+        updateLetterMessage(
+          copiedInfo,
+          setCopiedInfo,
+          index,
+          <>프로필을 거절했어요.</>
+        );
+
         setActionVisible(false);
       }
     }
@@ -204,12 +217,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
           <IconImage src={closeIcon}></IconImage>
         </button>
         {copiedInfo.map((i, k) => (
-          <Letter
-            key={k}
-            info={i}
-            index={index}
-            message={letterMessage}
-          ></Letter>
+          <Letter key={k} info={i} index={index}></Letter>
         ))}
       </div>
 
@@ -218,10 +226,24 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
           <PositiveButton
             info={copiedInfo[index]}
             mode={mode}
-            afterAction={(message, visible) => {
-              setLetterMessage(message);
+            afterAction={(message, visible, photo = null) => {
+              const temp = { ...copiedInfo[index] };
+              (() => {
+                temp.message = message;
+              })();
+
               setActionVisible(visible);
-              setCopiedInfo([...copiedInfo]);
+              photo &&
+                (() => {
+                  temp.photo = `${TARGET}/${photo}`;
+                })();
+              let newList = [];
+              for (let i = 0; i < copiedInfo.length; i++) {
+                if (i === index) newList = [...newList, temp];
+                else newList = [...newList, copiedInfo[i]];
+              }
+
+              setCopiedInfo(newList);
             }}
           />
           <button

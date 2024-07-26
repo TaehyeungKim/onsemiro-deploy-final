@@ -4,6 +4,7 @@ import {
   getRestrictedProfile,
   getMatchingList,
   requestKakaoId,
+  getPhotoData,
 } from "apis/api";
 import {
   REQUEST_MESSAGE_MAP,

@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { AUTH_UNIV_LIST } from "assets/asset";
 import LetterLayout from "layouts/LetterLayout";
-import { getDetailedInfo } from "apis/api";
+import { getDetailedInfo, TARGET } from "apis/api";
 import { soapDetailViewData } from "components/HomeContent/utils";
 
 // import { createFuzzyMatcher } from "utils/match";
@@ -144,9 +144,6 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                     matching_num: info.matching_num,
                     matching_index: info.matching_index,
                   });
-                  // console.log("index", info.matching_index);
-                  // console.log("num", info.matching_num);
-                  // console.log("data", res.data);
 
                   if (res.status === 200) {
                     setDetailVisible(true);
@@ -156,6 +153,7 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                       {
                         date: info.matching_request_at,
                         time: info.time,
+                        photo: `${TARGET}/${info.photo}`,
                       }
                     );
                     setDetailInfo(data);
@@ -163,8 +161,7 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                 }}
               >
                 <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
-                  <IconImage src={testProfile} />
-                  {console.log(info.matching_num)}
+                  <IconImage src={`${TARGET}/${info.photo}`} />
                 </div>
                 <div className="grow flex flex-col justify-between ml-4">
                   <span className="block font-bold">
