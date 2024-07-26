@@ -47,3 +47,8 @@ export const photoDataState = atom({
   key: "photoDataState",
   default: [],
 });
+
+export const activeState = atom({
+  key: "activeState",
+  default: false,
+});

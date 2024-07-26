@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 
 import { FloatingLetterOverlay } from "components/Overlay";
 
-import { recommendDataState } from "state/state";
-import { useRecoilState } from "recoil";
+import { recommendDataState, activeState } from "state/state";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import { getRecommendation, dayRender } from "./utils";
 import { TIME_MAP } from "assets/asset";
@@ -54,6 +54,7 @@ function RecommendButtonMessage({ type }) {
 export default function Recommend() {
   const [recommendData, setRecommendData] = useRecoilState(recommendDataState);
   const [letterVisible, setLetterVisible] = useState(false);
+  const active = useRecoilValue(activeState);
 
   const closeLetter = useCallback(() => {
     setLetterVisible(false);
@@ -61,7 +62,7 @@ export default function Recommend() {
 
   useEffect(() => {
     getRecommendation(setRecommendData);
-  }, []);
+  }, [, active]);
 
   if (!recommendData[0]) return;
 

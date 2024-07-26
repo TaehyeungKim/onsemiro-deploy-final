@@ -223,3 +223,21 @@ export const getPhotoResults = async () => {
 
   return response;
 };
+
+export const toggleActiveMode = async () => {
+  const response = await instanceWithToken.put("/account/activate/");
+
+  if (response.status === 200) {
+    if (response.data[0] === "message : is_activate : True") return true;
+    return false;
+  }
+};
+
+export const getActiveMode = async () => {
+  const response = await instanceWithToken.get("/account/activate/");
+
+  if (response.status === 200) {
+    if (response.data[0] === "message : is_activate : True") return true;
+    return false;
+  }
+};

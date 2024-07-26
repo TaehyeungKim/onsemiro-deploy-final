@@ -1,10 +1,19 @@
 import styles from "./index.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { toggleActiveMode, getActiveMode } from "apis/api";
+import { activeState } from "state/state";
 
 export default function ActiveMode() {
-  const [isModeOn, setModeOn] = useState(false);
+  const [isModeOn, setModeOn] = useRecoilState(activeState);
 
-  const toggleMode = () => setModeOn(!isModeOn);
+  const toggleMode = async () => {
+    toggleActiveMode().then((res) => setModeOn(res));
+  };
+
+  useEffect(() => {
+    getActiveMode().then((res) => setModeOn(res));
+  }, []);
 
   return (
     <div className="flex items-center cursor-pointer" onClick={toggleMode}>

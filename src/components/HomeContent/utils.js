@@ -60,6 +60,8 @@ export const callRequestForMe = async (dataSetter) => {
 export const getRecommendation = async (dataSetter) => {
   const recommended = await getRecommend();
 
+  console.log(recommended.data, "active recommend");
+
   if (
     !recommended.data.recommended_user_id ||
     recommended.data.message_type !== 2
