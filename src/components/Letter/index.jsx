@@ -16,12 +16,11 @@ import {
 import  messageFrom  from "assets/message/message.png";
 import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
 
+
 import "./index.css";
 
 export default function Letter({ info, index, message, close }) {
   const keys = useMemo(() => filterValidProfileKey(info), [info]);
-
-  const visibleInfoContext = useContext(VisibleInfoContext);
 
   useEffect(() => console.log(info), []);
 

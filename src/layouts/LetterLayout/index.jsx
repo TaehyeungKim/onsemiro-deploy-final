@@ -152,7 +152,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
   const [copiedInfo, setCopiedInfo] = useState([...info]);
 
-  const [letterMessage, setLetterMessage] = useState(null);
   const [actionVisible, setActionVisible] = useState(true);
 
   const setRecommendData = useSetRecoilState(recommendDataState);
@@ -196,10 +195,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
       } else if (mode === "request") return callRequestForMe(setRequestData);
     };
   }, []);
-
-  useEffect(() => {
-    setLetterMessage(copiedInfo[index]?.message);
-  }, [copiedInfo, index]);
 
   useEffect(() => {
     if (
