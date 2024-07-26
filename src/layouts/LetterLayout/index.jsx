@@ -45,7 +45,7 @@ function PositiveButton({ info, mode, afterAction }) {
                 <>
                   사진을 요청했어요!
                   <br />
-                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서
+                  요청 결과는 매칭 현황 - 사진 요청 결과에서
                   <br />
                   확인할 수 있어요.
                 </>,

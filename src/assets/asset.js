@@ -353,7 +353,11 @@ export const filterValidProfileKey = (info) =>
       key !== "counter_id" &&
       key !== "render_type" &&
       key !== "matching_request_at" &&
-      key !== "date"
+      key !== "date" &&
+      key !== "matching_index" &&
+      key !== "matcing_num" &&
+      key !== "code" &&
+      key !== "kakao_id"
   );
 
 export const keyMapWithKorean = {
@@ -1542,3 +1546,5 @@ export const TIME_MAP = {
     label: "새벽",
   },
 };
+
+export const HeightRange = {1: "150 이하", 2: "151 이상 155 이하", 3: "156 이상 160 이하", 4: "161 이상 165 이하", 5: "166 이상 170 이하", 6: "171 이상 175 이하", 7: "176 이상 180 이하", 8: "181 이상 185 이하", 9: "185 초과"};

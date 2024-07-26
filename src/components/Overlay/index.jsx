@@ -160,7 +160,7 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                   }
                 }}
               >
-                <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
+                <div className="w-10 aspect-square rounded-full overflow-hidden flex items-center justify-center">
                   <IconImage src={`${TARGET}/${info.photo}`} />
                 </div>
                 <div className="grow flex flex-col justify-between ml-4">
@@ -170,14 +170,14 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                   <span className="block">
                     {info.user2_profile.age}세 {info.user2_profile.gender}
                   </span>
-                  <div className="flex w-full gap-2">
-                    <span className="bg-main text-white block grow rounded-lg text-center shadow-md">
+                  <div className="flex w-full gap-1 text-xs">
+                    <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
                       #{info.user2_profile.univ}
                     </span>
-                    <span className="bg-main text-white block grow rounded-lg text-center shadow-md">
+                    <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
                       #{info.user2_profile.location}
                     </span>
-                    <span className="bg-main text-white block grow rounded-lg text-center shadow-md">
+                    <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
                       #{info.user2_profile.mbti}
                     </span>
                   </div>
