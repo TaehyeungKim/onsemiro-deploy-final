@@ -45,7 +45,7 @@ function PositiveButton({ info, mode, afterAction }) {
                 <>
                   매칭 요청을 보냈습니다.
                   <br />
-                  상대방의 매칭 수락 여부가 
+                  상대방의 매칭 수락 여부가
                   <br />
                   24시간 내에 결정돼요.
                 </>,
@@ -60,7 +60,7 @@ function PositiveButton({ info, mode, afterAction }) {
                 <>
                   사진을 요청했어요! 사진 요청 결과는
                   <br />
-                  매칭 현황 보기 - 사진 요청 결과에서 
+                  매칭 현황 보기 - 사진 요청 결과에서
                   <br />
                   확인할 수 있어요.
                 </>,
@@ -93,7 +93,7 @@ function PositiveButton({ info, mode, afterAction }) {
                 <>
                   사진이 공개됐어요!
                   <br />
-                  매칭 수락 여부를 
+                  매칭 수락 여부를
                   <br />
                   24시간 내에 결정해주세요.
                 </>,
@@ -155,7 +155,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
   const [copiedInfo, setCopiedInfo] = useState([...info]);
 
-  const [letterMessage, setLetterMessage] = useState(null);
   const [actionVisible, setActionVisible] = useState(true);
 
   const setRecommendData = useSetRecoilState(recommendDataState);
