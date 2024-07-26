@@ -8,30 +8,45 @@ import { PLAY_DATA } from "assets/asset";
 import { PlayExitAlert } from "components/Overlay";
 
 export default function PlayLayout({ test, level, total, setter }) {
-  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [selectedCheckBoxes, setSelectedCheckBoxes] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [stopAlertVisible, setStopAlertVisible] = useState(false);
   const [startTest, setStartTest] = useState(false);
+  const [endTestVisible, setEndTestVisible] = useState(false);
 
   useEffect(() => {
     console.log(test, level);
   }, [test, level]);
 
+  useEffect(() => {
+    if (selectedAnswers.length === total && level === total) {
+      setShowResults(true);
+    }
+  }, [selectedAnswers, level, total]);
+
+  useEffect(() => {
+    selectedAnswers.sort((a,b) => a.questionId - b.questionId)
+  }, [level])
+
   const data = test.questions[level];
 
   const handleAnswerChange = (questionId, answerIndex) => {
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [questionId]: answerIndex,
-    }));
+    setSelectedAnswers((prev) => ([...prev, {
+      questionId, answerIndex
+    }]));
   };
+
+  useEffect(() => {
+    if (selectedAnswers.length > 0)
+    handleNextClick();
+  }, [selectedAnswers]);
 
   const handleNextClick = () => {
     if (level + 1 < total) {
       setter(level + 1);
     } else {
-      const allAnswered = Object.keys(selectedAnswers).length === total;
+      const allAnswered = selectedAnswers.length === total;
       if (allAnswered) {
         setShowResults(true);
       } else {
@@ -78,9 +93,7 @@ export default function PlayLayout({ test, level, total, setter }) {
   };
 
   const handleCompleteSelection = () => {
-    alert("프로필에 표시할 문항 선택 완료!");
-    console.log(selectedCheckBoxes);
-    setter(null);
+    setEndTestVisible(true);
   };
 
   const handleClose = () => {
@@ -96,6 +109,7 @@ export default function PlayLayout({ test, level, total, setter }) {
   };
 
   if (showResults) {
+    console.log(selectedAnswers)
     return (
       <div className="flex flex-col h-screen p-5">
         {stopAlertVisible && (
@@ -104,6 +118,14 @@ export default function PlayLayout({ test, level, total, setter }) {
             confirm={confirmClose}
           >
             <h4 className="font-bold">테스트를 종료하시겠습니까?</h4>
+          </PlayExitAlert>
+        )}
+        {endTestVisible && (
+          <PlayExitAlert
+            close={() => setEndTestVisible(false)}
+            confirm={confirmClose}
+          >
+            <h4 className="font-bold">프로필에 등록할 문항을 선택 완료했습니다.</h4>
           </PlayExitAlert>
         )}
         <header className="w-full flex justify-end pl-2 pr-2">
@@ -135,27 +157,27 @@ export default function PlayLayout({ test, level, total, setter }) {
           </button>
         </div>
         <section className="flex flex-col flex-1 overflow-auto">
-          {Object.keys(selectedAnswers).map((questionId) => {
-            const answerIndex = selectedAnswers[questionId];
+          {selectedAnswers.map((a) => {
+            const answerIndex = a.answerIndex;
             const question = test.questions.find(
-              (q) => q.id === parseInt(questionId)
+              (q) => q.id === parseInt(a.questionId)
             );
             const answer = question.answers[answerIndex];
 
             return (
               <div
-                key={questionId}
-                onClick={() => handleCheckboxChange(questionId)}
+                key={a.questionId}
+                onClick={() => handleCheckboxChange(a.questionId)}
                 className={`w-full flex items-center justify-start mb-4 p-2 border rounded shadow cursor-pointer ${
-                  selectedCheckBoxes[questionId] ? "bg-main" : ""
+                  selectedCheckBoxes[a.questionId] ? "bg-main" : ""
                 }`}
               >
                 <div>
                   <p className="font-bold">
-                    Q{parseInt(questionId) + 1}. {question.question}
+                    Q{parseInt(a.questionId) + 1}. {question.question}
                   </p>
                   <p>
-                    A{parseInt(questionId) + 1}. {answer}
+                    A{parseInt(a.questionId) + 1}. {answer}
                   </p>
                 </div>
               </div>
@@ -214,7 +236,6 @@ export default function PlayLayout({ test, level, total, setter }) {
         </div>
       );
     } else {
-      const questionIndex = level;
 
       return (
         <div className="flex flex-col h-screen">
@@ -250,10 +271,12 @@ export default function PlayLayout({ test, level, total, setter }) {
                   name={`answer_${level}`}
                   id={`answer_${level}_${i}`}
                   className="peer"
-                  checked={selectedAnswers[`${data.id}-${questionIndex}`] === i}
-                  onChange={() =>
-                    handleAnswerChange(`${data.id}-${questionIndex}`, i)
-                  }
+                  checked={selectedAnswers.find((answer) => 
+                    answer.questionId === level)?.answerIndex === i}
+                  onChange={() => {
+                    handleAnswerChange(level, i)
+                    console.log(level)
+                  }}
                 />
                 <label
                   htmlFor={`answer_${level}_${i}`}
