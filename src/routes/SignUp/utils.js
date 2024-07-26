@@ -73,6 +73,7 @@ export const dataSoapBeforeSubmit = (data) => {
     ideal_age: 0,
     ideal_bdsm: "",
     ideal_height: "",
+    ideal_weight: "",
     ideal_appearance: "",
     ideal_eyelid: "",
     ideal_mbti: "",

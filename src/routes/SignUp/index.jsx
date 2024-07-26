@@ -12,7 +12,7 @@ import closeButton from "assets/icons/ph_x.png";
 import SignUpSub from "./sub";
 import { MainCustomButton } from "components/CustomButton";
 import { IdealChoiceSub } from "./subs/ideal";
-import { requestAuthSchool } from "apis/api";
+import { requestAuthSchool, submitSignUpData } from "apis/api";
 
 import { SignUpCancleAlert } from "components/Overlay";
 import { useNavigate } from "react-router-dom";
@@ -62,10 +62,10 @@ function SignUpMain({ curLevel, levelSetter, total }) {
       if (curLevel === 13) {
         const data = dataSoapBeforeSubmit(signUpData);
         console.log(data);
-        // submitSignUpData(data, {
-        //   photo: signUpData.photo,
-        //   std_test_report: signUpData.std,
-        // });
+          submitSignUpData(data, {
+          photo: signUpData.photo,
+          std_test_report: signUpData.std,
+        });
       } else if (curLevel === 0) {
         const { email, univ, verification_code } = authSchool;
         requestAuthSchool({ email, univ, verification_code }).then((res) => {

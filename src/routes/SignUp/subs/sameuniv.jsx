@@ -10,7 +10,7 @@ export default function SameUniv() {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
 
   const [sameUniv, setSameUniv] = useState(
-    signUpData.same_univ === false ? false : true
+    signUpData.same_univ === false ? false : undefined
   );
 
   useEffect(() => {
@@ -32,8 +32,8 @@ export default function SameUniv() {
               id="ok"
               className="peer"
               value={true}
-              defaultChecked={sameUniv === true ?? false}
               onChange={(e) => setSameUniv(e.target.value === "true")}
+              defaultChecked={sameUniv === true}
             />
             <label
               htmlFor="ok"
@@ -53,7 +53,7 @@ export default function SameUniv() {
               id="no"
               className="peer"
               // value={false}
-              defaultChecked={sameUniv === false ?? false}
+              defaultChecked={sameUniv === false}
               onChange={(e) => setSameUniv(e.target.value === "true")}
             />
             <label

@@ -203,7 +203,7 @@ export function SelectionRadioGrid({ collection, name, setter, defaultV }) {
   // const [data, setData] = useRecoilState(atom);
 
   return (
-    <div className="grid grid-cols-2 gap-5 w-3/4 mx-auto mt-10">
+    <div className="grid grid-cols-2 gap-5 w-5/6 mx-auto mt-10 mb-5">
       {collection.map((value, i) => {
         return (
           <div
