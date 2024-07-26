@@ -152,6 +152,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
 
   const [copiedInfo, setCopiedInfo] = useState([...info]);
 
+  const [letterMessage, setLetterMessage] = useState(null);
   const [actionVisible, setActionVisible] = useState(true);
 
   const setRecommendData = useSetRecoilState(recommendDataState);
@@ -197,6 +198,10 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   }, []);
 
   useEffect(() => {
+    setLetterMessage(copiedInfo[index]?.message);
+  }, [copiedInfo, index]);
+
+  useEffect(() => {
     if (
       mode === "detail" &&
       [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(copiedInfo[index].code)
@@ -209,7 +214,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
     <VisibleInfoContext.Provider value={copiedInfo[index]}>
       <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-background rounded-xl relative pb-2 shadow-md">
         {copiedInfo.map((i, k) => (
-          <Letter key={k} info={i} index={index}></Letter>
+          <Letter key={k} info={i} close={close} index={index}></Letter>
         ))}
       </div>
 
