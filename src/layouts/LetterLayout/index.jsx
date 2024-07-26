@@ -30,6 +30,7 @@ import {
 } from "components/HomeContent/utils";
 
 import { TARGET } from "apis/api";
+import { updateLetterMessage } from "./utils";
 
 export const VisibleInfoContext = createContext(null);
 
@@ -161,17 +162,28 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
     if (mode === "recommend") {
       return deleteRecommend().then(async (res) => {
         if (res) {
-          setLetterMessage(<>프로필을 거절했어요.</>);
+          updateLetterMessage(
+            copiedInfo,
+            setCopiedInfo,
+            index,
+            <>프로필을 거절했어요.</>
+          );
           setActionVisible(false);
         }
       });
-    } else if (mode === "request") {
+    } else if (mode === "request" || mode === "detail") {
       const deleteRes = await deleteRequestForMe({
         matching_type: copiedInfo[i].matching_type,
         counter_id: copiedInfo[i].counter_id,
       });
       if (deleteRes) {
-        setLetterMessage(<>프로필을 거절했어요.</>);
+        updateLetterMessage(
+          copiedInfo,
+          setCopiedInfo,
+          index,
+          <>프로필을 거절했어요.</>
+        );
+
         setActionVisible(false);
       }
     }
