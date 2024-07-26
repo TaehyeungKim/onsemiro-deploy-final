@@ -43,11 +43,9 @@ function PositiveButton({ info, mode, afterAction }) {
             if (res) {
               afterAction(
                 <>
-                  사진을 요청했어요!
+                  매칭 요청을 보냈습니다.
                   <br />
-                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서
-                  <br />
-                  확인할 수 있어요.
+                  상대방의 매칭 수락 여부가 24시간 내에 결정돼요.
                 </>,
                 false
               );
@@ -232,7 +230,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
               setActionVisible(visible);
               photo &&
                 (() => {
-                  temp.photo = `${TARGET}/${photo}`;
+                  temp.photo = photo;
                 })();
               let newList = [];
               for (let i = 0; i < copiedInfo.length; i++) {

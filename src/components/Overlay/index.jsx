@@ -12,6 +12,7 @@ import { AUTH_UNIV_LIST } from "assets/asset";
 import LetterLayout from "layouts/LetterLayout";
 import { getDetailedInfo, TARGET } from "apis/api";
 import { soapDetailViewData } from "components/HomeContent/utils";
+import ProfileWOPhoto from "assets/profile1.png";
 
 // import { createFuzzyMatcher } from "utils/match";
 
@@ -153,7 +154,7 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                       {
                         date: info.matching_request_at,
                         time: info.time,
-                        photo: `${TARGET}/${info.photo}`,
+                        photo: info.photo,
                       }
                     );
                     setDetailInfo(data);
@@ -161,7 +162,11 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                 }}
               >
                 <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
-                  <IconImage src={`${TARGET}/${info.photo}`} />
+                  <IconImage
+                    src={
+                      info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto
+                    }
+                  />
                 </div>
                 <div className="grow flex flex-col justify-between ml-4">
                   <span className="block font-bold">

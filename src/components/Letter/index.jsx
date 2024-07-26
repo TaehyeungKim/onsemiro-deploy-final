@@ -13,9 +13,9 @@ import {
   keyMapWithKorean,
   TIME_MAP,
 } from "assets/asset";
-import  messageFrom  from "assets/message/message.png";
+import messageFrom from "assets/message/message.png";
 import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
-
+import { TARGET } from "apis/api";
 
 import "./index.css";
 
@@ -62,7 +62,9 @@ export default function Letter({ info, index, message, close }) {
       </section>
       <div className="px-5 w-full mt-3 relative">
         <div className="w-1/4 m-auto">
-          <IconImage src={info.photo ?? ProfileWOPhoto} />
+          <IconImage
+            src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
+          />
         </div>
         <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
           <div className="w-4 mr-2">
@@ -88,7 +90,7 @@ export default function Letter({ info, index, message, close }) {
       <section className={`px-5 w-full rounded-3xl block`}>
         <div className="flex-col items-center">
           <div className="w-12 ml-[25%]">
-            <IconImage src={messageFrom}/>
+            <IconImage src={messageFrom} />
           </div>
           <div className="w-full bg-mint text-center rounded-2xl shadow-lg">
             <h4 className="w-full p-4 break-all">{info.introduction}</h4>
