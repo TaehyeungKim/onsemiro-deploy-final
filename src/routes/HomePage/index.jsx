@@ -5,10 +5,20 @@ import Recommend from "components/HomeContent/recommend";
 import Request from "components/HomeContent/request";
 import { useRecoilValue } from "recoil";
 import { matchDataState, photoDataState } from "state/state";
+import { useEffect } from "react";
 
 export default function HomePage() {
   const matchResults = useRecoilValue(matchDataState);
   const photoResults = useRecoilValue(photoDataState);
+
+  useEffect(() => {
+    console.log(
+      matchResults.flat(),
+      matchResults.length,
+      photoResults.flat(),
+      photoResults.length
+    );
+  }, [matchResults, photoResults]);
 
   return (
     <div className="flex flex-col grow">
@@ -20,8 +30,14 @@ export default function HomePage() {
         <section className="mt-28 px-6 flex flex-col items-center justify-center grow">
           <MatchingSituation
             count={{
-              matching: matchResults.length,
-              photo: photoResults.length,
+              matching: matchResults.reduce(
+                (prev, cur) => prev + cur.data.length,
+                0
+              ),
+              photo: photoResults.reduce(
+                (prev, cur) => prev + cur.data.length,
+                0
+              ),
             }}
           />
           <Recommend></Recommend>

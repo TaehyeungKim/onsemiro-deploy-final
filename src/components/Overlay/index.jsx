@@ -112,9 +112,6 @@ export function MatchMenuOverlay({ count, close, opener }) {
 export function ResultListOverlay({ close, dataByDay = [] }) {
   const [detailVisible, setDetailVisible] = useState(false);
   const [detailInfo, setDetailInfo] = useState(null);
-  // const [matchResultsData, setMatchResultsData] =
-  //   useRecoilState(matchDataState);
-  // const []
 
   if (detailVisible && detailInfo)
     return (
@@ -122,6 +119,7 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
         info={[detailInfo]}
         close={() => {
           setDetailVisible(false);
+          setDetailInfo(null);
         }}
         mode={"detail"}
       />

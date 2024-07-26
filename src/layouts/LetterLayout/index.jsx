@@ -81,14 +81,16 @@ function PositiveButton({ info, mode, afterAction }) {
         else
           return acceptPhoto(data).then(async (res) => {
             const photoResponse = await getPhotoData({ counter_id: info.id });
-            console.log(photoResponse.data);
 
             if (res) {
-              <>
-                사진이 공개됐어요!
-                <br />
-                매칭 수락 여부를 24시간 내에 결정해주세요.
-              </>;
+              afterAction(
+                <>
+                  사진이 공개됐어요!
+                  <br />
+                  매칭 수락 여부를 24시간 내에 결정해주세요.
+                </>,
+                false
+              );
             }
           });
       }
@@ -141,65 +143,13 @@ function PositiveButton({ info, mode, afterAction }) {
 
 export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   const [index, setIndex] = useState(i);
-  const [positiveButtonMessage, setPositiveButtonMessage] = useState("");
-  const [positiveButtonColor, setPositiveButtonColor] = useState("");
+
   const [copiedInfo] = useState([...info]);
   const [letterMessage, setLetterMessage] = useState(null);
   const [actionVisible, setActionVisible] = useState(true);
 
   const setRecommendData = useSetRecoilState(recommendDataState);
   const setRequestData = useSetRecoilState(requestDataState);
-
-  const positiveCall = useCallback(
-    async (data) => {
-      if (mode === "recommend") {
-        if (copiedInfo[index].matching_type === 1)
-          return requestMatching(data).then((res) => {
-            if (res) {
-              setLetterMessage(
-                <>
-                  사진을 요청했어요!
-                  <br />
-                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서
-                  <br />
-                  확인할 수 있어요.
-                </>
-              );
-              setActionVisible(false);
-            }
-          });
-        else
-          return requestPhoto(data).then((res) => {
-            if (res) {
-              setLetterMessage(
-                <>
-                  사진을 요청했어요!
-                  <br />
-                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서 <br />
-                  확인할 수 있어요.
-                </>
-              );
-              setActionVisible(false);
-            }
-          });
-      } else if (mode === "request") {
-        if (copiedInfo[index].matching_type === 1)
-          return acceptMatching(data).then((res) => {
-            if (res.status === 200 || res.status === 201) {
-              close();
-            }
-          });
-        else
-          return acceptPhoto(data).then((res) => {
-            if (res) {
-              close();
-            }
-          });
-        return;
-      }
-    },
-    [mode, index]
-  );
 
   const negativeCall = useCallback(async () => {
     if (mode === "recommend") {
@@ -222,22 +172,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   }, [mode, index]);
 
   useEffect(() => {
-    if (mode === "request")
-      setPositiveButtonMessage(
-        copiedInfo[index]?.matching_type === 1 ? "매칭 수락" : "사진 공개"
-      );
-    else if (mode === "recommend")
-      setPositiveButtonMessage(
-        copiedInfo[index]?.matching_type === 1 ? "매칭 요청" : "사진 요청"
-      );
-
-    (mode === "recommend" || mode === "request") &&
-      setPositiveButtonColor(
-        copiedInfo[index]?.matching_type === 1 ? "bg-main" : "bg-sub"
-      );
-  }, [index]);
-
-  useEffect(() => {
     return () => {
       if (mode === "recommend") {
         return getRecommendation(setRecommendData);
@@ -253,15 +187,11 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
   useEffect(() => {
     if (
       mode === "detail" &&
-      [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(info.code)
+      [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(copiedInfo[index].code)
     ) {
       setActionVisible(false);
     }
-  }, [mode]);
-
-  useEffect(() => {
-    console.log(info);
-  }, []);
+  }, [mode, info]);
 
   return (
     <>
