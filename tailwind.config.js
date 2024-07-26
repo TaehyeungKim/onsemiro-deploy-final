@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const headerHeight = 75
+const headerHeight = 75;
 
 module.exports = {
   content: ["./src/**/*.{html,js,jsx}"],
@@ -34,6 +34,7 @@ module.exports = {
         "light-green": "#2EEF4D",
         mint: "#CDF0EA",
         "count-red": "#F35757",
+        "play-black": "#3C3C3C",
       },
       borderRadius: {
         half: "50%",

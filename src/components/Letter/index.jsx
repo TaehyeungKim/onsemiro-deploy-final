@@ -19,7 +19,6 @@ import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
 
 import { TARGET } from "apis/api";
 
-
 import "./index.css";
 
 export default function Letter({ info, index, message, close }) {
@@ -42,7 +41,7 @@ export default function Letter({ info, index, message, close }) {
           <IconImage src={closeIcon}></IconImage>
         </button>
       </header>
-      <div className="px-10 mx-3 bg-main text-center rounded-2xl shadow-lg py-2 my-5">
+      <div className="px-8 mx-3 bg-main text-center rounded-2xl shadow-lg py-2 my-5">
         <p className="w-full">{info.message}</p>
       </div>
       <section className="px-5 w-full mb-2">
@@ -115,13 +114,10 @@ export default function Letter({ info, index, message, close }) {
                     ? info[key] &&
                       `${info[key]} ${info["eyelid"] && info["eyelid"]}`
                     : key === "height"
-                      ? info[key] &&
-                        HeightRange[info[key]]
-                      : key === "meeting_frequency"
-                        ? info[key] &&
-                          `주 ${info[key]}회`
-                          :
-                    info[key] ?? null
+                    ? info[key] && HeightRange[info[key]]
+                    : key === "meeting_frequency"
+                    ? info[key] && `주 ${info[key]}회`
+                    : info[key] ?? null
                 }
                 key={key}
               ></ProfileLine>
