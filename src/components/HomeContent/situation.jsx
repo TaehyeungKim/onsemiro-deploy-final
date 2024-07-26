@@ -35,6 +35,9 @@ export default function MatchingSituation({ count }) {
               cleanMatchList(getMatchingList).then((res) =>
                 setMatchResultsData(res)
               );
+              cleanMatchList(getPhotoResults).then((res) =>
+                setPhotoResultsData(res)
+              );
             }}
             dataByDay={matchResultsData}
           />
@@ -44,6 +47,9 @@ export default function MatchingSituation({ count }) {
           <ResultListOverlay
             close={() => {
               dispatch({ for: "menu" });
+              cleanMatchList(getMatchingList).then((res) =>
+                setMatchResultsData(res)
+              );
               cleanMatchList(getPhotoResults).then((res) =>
                 setPhotoResultsData(res)
               );

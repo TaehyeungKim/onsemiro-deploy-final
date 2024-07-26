@@ -3,9 +3,10 @@ import MainIconSection from ".";
 import { useState, useEffect, useCallback } from "react";
 
 import { FloatingLetterOverlay } from "components/Overlay";
-import { useRecoilState } from "recoil";
-import { requestDataState } from "state/state";
-import { callRequestForMe } from "./utils";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { requestDataState, matchDataState, photoDataState } from "state/state";
+import { callRequestForMe, cleanMatchList } from "./utils";
+import { getMatchingList, getPhotoResults } from "apis/api";
 
 function RequestHold({ count }) {
   return (
@@ -24,8 +25,14 @@ export default function Request() {
   const [letterVisible, setLetterVisible] = useState(false);
   const [requestIndex, setRequestIndex] = useState(0);
 
+  const setResultsState = useSetRecoilState(matchDataState);
+  const setPhotoState = useSetRecoilState(photoDataState);
+
   const closeLetter = useCallback(() => {
     setLetterVisible(false);
+    callRequestForMe(setRequestData);
+    cleanMatchList(getMatchingList).then((res) => setResultsState(res));
+    cleanMatchList(getPhotoResults).then((res) => setPhotoState(res));
   }, []);
 
   useEffect(() => {

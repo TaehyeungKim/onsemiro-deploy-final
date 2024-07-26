@@ -200,9 +200,9 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
     };
   }, []);
 
-  useEffect(() => {
-    setLetterMessage(copiedInfo[index]?.message);
-  }, [copiedInfo, index]);
+  // useEffect(() => {
+  //   setLetterMessage(copiedInfo[index]?.message);
+  // }, [copiedInfo, index]);
 
   useEffect(() => {
     if (
