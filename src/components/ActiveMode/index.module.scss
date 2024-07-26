@@ -1,0 +1,35 @@
+$height: 20px;
+$width: 60px;
+
+.frame {
+  border-radius: calc($height/2);
+  width: $width;
+  height: $height;
+  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.below-layer {
+  height: $height;
+}
+
+.below-layer-off {
+  width: calc($height/2);
+}
+
+.below-layer-on {
+  width: calc($width - $height/2);
+}
+
+.transition {
+  transition-property: width, left, right;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.5s;
+}
+
+.slider-off {
+  left: 0px;
+}
+
+.slider-on {
+  left: calc(100% - $height);
+}

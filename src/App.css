@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .range-point-selected {
+    @apply block h-1/2 bg-white content-[''] aspect-square rounded-full;
+  }
+}

@@ -1,0 +1,15 @@
+.range-point {
+  transform-origin: center;
+  // h-full aspect-square rounded-full shadow-md
+  aspect-ratio: 1;
+  border-radius: 50%;
+  height: 100%;
+}
+
+.range-point-left {
+  transform: translateX(-50%) scale(200%);
+}
+
+.range-point-right {
+  transform: translateX(50%) scale(200%);
+}

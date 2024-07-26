@@ -1,0 +1,25 @@
+@keyframes afterLogin {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 100px;
+  }
+}
+
+@keyframes verificationAppear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.afterLogin {
+  animation: afterLogin 0.5s ease-in-out forwards;
+}
+
+.verificationAppear {
+  animation: verificationAppear 0.5s ease-in-out forwards;
+}
