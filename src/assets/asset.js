@@ -145,7 +145,7 @@ export const Conditions = [
     label: "나이",
   },
   {
-    condition: "sexual",
+    condition: "bdsm",
     icon: sexual,
     label: "성적 성향",
   },
@@ -155,7 +155,7 @@ export const Conditions = [
     label: "키",
   },
   {
-    condition: "shape",
+    condition: "weight",
     icon: shape,
     label: "체형",
   },
@@ -178,11 +178,6 @@ export const Conditions = [
     condition: "character",
     icon: character,
     label: "성격",
-  },
-  {
-    condition: "frequency",
-    label: "원하는 만남 주기",
-    icon: frequency,
   },
   {
     condition: "location",
@@ -288,28 +283,12 @@ export const CITYSET = [
     sub: ["수정구", "중원구", "분당구"],
   },
   {
-    city: "의정부시",
-    sub: [],
-  },
-  {
     city: "안양시",
     sub: ["만안구", "동안구"],
   },
   {
     city: "부천시",
     sub: ["원미구", "소사구", "오정구"],
-  },
-  {
-    city: "광명시",
-    sub: [],
-  },
-  {
-    city: "동두천시",
-    sub: [],
-  },
-  {
-    city: "평택시",
-    sub: [],
   },
   {
     city: "안산시",
@@ -320,88 +299,8 @@ export const CITYSET = [
     sub: ["덕양구", "일산동구", "일산서구"],
   },
   {
-    city: "과천시",
-    sub: [],
-  },
-  {
-    city: "구리시",
-    sub: [],
-  },
-  {
-    city: "남양주시",
-    sub: [],
-  },
-  {
-    city: "오산시",
-    sub: [],
-  },
-  {
-    city: "시흥시",
-    sub: [],
-  },
-  {
-    city: "군포시",
-    sub: [],
-  },
-  {
-    city: "의왕시",
-    sub: [],
-  },
-  {
-    city: "하남시",
-    sub: [],
-  },
-  {
     city: "용인시",
     sub: ["처인구", "기흥구", "수지구"],
-  },
-  {
-    city: "파주시",
-    sub: [],
-  },
-  {
-    city: "이천시",
-    sub: [],
-  },
-  {
-    city: "안성시",
-    sub: [],
-  },
-  {
-    city: "김포시",
-    sub: [],
-  },
-  {
-    city: "화성시",
-    sub: [],
-  },
-  {
-    city: "광주시",
-    sub: [],
-  },
-  {
-    city: "양주시",
-    sub: [],
-  },
-  {
-    city: "포천시",
-    sub: [],
-  },
-  {
-    city: "여주시",
-    sub: [],
-  },
-  {
-    city: "연천군",
-    sub: [],
-  },
-  {
-    city: "가평군",
-    sub: [],
-  },
-  {
-    city: "양평군",
-    sub: [],
   },
 ];
 

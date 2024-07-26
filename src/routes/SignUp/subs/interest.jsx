@@ -41,7 +41,7 @@ export default function Interest() {
           <br />
           (복수 선택 가능)
         </h5>
-        <div className="flex flex-wrap gap-x-5 gap-y-3 mt-4">
+        <div className="flex flex-wrap gap-x-3 gap-y-2 mt-4">
           {valueSet &&
             valueSet.map((set, i) => (
               <button key={i} className="overflow-hidden rounded-md">
@@ -58,10 +58,10 @@ export default function Interest() {
                   defaultChecked={interest.find((v) => v === set) ?? false}
                 />
                 <label
-                  className="flex px-2 py-1 bg-sub peer-checked:bg-main items-center"
+                  className="flex px-2 py-1 bg-sub peer-checked:bg-main items-center text-sm"
                   htmlFor={set.value}
                 >
-                  <div className="w-3 mr-3">
+                  <div className="w-3 mr-2">
                     <IconImage src={set.icon} />
                   </div>
                   {set.value}
@@ -71,7 +71,7 @@ export default function Interest() {
         </div>
 
         {interest.length > 0 && (
-          <div className="flex justify-center mt-9">
+          <div className="flex justify-center mt-2">
             <InterestSelected icons={icons}></InterestSelected>
           </div>
         )}

@@ -38,7 +38,9 @@ export default function AuthenticateSelf() {
           <div className="w-3">
             <IconImage src={check} />
           </div>
+          <div className="px-2 text-xs">
           이 서비스는 신원이 확인된 사용자만 이용할 수 있어요.
+          </div>
         </h5>
       </FloatingSection>
       <FloatingSection addedStyle="mt-3">

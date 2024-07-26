@@ -18,7 +18,7 @@ import { CharacterSettingSection, MBTISettingSection } from "./subs/character";
 import { FrequencySetSection, LocationSetSection } from "./subs/freqandloc";
 
 function IdealSetCaption({ children }) {
-  return <h5 className="mt-10 text-2xl">{children}</h5>;
+  return <h5 className="mt-12 mx-3 text-xl">{children}</h5>;
 }
 
 function IdealSetChoice({ children }) {
@@ -97,7 +97,7 @@ export function IdealSexualSet({ reqType, setter, tempData }) {
     setter({
       ...tempData,
       [reqType]: {
-        sexual,
+        bdsm: sexual,
       },
     });
   }, [sexual]);
@@ -110,7 +110,7 @@ export function IdealSexualSet({ reqType, setter, tempData }) {
       <IdealSetChoice>
         <SelectionRadioGrid
           collection={sexualTendency}
-          name="sexual"
+          name="bdsm"
           setter={(s) => setSexual(s)}
           defaultV={sexual}
         ></SelectionRadioGrid>
@@ -120,16 +120,16 @@ export function IdealSexualSet({ reqType, setter, tempData }) {
 }
 
 export function IdealShapeSet({ reqType, setter, tempData }) {
-  const [shape, setShape] = useState(tempData[reqType]?.shape ?? "");
+  const [weight, setWeight] = useState(tempData[reqType]?.weight ?? "");
 
   useEffect(() => {
     setter({
       ...tempData,
       [reqType]: {
-        shape,
+        weight,
       },
     });
-  }, [shape]);
+  }, [weight]);
 
   return (
     <>
@@ -139,9 +139,9 @@ export function IdealShapeSet({ reqType, setter, tempData }) {
       <IdealSetChoice>
         <SelectionRadioGrid
           collection={ShapeCollection}
-          name="shape"
-          setter={(shape) => setShape(shape)}
-          defaultV={shape}
+          name="weight"
+          setter={(w) => setWeight(w)}
+          defaultV={weight}
         ></SelectionRadioGrid>
       </IdealSetChoice>
     </>
@@ -275,7 +275,7 @@ export function IdealMBTISet({ reqType, setter, tempData }) {
     setter({
       ...tempData,
       [reqType]: {
-        mbti: `${mbti.first}${mbti.second}${mbti.third}${mbti.fourth}`,
+        mbti: mbti,
       },
     });
   }, [mbti]);
@@ -326,30 +326,6 @@ export function IdealCharacterSet({ reqType, setter, tempData }) {
   );
 }
 
-export function IdealFrequencySet({ reqType, setter, tempData }) {
-  const [meetNum, setMeetNum] = useState(tempData[reqType]?.frequency ?? 1);
-
-  useEffect(() => {
-    setter({ ...tempData, [reqType]: { frequency: meetNum } });
-  }, [meetNum]);
-
-  return (
-    <>
-      <FloatingSection>
-        <IdealSetCaption>
-          이상형이 일주일에 몇 번 만남을 원했으면 좋겠나요?
-        </IdealSetCaption>
-      </FloatingSection>
-      <IdealSetChoice>
-        <FrequencySetSection
-          meetNum={meetNum}
-          setter={(num) => setMeetNum(parseInt(num))}
-        ></FrequencySetSection>
-      </IdealSetChoice>
-    </>
-  );
-}
-
 export function IdealLocationSet({ reqType, setter, tempData }) {
   const [city, setCity] = useState(tempData[reqType]?.location?.city ?? "");
   const [sub, setSub] = useState(tempData[reqType]?.location?.subRegion ?? "");
@@ -368,7 +344,7 @@ export function IdealLocationSet({ reqType, setter, tempData }) {
   return (
     <>
       <FloatingSection>
-        <IdealSetCaption>이상형이 어디에 살았으면 좋겠나요?</IdealSetCaption>
+        <IdealSetCaption>이상형이 어디에 살았으면 <br/>좋겠나요?</IdealSetCaption>
       </FloatingSection>
       <IdealSetChoice>
         <LocationSetSection

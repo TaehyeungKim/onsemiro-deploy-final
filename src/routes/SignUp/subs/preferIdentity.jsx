@@ -23,9 +23,9 @@ export default function PreferIdentity() {
     <>
       <FloatingSection>
         <h5>
-          당신이 온새미로에서 만나고 싶은 이상형의 성정체성은
+          당신이 온새미로에서 만나고 싶은 이상형의
           <br />
-          무엇인가요?
+          성정체성은 무엇인가요?
         </h5>
       </FloatingSection>
       <FloatingSection>

@@ -14,7 +14,6 @@ import {
   IdealAppearanceSet,
   IdealCharacterSet,
   IdealEyelidSet,
-  IdealFrequencySet,
   IdealHeightSet,
   IdealLocationSet,
   IdealMBTISet,
@@ -35,17 +34,17 @@ function ConditionSelect({ label, reqType }) {
 
   return (
     <div className="bg-input flex flex-col items-center w-full rounded-lg">
-      <h3 className="py-10 text-2xl font-bold">{label}</h3>
+      <h3 className="py-7 text-2xl text-center font-bold">{label}</h3>
       {!signUpData.preference || !signUpData.preference[reqType] ? (
         <button
-          className=" mb-10 block w-fit after:content-[''] after:w-full after:block after:border-b-2 after:border-main text-main"
+          className="h-12 mb-8 block w-fit after:content-[''] after:w-full after:block after:border-b-2 after:border-main text-main"
           onClick={() => setIdealChoiceVisible({ visible: true, reqType })}
         >
           고르기
         </button>
       ) : (
         <button
-          className="bg-input-darker w-4/5 py-3 flex justify-center items-center rounded-lg my-3"
+          className=" bg-input-less-darker w-4/5 py-3 flex justify-center items-center rounded-lg mb-5"
           onClick={() => setIdealChoiceVisible({ visible: true, reqType })}
         >
           <div className="w-5 mr-2">
@@ -55,7 +54,7 @@ function ConditionSelect({ label, reqType }) {
                   (condition) =>
                     condition.condition ===
                     Object.keys(signUpData.preference[reqType])[0]
-                ).icon
+                )?.icon
               }
             />
           </div>
@@ -64,7 +63,7 @@ function ConditionSelect({ label, reqType }) {
               (condition) =>
                 condition.condition ===
                 Object.keys(signUpData.preference[reqType])[0]
-            ).label
+            )?.label
           }
         </button>
       )}
@@ -88,8 +87,8 @@ export default function Ideal() {
             <ConditionSelect label={"필수 조건"} reqType={"required"} />
           </div>
           <div className="flex w-full gap-x-3">
-            <ConditionSelect label={"선택 조건 1순위"} reqType={"optional_1"} />
-            <ConditionSelect label={"선택 조건 2순위"} reqType={"optional_2"} />
+            <ConditionSelect label={<>선택 조건<br/>1순위</>} reqType={"optional_1"} />
+            <ConditionSelect label={<>선택 조건<br/>2순위</>} reqType={"optional_2"} />
           </div>
         </div>
       </FloatingSection>
@@ -101,7 +100,7 @@ function ConditionSet({ type, close, reqType }) {
   const [signUpData, setSignUpData] = useRecoilState(signUpState);
   const setIdealChoiceVisible = useSetRecoilState(idealChoiceVisibleState);
 
-  const [isLayoutFloatingEnd, setIsLayoutFloatigEnd] = useRecoilState(
+  const [isLayoutFloatingEnd, setIsLayoutFloatingEnd] = useRecoilState(
     layoutFloatingEndState
   );
 
@@ -141,7 +140,7 @@ function ConditionSet({ type, close, reqType }) {
                   tempData={conditionSetData}
                 />
               );
-            case "sexual":
+            case "bdsm":
               return (
                 <IdealSexualSet
                   reqType={reqType}
@@ -149,7 +148,7 @@ function ConditionSet({ type, close, reqType }) {
                   tempData={conditionSetData}
                 />
               );
-            case "shape":
+            case "weight":
               return (
                 <IdealShapeSet
                   reqType={reqType}
@@ -192,14 +191,6 @@ function ConditionSet({ type, close, reqType }) {
             case "character":
               return (
                 <IdealCharacterSet
-                  reqType={reqType}
-                  setter={setConditionSetData}
-                  tempData={conditionSetData}
-                />
-              );
-            case "frequency":
-              return (
-                <IdealFrequencySet
                   reqType={reqType}
                   setter={setConditionSetData}
                   tempData={conditionSetData}
@@ -278,9 +269,9 @@ export function IdealChoiceSub({ reqType }) {
           <IconImage src={ArrowLeft} />
         </button>
       </header>
-      <div className="w-full px-4 pt-10">
+      <div className="w-full px-4 pt-3">
         <FloatingSection>
-          <h5 className="text-xl">원하는 이상형의 조건을 선택해주세요.</h5>
+          <h5 className="text-lg">원하는 이상형의 조건을 선택해주세요.</h5>
         </FloatingSection>
         <FloatingSection>
           <div className="w-11/12 mx-auto">

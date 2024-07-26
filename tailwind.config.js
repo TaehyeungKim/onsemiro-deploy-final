@@ -28,6 +28,7 @@ module.exports = {
         "mask-deeper": "rgba(0,0,0,0.33)",
         input: "#EAEAEA",
         "input-darker": "#A9A9A9",
+        "input-less-darker": "#bcbcbc",
         pale: "#f5f5f5",
         "sub-pale": "#F2F2F2",
         "light-green": "#2EEF4D",
