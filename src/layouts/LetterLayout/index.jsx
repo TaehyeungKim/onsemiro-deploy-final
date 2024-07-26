@@ -45,7 +45,9 @@ function PositiveButton({ info, mode, afterAction }) {
                 <>
                   매칭 요청을 보냈습니다.
                   <br />
-                  상대방의 매칭 수락 여부가 24시간 내에 결정돼요.
+                  상대방의 매칭 수락 여부가 
+                  <br />
+                  24시간 내에 결정돼요.
                 </>,
                 false
               );
@@ -56,9 +58,10 @@ function PositiveButton({ info, mode, afterAction }) {
             if (res) {
               afterAction(
                 <>
-                  사진을 요청했어요!
+                  사진을 요청했어요! 사진 요청 결과는
                   <br />
-                  사진 요청 결과는 매칭 현황 보기 - 사진 요청 결과에서 <br />
+                  매칭 현황 보기 - 사진 요청 결과에서 
+                  <br />
                   확인할 수 있어요.
                 </>,
                 false
@@ -90,7 +93,9 @@ function PositiveButton({ info, mode, afterAction }) {
                 <>
                   사진이 공개됐어요!
                   <br />
-                  매칭 수락 여부를 24시간 내에 결정해주세요.
+                  매칭 수락 여부를 
+                  <br />
+                  24시간 내에 결정해주세요.
                 </>,
                 false,
                 photoResponse.photo_url

@@ -1405,7 +1405,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             매칭 요청을 보냈습니다.
             <br />
-            상대방의 매칭 수락 여부가 24시간 내에 결정돼요.
+            상대방의 매칭 수락 여부가 
+            <br />
+            24시간 내에 결정돼요.
           </>
         ),
       };
@@ -1416,7 +1418,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             사진이 공개됐어요!
             <br />
-            매칭 수락 여부를 24시간 내에 결정해주세요.
+            매칭 수락 여부를 
+            <br />
+            24시간 내에 결정해주세요.
           </>
         ),
       };
@@ -1427,7 +1431,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             매칭을 수락했어요!
             <br />
-            상대방의 매칭 수락 여부가 24시간 내에 결정돼요.
+            상대방의 매칭 수락 여부가 
+            <br />
+            24시간 내에 결정돼요.
           </>
         ),
       };
@@ -1483,7 +1489,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
             <>
               사진이 공개됐어요!
               <br />
-              매칭 수락 여부를 24시간 내에 결정해주세요.
+              매칭 수락 여부를 
+              <br />
+              24시간 내에 결정해주세요.
             </>
           </>
         ),
@@ -1495,7 +1503,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             사진 요청을 보냈어요!
             <br />
-            상대방이 수락한 요청은 24시간 내에 표시돼요.
+            상대방이 수락한 요청은 
+            <br />
+            24시간 내에 표시돼요.
           </>
         ),
       };
@@ -1507,7 +1517,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             상호 의견이 달라 매칭에 실패하였습니다.
             <br />
-            창을 닫으면 더 이상 프로필을 볼 수 없습니다.
+            창을 닫으면 
+            <br />
+            더 이상 프로필을 볼 수 없습니다.
             <br />
             다음 매칭을 기대해 주세요.
           </>
