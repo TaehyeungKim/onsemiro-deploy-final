@@ -127,6 +127,7 @@ export const requestMatching = async (data) => {
 };
 
 export const requestPhoto = async (data) => {
+  console.log(data);
   const response = await instanceWithToken.post("/matching/type2/photo/", data);
 
   if (response.status === 201) {

@@ -13,14 +13,11 @@ import {
   TIME_MAP,
 } from "assets/asset";
 import { messageFrame } from "assets/message/message";
-import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
 
 import "./index.css";
 
 export default function Letter({ info, index, message }) {
   const keys = useMemo(() => filterValidProfileKey(info), [info]);
-
-  const visibleInfoContext = useContext(VisibleInfoContext);
 
   useEffect(() => console.log(info), []);
 

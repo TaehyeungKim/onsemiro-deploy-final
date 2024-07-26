@@ -10,17 +10,30 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { getRecommendation, dayRender, timeCalculate } from "./utils";
 import { TIME_MAP } from "assets/asset";
 
-
 function RecommendButtonMessage({ type }) {
-
   const [timeMessage, setTimeMessage] = useState("");
 
-  useEffect(()=>{
-    setTimeMessage(`${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainhour}시간 ${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainminute}분`)
-    const timeOut = setInterval(()=>{
-      setTimeMessage(`${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainhour}시간 ${timeCalculate(new Date().getHours(), new Date().getMinutes()).remainminute}분`)
-    },60000)
-  },[])
+  useEffect(() => {
+    setTimeMessage(
+      `${
+        timeCalculate(new Date().getHours(), new Date().getMinutes()).remainhour
+      }시간 ${
+        timeCalculate(new Date().getHours(), new Date().getMinutes())
+          .remainminute
+      }분`
+    );
+    const timeOut = setInterval(() => {
+      setTimeMessage(
+        `${
+          timeCalculate(new Date().getHours(), new Date().getMinutes())
+            .remainhour
+        }시간 ${
+          timeCalculate(new Date().getHours(), new Date().getMinutes())
+            .remainminute
+        }분`
+      );
+    }, 60000);
+  }, []);
   switch (type) {
     case 1:
       return (
