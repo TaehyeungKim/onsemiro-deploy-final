@@ -44,7 +44,6 @@ import age from "../assets/conditions/age.png";
 import appearance from "../assets/conditions/appearance.png";
 import character from "../assets/conditions/character.png";
 import eyelid from "../assets/conditions/eyelid.png";
-import frequency from "../assets/conditions/frequency.png";
 import height from "../assets/conditions/height.png";
 import location from "../assets/conditions/location.png";
 import mbti from "../assets/conditions/mbti.png";
@@ -54,6 +53,7 @@ import shape from "../assets/conditions/shape.png";
 import bdsmImage from "../assets/background/bdsm-test.png";
 import deciImage from "../assets/background/decision-test.png";
 import abilImage from "../assets/background/ability-test.png";
+import { nextLetter } from "components/HomeContent/utils";
 
 export const interestValueSet = [
   {
@@ -1338,6 +1338,7 @@ export const AUTH_UNIV_LIST = [
 ];
 
 export const RECOMMEND_MESSAGE_MAP = (renderType, matchType) => {
+  const nextlettertime = nextLetter(new Date().getHours()).nextTime
   if (matchType === 1) {
     switch (renderType) {
       case 2:
@@ -1345,7 +1346,7 @@ export const RECOMMEND_MESSAGE_MAP = (renderType, matchType) => {
           <>
             사진이 등록되지 않은 사용자에요!
             <br />
-            매칭 수락 여부를 다음 쪽지 시간(17:00)
+            매칭 수락 여부를 다음 쪽지 시간({nextlettertime})
             <br />
             전까지 결정해주세요.
           </>
@@ -1360,7 +1361,7 @@ export const RECOMMEND_MESSAGE_MAP = (renderType, matchType) => {
         <>
           사진이 등록된 사용자에요!
           <br />
-          사진 요청 여부를 다음 쪽지 시간(17:00)
+          사진 요청 여부를 다음 쪽지 시간({nextlettertime})
           <br />
           전까지 결정해주세요.
         </>
@@ -1369,12 +1370,13 @@ export const RECOMMEND_MESSAGE_MAP = (renderType, matchType) => {
 };
 
 export const REQUEST_MESSAGE_MAP = (type) => {
+  const nextlettertime = nextLetter(new Date().getHours()).nextTime
   if (type === 1)
     return (
       <>
         사진이 등록되지 않은 사용자에요!
         <br />
-        매칭 수락 여부를 다음 쪽지 시간(17:00)
+        매칭 수락 여부를 다음 쪽지 시간({nextlettertime})
         <br />
         전까지 결정해주세요.
       </>
@@ -1516,27 +1518,27 @@ export const TIME_SECTION_FOR_RECOMMENDATION = [8, 18, 22, 32];
 
 export const TIME_MAP = {
   morning: {
-    time: "08:00시",
+    time: "08:00",
     label: "아침",
   },
 
   afternoon: {
-    time: "12:00시",
+    time: "12:00",
     label: "오후",
   },
 
   evening: {
-    time: "17:00시",
+    time: "17:00",
     label: "저녁",
   },
 
   night: {
-    time: "23:00시",
+    time: "23:00",
     label: "밤",
   },
 
   dawn: {
-    time: "02:00시",
+    time: "02:00",
     label: "새벽",
   },
 };
