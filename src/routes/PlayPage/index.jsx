@@ -47,7 +47,7 @@ export default function PlayPage() {
         </button>
       </header>
       <main className="flex flex-col w-full mt-header-height relative grow bg-main-image bg-fixed bg-center bg-no-repeat">
-        <div className="flex flex-row items-center justify-between fixed top-header-height w-main-frame py-6 px-10 z-10">
+        <div className="flex flex-row gap-x-5 items-center justify-between fixed top-header-height w-main-frame py-6 px-10 z-10">
           <MainCustomButton
             addedStyle="!w-40"
             onClick={ handleBackToMain }>
