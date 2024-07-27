@@ -44,11 +44,13 @@ export const requestAuthSchool = async (data) => {
 export const submitSignUpData = async (profile, photo) => {
   const profileResponse = await submitProfile(profile);
   if (profileResponse.status === 200 || profileResponse.status === 201) {
-    const photoResponse = await submitPhoto(photo);
-    if (photoResponse.status === 200 || photoResponse.status === 201) {
-      console.log("signUpSuccess");
-      window.location.href = "/home";
-    } else console.log("error");
+    console.log("signUpSuccess");
+    window.location.href = "/home";
+    // const photoResponse = await submitPhoto(photo);
+    // if (photoResponse.status === 200 || photoResponse.status === 201) {
+    //   console.log("signUpSuccess");
+    //   window.location.href = "/home";
+    // } else console.log("error");
   }
 };
 
