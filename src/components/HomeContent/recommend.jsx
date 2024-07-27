@@ -119,8 +119,8 @@ export default function Recommend() {
             !recommendData[0]
               ? ""
               : `${dayRender(recommendData[0].date, "/", false)} ${
-                  TIME_MAP[recommendData[0].time].label
-                } 쪽지 (${TIME_MAP[recommendData[0].time].time})`
+                  TIME_MAP[recommendData[0].time]?.label
+                } 쪽지 (${TIME_MAP[recommendData[0]?.time]?.time})`
           }
         >
           {recommendData[0] && (
