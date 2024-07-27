@@ -19,6 +19,8 @@ export default function AuthenticateSelf() {
 
   const [univSearchVisible, setUnivSearchVisible] = useState(false);
 
+  const [schoolReady, setSchoolReady] = useState(false);
+
   const [authSchoolInput, setAuthSchoolInput] = useState({
     school_name: "",
     school_email: "",
@@ -39,7 +41,7 @@ export default function AuthenticateSelf() {
             <IconImage src={check} />
           </div>
           <div className="px-2 text-xs">
-          이 서비스는 신원이 확인된 사용자만 이용할 수 있어요.
+            이 서비스는 신원이 확인된 사용자만 이용할 수 있어요.
           </div>
         </h5>
       </FloatingSection>
@@ -72,7 +74,10 @@ export default function AuthenticateSelf() {
       <FloatingSection addedStyle="mt-20">
         <SectionTitle>학교인증</SectionTitle>
         <div className="mt-2 flex flex-col gap-2">
-          <div className="relative flex items-center">
+          <div
+            className="relative flex items-center"
+            onClick={() => !schoolReady && setUnivSearchVisible(true)}
+          >
             <CustomTextInput
               id="auth_school_search"
               placeholder={"학교를 검색해주세요."}
@@ -84,10 +89,11 @@ export default function AuthenticateSelf() {
               }
               readOnly
               value={authSchoolInput.school_name}
+              addedStyle={`${schoolReady ? "!opacity-70" : ""}`}
             />
             <button
               className="h-full absolute right-1"
-              onClick={() => setUnivSearchVisible(true)}
+              // onClick={() => setUnivSearchVisible(true)}
             >
               <IconImage src={search} />
             </button>
@@ -102,27 +108,33 @@ export default function AuthenticateSelf() {
                   school_email: e.target.value,
                 })
               }
+              readOnly={schoolReady}
+              addedStyle={`${schoolReady ? "!opacity-70" : ""}`}
             />
             <MainCustomButton
-              addedStyle={"h-full py-0 ml-6 flex items-center"}
+              addedStyle={`h-full py-0 ml-6 flex items-center ${
+                schoolReady ? "!bg-input-darker" : ""
+              }`}
               onClick={() => {
-                requestSchoolVerifyCode({
-                  email: authSchoolInput.school_email,
-                  univ: authSchoolInput.school_name,
-                }).then((res) => {
-                  if (res.status === 200) {
-                    setAuthSchool({
-                      univ: authSchoolInput.school_name,
-                      email: authSchoolInput.school_email,
-                      verification_code: "",
-                      requested: true,
-                    });
-                    setSignUpData({
-                      ...signUpData,
-                      univ: authSchoolInput.school_name,
-                    });
-                  }
-                });
+                !schoolReady &&
+                  requestSchoolVerifyCode({
+                    email: authSchoolInput.school_email,
+                    univ: authSchoolInput.school_name,
+                  }).then((res) => {
+                    if (res.status === 200) {
+                      setAuthSchool({
+                        univ: authSchoolInput.school_name,
+                        email: authSchoolInput.school_email,
+                        verification_code: "",
+                        requested: true,
+                      });
+                      setSignUpData({
+                        ...signUpData,
+                        univ: authSchoolInput.school_name,
+                      });
+                      setSchoolReady(true);
+                    }
+                  });
               }}
             >
               인증
