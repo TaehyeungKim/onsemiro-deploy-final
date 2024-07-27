@@ -246,7 +246,7 @@ export const getPhotoResults = async () => {
 };
 
 export const toggleActiveMode = async () => {
-  const response = await instanceWithToken.put("/account/activate/");
+  const response = await instanceWithToken.put("/account/user_activate/");
 
   if (response.status === 200) {
     console.log(response, "toggle");
@@ -256,7 +256,7 @@ export const toggleActiveMode = async () => {
 };
 
 export const getActiveMode = async () => {
-  const response = await instanceWithToken.get("/account/activate/");
+  const response = await instanceWithToken.get("/account/user_activate/");
   console.log(response, "getActive");
   if (response.status === 200) {
     if (response.data.active === true) return true;
