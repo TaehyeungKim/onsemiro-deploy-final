@@ -81,7 +81,11 @@ function RecommendButtonMessage({ type }) {
         </h5>
       );
     default:
-      return;
+      return (
+        <h5 className="bg-sub-pale py-6 w-full text-center">
+          추천 정보가 없습니다.
+        </h5>
+      );
   }
 }
 
@@ -116,8 +120,8 @@ export default function Recommend() {
       >
         <MainSection
           caption={
-            !recommendData[0]
-              ? ""
+            recommendData[0].render_type === undefined
+              ? "추천 정보가 없습니다."
               : `${dayRender(recommendData[0].date, "/", false)} ${
                   TIME_MAP[recommendData[0].time]?.label
                 } 쪽지 (${TIME_MAP[recommendData[0]?.time]?.time})`
