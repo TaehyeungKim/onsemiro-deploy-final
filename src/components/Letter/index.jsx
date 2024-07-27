@@ -1,8 +1,8 @@
 import IconImage from "../IconImage";
-import { useEffect, useMemo, useContext } from "react";
-import { VisibleInfoContext } from "layouts/LetterLayout";
+import { useEffect, useMemo } from "react";
+
 import ProfileWOPhoto from "assets/profile1.png";
-import ProfileWPhoto from "assets/profile2.png";
+
 import closeIcon from "assets/icons/ph_x.png";
 
 import check from "assets/icons/check.png";
@@ -15,16 +15,13 @@ import {
   TIME_MAP,
 } from "assets/asset";
 import messageFrom from "assets/message/message.png";
-import { RECOMMEND_MESSAGE_MAP } from "assets/asset";
 
 import { TARGET } from "apis/api";
 
 import "./index.css";
 
-export default function Letter({ info, index, message, close }) {
+export default function Letter({ info, index, close }) {
   const keys = useMemo(() => filterValidProfileKey(info), [info]);
-
-  const visibleInfoContext = useContext(VisibleInfoContext);
 
   useEffect(() => console.log(info), []);
 

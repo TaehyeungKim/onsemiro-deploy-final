@@ -168,7 +168,15 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
             copiedInfo,
             setCopiedInfo,
             index,
-            <>프로필을 거절했어요.</>
+            <>
+              상호 의견이 달라 매칭에 실패하였습니다.
+              <br />
+              창을 닫으면
+              <br />
+              더 이상 프로필을 볼 수 없습니다.
+              <br />
+              다음 매칭을 기대해 주세요.
+            </>
           );
           setActionVisible(false);
         }
@@ -183,7 +191,15 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
           copiedInfo,
           setCopiedInfo,
           index,
-          <>프로필을 거절했어요.</>
+          <>
+            상호 의견이 달라 매칭에 실패하였습니다.
+            <br />
+            창을 닫으면
+            <br />
+            더 이상 프로필을 볼 수 없습니다.
+            <br />
+            다음 매칭을 기대해 주세요.
+          </>
         );
 
         setActionVisible(false);

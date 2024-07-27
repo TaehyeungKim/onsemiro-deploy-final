@@ -1348,7 +1348,6 @@ export const RECOMMEND_MESSAGE_MAP = (renderType, matchType) => {
       case 2:
         return (
           <>
-            <br />
             매칭 수락 여부를 다음 쪽지 시간({nextlettertime})
             <br />
             전까지 결정해주세요.
