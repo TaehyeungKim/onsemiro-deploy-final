@@ -1,7 +1,8 @@
 import axios from "axios";
 import { getCookie } from "../utils/cookie";
 
-axios.defaults.baseURL = "https://onsemiro-likelion2.fly.dev/api";
+axios.defaults.baseURL = "/api";
+// axios.defaults.baseURL = "http://localhost:8000/api";
 //baseURL updated
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post["Content-Type"] = "application/json";

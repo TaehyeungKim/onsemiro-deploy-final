@@ -307,6 +307,12 @@ function SearchOverlayContent({ select, ...props }) {
         AUTH_UNIV_LIST.find((univ) => univ === input)
           ? [AUTH_UNIV_LIST.find((univ) => univ === input)]
           : []
+        // setResults(
+        //   AUTH_UNIV_LIST.filter(
+        //     (univ) => new RegExp(input, "g").test(univ) === true
+        //   )
+
+        // )
       );
     } else setResults(AUTH_UNIV_LIST);
   }, [input]);

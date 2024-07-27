@@ -1342,13 +1342,12 @@ export const AUTH_UNIV_LIST = [
 ];
 
 export const RECOMMEND_MESSAGE_MAP = (renderType, matchType) => {
-  const nextlettertime = nextLetter(new Date().getHours()).nextTime
+  const nextlettertime = nextLetter(new Date().getHours()).nextTime;
   if (matchType === 1) {
     switch (renderType) {
       case 2:
         return (
           <>
-            사진이 등록되지 않은 사용자에요!
             <br />
             매칭 수락 여부를 다음 쪽지 시간({nextlettertime})
             <br />
@@ -1374,7 +1373,7 @@ export const RECOMMEND_MESSAGE_MAP = (renderType, matchType) => {
 };
 
 export const REQUEST_MESSAGE_MAP = (type) => {
-  const nextlettertime = nextLetter(new Date().getHours()).nextTime
+  const nextlettertime = nextLetter(new Date().getHours()).nextTime;
   if (type === 1)
     return (
       <>
@@ -1405,7 +1404,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             매칭 요청을 보냈습니다.
             <br />
-            상대방의 매칭 수락 여부가 
+            상대방의 매칭 수락 여부가
             <br />
             24시간 내에 결정돼요.
           </>
@@ -1418,7 +1417,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             사진이 공개됐어요!
             <br />
-            매칭 수락 여부를 
+            매칭 수락 여부를
             <br />
             24시간 내에 결정해주세요.
           </>
@@ -1431,7 +1430,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             매칭을 수락했어요!
             <br />
-            상대방의 매칭 수락 여부가 
+            상대방의 매칭 수락 여부가
             <br />
             24시간 내에 결정돼요.
           </>
@@ -1489,7 +1488,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
             <>
               사진이 공개됐어요!
               <br />
-              매칭 수락 여부를 
+              매칭 수락 여부를
               <br />
               24시간 내에 결정해주세요.
             </>
@@ -1503,7 +1502,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             사진 요청을 보냈어요!
             <br />
-            상대방이 수락한 요청은 
+            상대방이 수락한 요청은
             <br />
             24시간 내에 표시돼요.
           </>
@@ -1517,7 +1516,7 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           <>
             상호 의견이 달라 매칭에 실패하였습니다.
             <br />
-            창을 닫으면 
+            창을 닫으면
             <br />
             더 이상 프로필을 볼 수 없습니다.
             <br />
@@ -1559,4 +1558,14 @@ export const TIME_MAP = {
   },
 };
 
-export const HeightRange = {1: "150 이하", 2: "151 이상 155 이하", 3: "156 이상 160 이하", 4: "161 이상 165 이하", 5: "166 이상 170 이하", 6: "171 이상 175 이하", 7: "176 이상 180 이하", 8: "181 이상 185 이하", 9: "185 초과"};
+export const HeightRange = {
+  1: "150 이하",
+  2: "151 이상 155 이하",
+  3: "156 이상 160 이하",
+  4: "161 이상 165 이하",
+  5: "166 이상 170 이하",
+  6: "171 이상 175 이하",
+  7: "176 이상 180 이하",
+  8: "181 이상 185 이하",
+  9: "185 초과",
+};
