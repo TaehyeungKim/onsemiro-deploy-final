@@ -249,7 +249,7 @@ export const toggleActiveMode = async () => {
   const response = await instanceWithToken.put("/account/activate/");
 
   if (response.status === 200) {
-    console.log(response);
+    console.log(response, "toggle");
     if (response.data.active === true) return true;
     return false;
   }
@@ -257,9 +257,8 @@ export const toggleActiveMode = async () => {
 
 export const getActiveMode = async () => {
   const response = await instanceWithToken.get("/account/activate/");
-
+  console.log(response, "getActive");
   if (response.status === 200) {
-    console.log(response);
     if (response.data.active === true) return true;
     return false;
   }
