@@ -62,10 +62,19 @@ export default function Letter({ info, index, close }) {
         </div>
       </section>
       <div className="px-5 w-full mt-3 relative">
-        <div className="w-1/4 m-auto">
+        {/* <div className="w-1/4 m-auto">
           <IconImage
             src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
           />
+        </div> */}
+        <div
+          className="w-1/4 m-auto aspect-square bg-center bg-cover bg-no-repeat overflow-hidden rounded-full border-2"
+          style={{ backgroundImage: `url(${TARGET}/${info.photo}})` }}
+        >
+          {/* <IconImage
+            src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
+          /> */}
+          {/* <IconImage src={test} /> */}
         </div>
         <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
           <div className="w-4 mr-2">
