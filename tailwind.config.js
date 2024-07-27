@@ -35,6 +35,7 @@ module.exports = {
         mint: "#CDF0EA",
         "count-red": "#F35757",
         "play-black": "#3C3C3C",
+        warning: "#FA0F0F",
       },
       borderRadius: {
         half: "50%",
