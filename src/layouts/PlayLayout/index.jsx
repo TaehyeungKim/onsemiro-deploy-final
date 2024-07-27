@@ -26,20 +26,23 @@ export default function PlayLayout({ test, level, total, setter }) {
   }, [selectedAnswers, level, total]);
 
   useEffect(() => {
-    selectedAnswers.sort((a,b) => a.questionId - b.questionId)
-  }, [level])
+    selectedAnswers.sort((a, b) => a.questionId - b.questionId);
+  }, [level]);
 
   const data = test.questions[level];
 
   const handleAnswerChange = (questionId, answerIndex) => {
-    setSelectedAnswers((prev) => ([...prev, {
-      questionId, answerIndex
-    }]));
+    setSelectedAnswers((prev) => [
+      ...prev,
+      {
+        questionId,
+        answerIndex,
+      },
+    ]);
   };
 
   useEffect(() => {
-    if (selectedAnswers.length > 0)
-    handleNextClick();
+    if (selectedAnswers.length > 0) handleNextClick();
   }, [selectedAnswers]);
 
   const handleNextClick = () => {
@@ -109,7 +112,7 @@ export default function PlayLayout({ test, level, total, setter }) {
   };
 
   if (showResults) {
-    console.log(selectedAnswers)
+    console.log(selectedAnswers);
     return (
       <div className="flex flex-col h-screen p-5">
         {stopAlertVisible && (
@@ -125,7 +128,9 @@ export default function PlayLayout({ test, level, total, setter }) {
             close={() => setEndTestVisible(false)}
             confirm={confirmClose}
           >
-            <h4 className="font-bold">프로필에 등록할 문항을 선택 완료했습니다.</h4>
+            <h4 className="font-bold">
+              프로필에 등록할 문항을 선택 완료했습니다.
+            </h4>
           </PlayExitAlert>
         )}
         <header className="w-full flex justify-end pl-2 pr-2">
@@ -142,7 +147,7 @@ export default function PlayLayout({ test, level, total, setter }) {
             수 있습니다.
           </h3>
         </section>
-        <div className="flex justify-around mb-4">
+        <div className="flex justify-around mb-4 gap-2">
           <button
             className="w-48 mb-4 bg-gray-200 p-2 rounded"
             onClick={handleSelectAll}
@@ -236,7 +241,6 @@ export default function PlayLayout({ test, level, total, setter }) {
         </div>
       );
     } else {
-
       return (
         <div className="flex flex-col h-screen">
           {stopAlertVisible && (
@@ -271,11 +275,14 @@ export default function PlayLayout({ test, level, total, setter }) {
                   name={`answer_${level}`}
                   id={`answer_${level}_${i}`}
                   className="peer"
-                  checked={selectedAnswers.find((answer) => 
-                    answer.questionId === level)?.answerIndex === i}
+                  checked={
+                    selectedAnswers.find(
+                      (answer) => answer.questionId === level
+                    )?.answerIndex === i
+                  }
                   onChange={() => {
-                    handleAnswerChange(level, i)
-                    console.log(level)
+                    handleAnswerChange(level, i);
+                    console.log(level);
                   }}
                 />
                 <label

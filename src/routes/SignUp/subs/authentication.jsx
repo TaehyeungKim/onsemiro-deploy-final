@@ -20,6 +20,7 @@ export default function AuthenticateSelf() {
   const [univSearchVisible, setUnivSearchVisible] = useState(false);
 
   const [schoolReady, setSchoolReady] = useState(false);
+  const [selfReady, setSelfReady] = useState(false);
 
   const [authSchoolInput, setAuthSchoolInput] = useState({
     school_name: "",
