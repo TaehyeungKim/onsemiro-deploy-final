@@ -64,8 +64,14 @@ export default function AuthenticateSelf() {
               onChange={(e) => setPhoneInput(e.target.value)}
             />
             <MainCustomButton
-              addedStyle={"h-full py-0 ml-6 flex items-center"}
-              onClick={() => signUp({ phone_num: phoneInput })}
+              addedStyle={`h-full py-0 ml-6 flex items-center ${
+                selfReady ? "!bg-dark" : ""
+              }`}
+              onClick={() =>
+                signUp({ phone_num: phoneInput }).then((res) =>
+                  setSelfReady(res)
+                )
+              }
             >
               인증
             </MainCustomButton>

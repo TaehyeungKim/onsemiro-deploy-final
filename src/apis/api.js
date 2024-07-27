@@ -11,6 +11,7 @@ export const signUp = async (data) => {
   const response = await instance.post("/account/signup/", data);
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);
+    return true;
     // window.location.href = "/";
   } else {
     console.log("Error");
