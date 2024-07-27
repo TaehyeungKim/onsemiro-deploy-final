@@ -69,7 +69,9 @@ export default function Letter({ info, index, close }) {
         </div> */}
         <div
           className="w-1/4 m-auto aspect-square bg-center bg-cover bg-no-repeat overflow-hidden rounded-full border-2"
-          style={{ backgroundImage: `url(${TARGET}/${info.photo}})` }}
+          style={
+            info?.photo && { backgroundImage: `url(${TARGET}/${info.photo}})` }
+          }
         >
           {/* <IconImage
             src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}

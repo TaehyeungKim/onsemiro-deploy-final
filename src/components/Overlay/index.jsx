@@ -175,12 +175,26 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                   }
                 }}
               >
-                <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
+                {/* <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
                   <IconImage
                     src={
                       info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto
                     }
                   />
+                </div> */}
+                <div
+                  className="bg-center bg-cover bg-no-repeat w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center"
+                  style={
+                    info?.photo && {
+                      backgroundImage: `url(${TARGET}/${info.photo})`,
+                    }
+                  }
+                >
+                  {/* <IconImage
+                    src={
+                      info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto
+                    }
+                  /> */}
                 </div>
                 <div className="grow flex flex-col justify-between ml-4">
                   <span className="block font-bold">
