@@ -179,6 +179,8 @@ export const cleanMatchList = async (listGetter) => {
 };
 
 export const dayRender = (when, splitter, year = true) => {
+  if (!when) return "";
+
   const options = year
     ? {
         year: "numeric",
