@@ -19,6 +19,7 @@ export const signUp = async (data) => {
 };
 
 export const requestSchoolVerifyCode = async (data) => {
+  console.log(data);
   const response = await instanceWithToken.post("/account/email/", data);
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);

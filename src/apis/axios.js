@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getCookie } from "../utils/cookie";
 
+// axios.defaults.baseURL = "/api/";
 axios.defaults.baseURL = "/api";
 // axios.defaults.baseURL = "http://localhost:8000/api";
 //baseURL updated
