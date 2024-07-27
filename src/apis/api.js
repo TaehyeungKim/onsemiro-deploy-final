@@ -260,4 +260,4 @@ export const getActiveMode = async () => {
   }
 };
 
-export const TARGET = "http://localhost:8000";
+export const TARGET = "http://34.194.153.39:8000";

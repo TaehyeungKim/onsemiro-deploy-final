@@ -46,5 +46,5 @@
   "devDependencies": {
     "tailwindcss": "^3.4.4"
   },
-  "proxy": "https://onsemiro-likelion2.fly.dev/"
+  "proxy": "http://34.194.153.39:8000/"
 }
