@@ -111,16 +111,20 @@ export default function Recommend() {
       <div
         className="cursor-pointer w-full mx-auto"
         onClick={() => {
-          recommendData[0].render_type === 2 && setLetterVisible(true);
+          recommendData[0]?.render_type === 2 && setLetterVisible(true);
         }}
       >
         <MainSection
-          caption={`${dayRender(recommendData[0].date, "/", false)} ${
-            TIME_MAP[recommendData[0].time].label
-          } 쪽지 (${TIME_MAP[recommendData[0].time].time})`}
+          caption={
+            !recommendData[0]
+              ? ""
+              : `${dayRender(recommendData[0].date, "/", false)} ${
+                  TIME_MAP[recommendData[0].time].label
+                } 쪽지 (${TIME_MAP[recommendData[0].time].time})`
+          }
         >
           {recommendData[0] && (
-            <RecommendButtonMessage type={recommendData[0].render_type} />
+            <RecommendButtonMessage type={recommendData[0]?.render_type} />
           )}
         </MainSection>
       </div>
@@ -128,7 +132,7 @@ export default function Recommend() {
         <FloatingLetterOverlay
           info={recommendData}
           close={closeLetter}
-          renderType={recommendData[0].render_type}
+          renderType={recommendData[0]?.render_type}
           mode={"recommend"}
         ></FloatingLetterOverlay>
       ) : null}
