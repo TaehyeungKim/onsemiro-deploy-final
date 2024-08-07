@@ -10,12 +10,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { AUTH_UNIV_LIST } from "assets/asset";
 import LetterLayout from "layouts/LetterLayout";
-import {
-  getDetailedInfo,
-  getMatchingList,
-  getPhotoResults,
-  TARGET,
-} from "apis/api";
+import { getDetailedInfo, getMatchingList, getPhotoResults } from "apis/api";
+import { TARGET } from "apis/api";
 import {
   cleanMatchList,
   soapDetailViewData,

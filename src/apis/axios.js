@@ -1,9 +1,7 @@
 import axios from "axios";
-import { getCookie } from "../utils/cookie";
+import { getCookie } from "utils/cookie";
 
-// axios.defaults.baseURL = "/api/";
-axios.defaults.baseURL = "/api/";
-// axios.defaults.baseURL = "http://localhost:8000/api";
+axios.defaults.baseURL = "/api";
 //baseURL updated
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -16,11 +14,10 @@ export const instanceWithToken = axios.create();
 instanceWithToken.interceptors.request.use(
   (config) => {
     const accessToken = getCookie("access_token");
-    console.log(accessToken);
 
-    if (!accessToken) {
-      return;
-    } else config.headers["Authorization"] = `Bearer ${accessToken}`;
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
     return config;
   },
   (error) => {

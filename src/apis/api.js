@@ -2,17 +2,16 @@ import { instance, instanceWithToken } from "./axios";
 
 export const signIn = async (data) => {
   const res = await instance.post("/account/signin/", data);
-  // if (res.status === 200) window.location.href = "/main";
-  if (res.status === 200) console.log(res.data);
-  else console.log("Error");
+
+  if (res.status === 200) {
+    window.location.href = "/main";
+  } else console.log("Error");
 };
 
 export const signUp = async (data) => {
   const response = await instance.post("/account/signup/", data);
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
     return true;
-    // window.location.href = "/";
   } else {
     console.log("Error");
   }
@@ -20,11 +19,8 @@ export const signUp = async (data) => {
 };
 
 export const requestSchoolVerifyCode = async (data) => {
-  console.log(data);
   const response = await instanceWithToken.post("/account/email/", data);
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
-    // window.location.href = "/";
   } else {
     console.log("Error");
   }
@@ -34,8 +30,6 @@ export const requestSchoolVerifyCode = async (data) => {
 export const requestAuthSchool = async (data) => {
   const response = await instanceWithToken.put("/account/email/", data);
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
-    // window.location.href = "/";
   } else {
     console.log("Error");
   }
@@ -45,13 +39,10 @@ export const requestAuthSchool = async (data) => {
 export const submitSignUpData = async (profile, photo) => {
   const profileResponse = await submitProfile(profile);
   if (profileResponse.status === 200 || profileResponse.status === 201) {
-    console.log("signUpSuccess");
-    window.location.href = "/home";
-    // const photoResponse = await submitPhoto(photo);
-    // if (photoResponse.status === 200 || photoResponse.status === 201) {
-    //   console.log("signUpSuccess");
-    //   window.location.href = "/home";
-    // } else console.log("error");
+    const photoResponse = await submitPhoto(photo);
+    if (photoResponse.status === 200 || photoResponse.status === 201) {
+      window.location.href = "/home";
+    } else console.log("error");
   }
 };
 
@@ -66,8 +57,6 @@ const submitProfile = async (profile) => {
 };
 
 const submitPhoto = async (photo) => {
-  console.log(photo);
-
   const formData = new FormData();
   formData.append("photo", photo.photo);
   formData.append("std_test_report", photo.std_test_report);
@@ -80,7 +69,6 @@ const submitPhoto = async (photo) => {
 
   if (response.status === 200 || response.status === 201) {
     console.log(response.data);
-    // window.location.href = "/home";
   } else {
     console.log(response);
   }
@@ -264,4 +252,5 @@ export const getActiveMode = async () => {
   }
 };
 
-export const TARGET = "http://34.194.153.39:8000";
+// export const TARGET = "http://34.194.153.39:8000";
+export const TARGET = "http://43.201.130.12/";
