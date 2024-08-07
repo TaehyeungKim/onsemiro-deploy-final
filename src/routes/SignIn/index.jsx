@@ -70,7 +70,7 @@ export default function SignInPage() {
             </div>
             <FloatAndShrinkElement condition={verificationCodeInput}>
               <MainCustomButton
-                addedStyle="w-full"
+                className={"!w-full"}
                 onClick={() => {
                   getCookie("access_token") && navigate("/home");
                 }}
