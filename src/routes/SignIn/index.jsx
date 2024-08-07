@@ -44,7 +44,7 @@ export default function SignInPage() {
               onClick={() => {
                 if (verifyInputVisible) return;
                 signIn({ phone_num: phoneInput })
-                  .then((res) => setVerifyInputVisible(true))
+                  .then((res) => res && setVerifyInputVisible(true))
                   .catch((reason) => {
                     console.log(reason);
                     if (reason.response.status === 400)

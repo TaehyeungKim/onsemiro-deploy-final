@@ -4,7 +4,7 @@ export const signIn = async (data) => {
   const res = await instance.post("/account/signin/", data);
 
   if (res.status === 200) {
-    window.location.href = "/main";
+    return true;
   } else console.log("Error");
 };
 
