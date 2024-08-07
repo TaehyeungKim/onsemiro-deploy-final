@@ -21,18 +21,15 @@ instanceWithToken.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log("Request Error!!");
     return Promise.reject(error);
   }
 );
 
 instanceWithToken.interceptors.response.use(
   (response) => {
-    console.log("Interceptor Response!!");
     return response;
   },
   (error) => {
-    console.log("Response Error!!");
     return Promise.reject(error);
   }
 );

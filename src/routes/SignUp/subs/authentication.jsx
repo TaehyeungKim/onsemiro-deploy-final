@@ -35,7 +35,7 @@ export default function AuthenticateSelf() {
 
   return (
     <>
-      <FloatingSection addedStyle="mt-3">
+      <FloatingSection className="mt-3">
         <h3>먼저, 전화 번호 인증과 학교 인증이 필요해요!</h3>
         <h5 className="flex items-center mt-2">
           <div className="w-3">
@@ -46,7 +46,7 @@ export default function AuthenticateSelf() {
           </div>
         </h5>
       </FloatingSection>
-      <FloatingSection addedStyle="mt-3">
+      <FloatingSection className="mt-3">
         <SectionTitle>번호 인증</SectionTitle>
         <div className="mt-2">
           <div className="mb-2">
@@ -64,7 +64,7 @@ export default function AuthenticateSelf() {
               onChange={(e) => setPhoneInput(e.target.value)}
             />
             <MainCustomButton
-              addedStyle={`h-full py-0 ml-6 flex items-center ${
+              className={`h-full py-0 ml-6 flex items-center ${
                 selfReady ? "!bg-dark" : ""
               }`}
               onClick={() =>
@@ -96,7 +96,6 @@ export default function AuthenticateSelf() {
               }
               readOnly
               value={authSchoolInput.school_name}
-              addedStyle={`${schoolReady ? "!opacity-70" : ""}`}
             />
             <button
               className="h-full absolute right-1"
@@ -116,10 +115,9 @@ export default function AuthenticateSelf() {
                 })
               }
               readOnly={schoolReady}
-              addedStyle={`${schoolReady ? "!opacity-70" : ""}`}
             />
             <MainCustomButton
-              addedStyle={`h-full py-0 ml-6 flex items-center ${
+              className={`h-full py-0 ml-6 flex items-center ${
                 schoolReady ? "!bg-input-darker" : ""
               }`}
               onClick={() => {
@@ -175,7 +173,7 @@ export default function AuthenticateSelf() {
             })
           }
           placeholder={"대학을 입력하세요. (ex: 서울대학교)"}
-          defaultValue={authSchoolInput.school_name}
+          value={authSchoolInput.school_name}
         />
       )}
     </>

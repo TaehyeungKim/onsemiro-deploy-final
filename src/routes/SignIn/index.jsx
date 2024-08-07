@@ -51,7 +51,7 @@ export default function SignInPage() {
                       setNoUserExistsAlertVisible(true);
                   });
               }}
-              addedStyle={`${
+              className={`${
                 verifyInputVisible ? "!bg-input-darker !text-white" : null
               } `}
             >

@@ -49,7 +49,6 @@ export const submitSignUpData = async (profile, photo) => {
 const submitProfile = async (profile) => {
   const response = await instanceWithToken.put("/account/profile/", profile);
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
   } else {
     console.log(response);
   }
@@ -68,7 +67,6 @@ const submitPhoto = async (photo) => {
   });
 
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
   } else {
     console.log(response);
   }
@@ -79,7 +77,6 @@ export const getRecommend = async () => {
   const response = await instanceWithToken.get("/account/recommend/");
 
   if (response.status === 200 || response.status === 201) {
-    console.log("getRecommend success");
     return response;
   } else {
     console.log(response);
@@ -89,7 +86,6 @@ export const getRecommend = async () => {
 export const deleteRecommend = async () => {
   const response = await instanceWithToken.delete("/account/recommend/");
   if (response.status === 204) {
-    console.log(response.data);
     return true;
   } else {
     console.log(response);
@@ -112,18 +108,15 @@ export const requestMatching = async (data) => {
   const response = await instanceWithToken.post("/matching/type1/", data);
 
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
     return true;
   } else console.log(response);
   return response;
 };
 
 export const requestPhoto = async (data) => {
-  console.log(data);
   const response = await instanceWithToken.post("/matching/type2/photo/", data);
 
   if (response.status === 201) {
-    console.log(response.data);
     return true;
   } else console.log(response);
   return response;
@@ -136,7 +129,6 @@ export const getPhotoData = async (data) => {
   );
 
   if (response.status === 200) {
-    console.log("photo get success", response.data);
     return response.data;
   }
 };
@@ -148,7 +140,6 @@ export const requestKakaoId = async (data) => {
   );
 
   if (response.status === 200 || response.status === 201) {
-    console.log(response.data);
     return response;
   } else console.log(response);
   return response;
@@ -187,7 +178,6 @@ export const deleteRequestForMe = async (data) => {
   const response = await instanceWithToken.put("/matching/refuse/", data);
 
   if (response.status === 200) {
-    console.log(response.data);
     return true;
   } else console.log(response);
 };
@@ -196,13 +186,11 @@ export const getMatchingList = async () => {
   const response = await instanceWithToken.get("/matching/results/");
 
   if (response.status === 200) {
-    console.log(response.data);
     return response.data;
   } else console.log(response);
 };
 
 export const getDetailedInfo = async (data) => {
-  console.log(data, "detail");
   const response = await instanceWithToken.post(
     "/matching/profile/details/",
     data
@@ -237,7 +225,6 @@ export const toggleActiveMode = async () => {
   const response = await instanceWithToken.put("/account/user_activate/");
 
   if (response.status === 200) {
-    console.log(response, "toggle");
     if (response.data.active === "success") return true;
     return false;
   }
@@ -245,12 +232,11 @@ export const toggleActiveMode = async () => {
 
 export const getActiveMode = async () => {
   const response = await instanceWithToken.get("/account/user_activate/");
-  console.log(response, "getActive");
+
   if (response.status === 200) {
-    if (response.data.active === "fail") return true;
+    if (response.data.active === "success") return true;
     return false;
   }
 };
 
-// export const TARGET = "http://34.194.153.39:8000";
 export const TARGET = "http://43.201.130.12/";

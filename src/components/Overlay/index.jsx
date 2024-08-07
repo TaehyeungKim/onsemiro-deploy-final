@@ -99,15 +99,18 @@ export function MatchMenuOverlay({ count, close, opener }) {
       <div className="w-2/3 mx-auto flex flex-col gap-3">
         <CustomButtonWithCount
           count={count.matching}
-          onClick={() => opener({ for: "result" })}
+          onClick={() => count.matching && opener({ for: "result" })}
+          className={!count.matching && "!cursor-auto !opacity-50 !w-full"}
         >
           매칭 결과
         </CustomButtonWithCount>
 
         <CustomButtonWithCount
           count={count.photo}
-          addedStyle="!bg-mint !text-black"
-          onClick={() => opener({ for: "photo" })}
+          className={`!bg-mint !text-black !w-full ${
+            !count.photo && "!cursor-auto !opacity-50 !w-full"
+          }`}
+          onClick={() => count.photo && opener({ for: "photo" })}
         >
           사진 요청 결과
         </CustomButtonWithCount>
@@ -250,7 +253,7 @@ function FloatingCustomAlertLayout({ children, close, ...props }) {
       {children}
       <div className="flex justify-center mt-6 gap-5">
         <MainCustomButton onClick={props.confirm}>확인</MainCustomButton>
-        <MainCustomButton addedStyle="bg-white !text-black" onClick={close}>
+        <MainCustomButton className="bg-white !text-black" onClick={close}>
           취소
         </MainCustomButton>
       </div>

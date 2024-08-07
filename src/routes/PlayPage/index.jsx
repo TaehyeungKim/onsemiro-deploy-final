@@ -12,11 +12,11 @@ export default function PlayPage() {
   const navigate = useNavigate();
   const [selectedTest, setSelectedTest] = useState(null);
   const [level, setLevel] = useState(null);
-  
+
   const handleBackToMain = () => {
     navigate("/home");
   };
-  
+
   const handleStartTest = (test) => {
     setSelectedTest(test);
     setLevel(0);
@@ -31,7 +31,7 @@ export default function PlayPage() {
         setter={setLevel}
       />
     );
-  } 
+  }
 
   return (
     <div className="flex flex-col grow">
@@ -48,15 +48,12 @@ export default function PlayPage() {
       </header>
       <main className="flex flex-col w-full mt-header-height relative grow bg-main-image bg-fixed bg-center bg-no-repeat">
         <div className="flex flex-row gap-x-5 items-center justify-between fixed top-header-height w-main-frame py-6 px-10 z-10">
-          <MainCustomButton
-            addedStyle="!w-40"
-            onClick={ handleBackToMain }>
+          <MainCustomButton className={"!w-40"} onClick={handleBackToMain}>
             ONSEMIRO로
             <br />
             돌아가기
           </MainCustomButton>
-          <MainCustomButton
-            addedStyle="!bg-pink-200 !text-black !w-40">
+          <MainCustomButton className={"!bg-pink-200 !text-black !w-40"}>
             내 프로필
             <br />
             표시 확인
@@ -71,7 +68,7 @@ export default function PlayPage() {
             {PLAY_TESTS.map((test) => (
               <MainCustomButton
                 key={test.id}
-                addedStyle="!bg-gray-100 !w-72 !h-20 !text-black"
+                className="!bg-gray-100 !w-72 !h-20 !text-black flex-col"
                 onClick={() => handleStartTest(test)}
               >
                 <h3 className="text-lg">{test.title}</h3>

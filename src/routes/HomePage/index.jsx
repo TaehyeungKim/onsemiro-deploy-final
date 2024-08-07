@@ -12,15 +12,6 @@ export default function HomePage() {
   const matchResults = useRecoilValue(matchDataState);
   const photoResults = useRecoilValue(photoDataState);
 
-  useEffect(() => {
-    console.log(
-      matchResults.flat(),
-      matchResults.length,
-      photoResults.flat(),
-      photoResults.length
-    );
-  }, [matchResults, photoResults]);
-
   return (
     <div className="flex flex-col grow">
       <HomeHeader />

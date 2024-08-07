@@ -124,9 +124,9 @@ export function DoubleThumbRangeBar({
       ></input>
       <div className="w-full h-1 bg-white flex justify-between items-center absolute shadow-md">
         <div ref={progress} className="absolute bg-main shadow-md h-1"></div>
-        {captions.map((c) => (
+        {captions.map((c, i) => (
           <div
-            key={c}
+            key={i}
             className="rounded-full aspect-square h-3 bg-white shadow-md flex justify-center"
           >
             <span className="block text-center translate-y-5 text-xs">{c}</span>
@@ -246,7 +246,7 @@ export function SelectionRadioGrid({ collection, name, setter, defaultV }) {
 export function CustomTextInput({
   id,
   placeholder,
-  defaultValue = null,
+  // defaultValue = null,
   label = "",
   ...props
 }) {
@@ -263,7 +263,7 @@ export function CustomTextInput({
           className="h-full w-full block text-xs pl-3 box-border"
           placeholder={placeholder}
           id={id}
-          defaultValue={defaultValue}
+          // defaultValue={defaultValue}
           {...props}
         ></input>
       </div>

@@ -178,12 +178,12 @@ export default function PlayLayout({ test, level, total, setter }) {
                 }`}
               >
                 <div>
-                  <p className="font-bold">
+                  <span className="font-bold">
                     Q{parseInt(a.questionId) + 1}. {question.question}
-                  </p>
-                  <p>
+                  </span>
+                  <span>
                     A{parseInt(a.questionId) + 1}. {answer}
-                  </p>
+                  </span>
                 </div>
               </div>
             );
@@ -191,7 +191,7 @@ export default function PlayLayout({ test, level, total, setter }) {
         </section>
         <footer className="w-full p-5 flex justify-center">
           <MainCustomButton
-            addedStyle={"!w-72"}
+            className={"!w-72"}
             onClick={handleCompleteSelection}
           >
             선택 완료
@@ -232,7 +232,7 @@ export default function PlayLayout({ test, level, total, setter }) {
           </main>
           <footer className="w-full p-5">
             <MainCustomButton
-              addedStyle={"!w-72 !font-medium !text-2xl"}
+              className={"!w-72 !font-medium !text-2xl"}
               onClick={handleStartTest}
             >
               START!
@@ -301,13 +301,13 @@ export default function PlayLayout({ test, level, total, setter }) {
             </div>
             <div className="w-full flex justify-between mt-10">
               <MainCustomButton
-                addedStyle={"!bg-input !w-36 !text-black"}
+                className={"!bg-input !w-36 !text-black"}
                 onClick={handlePrevClick}
               >
                 PREV
               </MainCustomButton>
               <MainCustomButton
-                addedStyle={"bg-main !w-36"}
+                className={"bg-main !w-36"}
                 onClick={handleNextClick}
               >
                 NEXT

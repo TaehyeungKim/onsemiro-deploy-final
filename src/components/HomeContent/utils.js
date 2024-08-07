@@ -18,8 +18,6 @@ export const callRequestForMe = async (dataSetter) => {
 
   let data = [];
 
-  console.log(type1, type2, "request");
-
   if (type1)
     data = [
       ...type1?.map((d) => {
@@ -121,7 +119,6 @@ export const soapDetailViewData = async (data, code, time) => {
 
 export const cleanMatchList = async (listGetter) => {
   const list = await listGetter();
-  console.log(list);
 
   const { results } = list;
 

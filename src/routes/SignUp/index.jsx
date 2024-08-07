@@ -106,7 +106,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
         <div className="flex my-auto w-11/12 mx-auto gap-x-10 px-6">
           {curLevel === 13 ? (
             <MainCustomButton
-              addedStyle="!bg-background !text-black !mx-0 grow"
+              className="!bg-background !text-black !mx-0 grow"
               onClick={() => {
                 setSignUpData({ ...signUpData, preference: undefined });
               }}
@@ -117,7 +117,7 @@ function SignUpMain({ curLevel, levelSetter, total }) {
 
           <MainCustomButton
             onClick={() => changeLevel()}
-            addedStyle={curLevel === 13 ? "!mx-0 grow" : null}
+            className={curLevel === 13 ? "!mx-0 grow" : null}
           >
             {buttonActionPerLevel().message}
           </MainCustomButton>

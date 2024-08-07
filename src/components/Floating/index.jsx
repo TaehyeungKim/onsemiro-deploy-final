@@ -11,7 +11,7 @@ import { useSetRecoilState } from "recoil";
 import { layoutFloatingEndState } from "state/state";
 import styles from "./index.module.scss";
 
-export function FloatingSection({ children, addedStyle = "" }) {
+export function FloatingSection({ children, ...props }) {
   const section = useRef(null);
 
   const setLayoutFloatingEndState = useSetRecoilState(layoutFloatingEndState);
@@ -37,7 +37,6 @@ export function FloatingSection({ children, addedStyle = "" }) {
       }
     });
     return () => {
-      console.log("unmount");
       setLayoutFloatingEndState(false);
     };
   }, []);
@@ -45,7 +44,7 @@ export function FloatingSection({ children, addedStyle = "" }) {
   return (
     <section
       ref={section}
-      className={`p-3 flex items-center ${addedStyle} ${styles["floating"]} floatingSection`}
+      className={`p-3 flex items-center ${props.className} ${styles["floating"]} floatingSection`}
       style={{ display: "none" }}
     >
       <div className="w-full">{children}</div>

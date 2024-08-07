@@ -1,8 +1,8 @@
-export function MainCustomButton({ addedStyle = "", children, ...props }) {
+export function MainCustomButton({ children, ...props }) {
   return (
     <button
       {...props}
-      className={`bg-main px-4 py-2 w-fit rounded-lg mx-auto shadow-lg text-white box-border block ${addedStyle} cursor-pointer`}
+      className={`bg-main px-4 py-2 w-fit rounded-lg mx-auto shadow-lg text-white box-border block ${props.className} cursor-pointer flex items-center justify-center`}
     >
       {children}
     </button>
@@ -11,7 +11,7 @@ export function MainCustomButton({ addedStyle = "", children, ...props }) {
 
 export function CustomButtonWithCount({
   count,
-  addedStyle = "",
+
   children,
   ...props
 }) {
@@ -22,7 +22,7 @@ export function CustomButtonWithCount({
           {count}
         </div>
       )}
-      <MainCustomButton addedStyle={`${addedStyle} !w-full`} {...props}>
+      <MainCustomButton className={`${props.className} !w-full`} {...props}>
         {children}
       </MainCustomButton>
     </div>
