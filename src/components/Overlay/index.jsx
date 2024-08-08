@@ -78,7 +78,7 @@ function OverlayStandard({ close, children, title }) {
 function OverlayStandardLayout({ title, close, children }) {
   return (
     <>
-      <div className="min-w-main-frame bg-background px-1 box-border rounded-xl shadow-md">
+      <div className="max-w-main-frame w-screen bg-background px-1 box-border rounded-xl shadow-md">
         <header className="w-full relative flex justify-center items-center after:content-[''] after:block after:h-0 after:absolute after:bottom-0 after:w-11/12 after:border-black after:border-[0.5px] after:opacity-10 ">
           <h3 className="text-center h-9 text-lg">{title}</h3>
           <button className="block w-6  absolute right-4" onClick={close}>
@@ -100,7 +100,9 @@ export function MatchMenuOverlay({ count, close, opener }) {
         <CustomButtonWithCount
           count={count.matching}
           onClick={() => count.matching && opener({ for: "result" })}
-          className={!count.matching && "!cursor-auto !opacity-50 !w-full"}
+          className={
+            !count.matching ? "!cursor-auto !opacity-50 !w-full" : "!w-full"
+          }
         >
           매칭 결과
         </CustomButtonWithCount>
@@ -108,7 +110,7 @@ export function MatchMenuOverlay({ count, close, opener }) {
         <CustomButtonWithCount
           count={count.photo}
           className={`!bg-mint !text-black !w-full ${
-            !count.photo && "!cursor-auto !opacity-50 !w-full"
+            !count.photo ? "!cursor-auto !opacity-50 !w-full" : ""
           }`}
           onClick={() => count.photo && opener({ for: "photo" })}
         >
