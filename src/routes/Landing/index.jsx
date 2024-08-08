@@ -1,6 +1,12 @@
 import HomeHeader from "components/HomeHeader";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { animateScroll as scroll } from "react-scroll";
 import f1 from "assets/captions/feature 1.png";
 import f2 from "assets/captions/feature 2.png";
@@ -10,7 +16,7 @@ import f1_cap from "assets/captures/letter_cap.png";
 import f2_cap from "assets/captures/auth_cap.png";
 import f3_cap from "assets/captures/choice_cap.png";
 import styles from "./index.module.scss";
-import landingImage from "assets/background/landing.png"
+import landingImage from "assets/background/landing.png";
 
 import { REVIEWS } from "assets/asset";
 import { MainCustomButton } from "components/CustomButton";
@@ -21,36 +27,38 @@ function TopButton() {
   const scrollToTop = () => {
     scroll.scrollToTop({
       duration: 500,
-      smooth: true
+      smooth: true,
     });
   };
 
   useEffect(() => {
     const handleShowButton = () => {
       if (window.scrollY > 500) {
-        setShowButton(true)
+        setShowButton(true);
       } else {
-        setShowButton(false)
+        setShowButton(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleShowButton)
+    window.addEventListener("scroll", handleShowButton);
     return () => {
-      window.removeEventListener("scroll", handleShowButton)
-    }
-  }, [])
+      window.removeEventListener("scroll", handleShowButton);
+    };
+  }, []);
 
-  return showButton && (
-    <div className="fixed right-10 bottom-5 z-10">
-      <button 
-        className="w-12 h-12 rounded-3xl bg-white font-bold text-lg border-2 border-black cursor-pointer opacity-80" 
-        onClick={scrollToTop} 
-        type="button"
-      >
-        TOP
-      </button>
-    </div>
-  )
+  return (
+    showButton && (
+      <div className="fixed right-10 bottom-5 z-10">
+        <button
+          className="w-12 h-12 rounded-3xl bg-white font-bold text-lg border-2 border-black cursor-pointer opacity-80"
+          onClick={scrollToTop}
+          type="button"
+        >
+          TOP
+        </button>
+      </div>
+    )
+  );
 }
 
 function LandingSectionCaption({ src }) {
@@ -100,6 +108,49 @@ function LandingReviewArticle({ point, info }) {
   );
 }
 
+function LandingMainSection({ children, ...props }) {
+  const captureRef = useRef(null);
+
+  const [heightFixed, setHeightFixed] = useState(false);
+
+  const [formerWindowSize, setFormerWindowSize] = useState(0);
+
+  useEffect(() => {
+    setFormerWindowSize(window.innerHeight);
+  }, []);
+
+  const resizeEvent = useCallback(
+    (e) => {
+      const renderedH = captureRef.current?.offsetHeight;
+      captureRef.current?.setAttribute(
+        "style",
+        `height: ${renderedH * (e.target.innerHeight / formerWindowSize)}px`
+      );
+      window.removeEventListener("resize", resizeEvent);
+    },
+    [formerWindowSize]
+  );
+
+  useEffect(() => {
+    window.addEventListener("resize", resizeEvent);
+  }, [formerWindowSize]);
+
+  useLayoutEffect(() => {
+    const renderedH = captureRef.current?.offsetHeight;
+    captureRef.current?.setAttribute("style", `height: ${renderedH}px`);
+    setHeightFixed(true);
+  }, []);
+
+  return (
+    <div
+      className="grow flex items-center relative justify-center"
+      ref={captureRef}
+    >
+      {heightFixed && children}
+    </div>
+  );
+}
+
 export default function LandingPage() {
   const navigate = useNavigate();
 
@@ -120,8 +171,8 @@ export default function LandingPage() {
           <h1 className="z-30 grow text-center text-3xl text-white font-bold py-10">
             내게 꼭 맞는 사람? <br /> 미리 알고 만날 수 있어
           </h1>
-          <div className="absolute top-0 left-0 opacity-80">
-            <img src={landingImage}/>
+          <div className="absolute top-0 left-0 w-full h-full opacity-80">
+            <img className="w-full h-full" src={landingImage} />
           </div>
           <footer className="z-30 mb-10 w-full flex flex-col bg-transparent items-center justify-start">
             <MainCustomButton
@@ -148,9 +199,9 @@ export default function LandingPage() {
             <br />
             서로의 사진은 서로만 확인할 수 있어요!
           </LandingSectionSubTitle>
-          <div className="grow mt-3">
+          <LandingMainSection>
             <img className="h-[75%]" src={f1_cap} />
-          </div>
+          </LandingMainSection>
         </div>
         <div className="w-full h-landing-height flex flex-col items-center bg-main">
           <LandingSectionCaption src={f2}></LandingSectionCaption>
@@ -158,15 +209,15 @@ export default function LandingPage() {
             안전한 상대만 만날 수 있어요.
           </LandingSectionTitle>
           <LandingSectionSubTitle>
-            프로필에서 본인 인증, 학교 인증, 
+            프로필에서 본인 인증, 학교 인증,
             <br />
-            성병(매독, 임질, 에이즈) 검사 인증 
+            성병(매독, 임질, 에이즈) 검사 인증
             <br />
             배지를 확인하세요!
           </LandingSectionSubTitle>
-          <div className="w-full flex flex-col justify-center items-center px-6 box-border mt-12">
-            <img src={f2_cap} className="w-72%]" />
-          </div>
+          <LandingMainSection>
+            <img src={f2_cap} className="w-[72%]" />
+          </LandingMainSection>
         </div>
         <div className="w-full h-landing-height flex flex-col items-center bg-mint">
           <LandingSectionCaption src={f3}></LandingSectionCaption>
@@ -178,13 +229,13 @@ export default function LandingPage() {
             <br />
             내가 고른 성향의 사람만 보여드려요.
           </LandingSectionSubTitle>
-          <div className="grow mt-3 mb-24">
-            <img src={f3_cap} className="h-[75%]"/>
-          </div>
+          <LandingMainSection>
+            <img src={f3_cap} className="h-[75%]" />
+          </LandingMainSection>
         </div>
         <div className="w-full h-landing-height flex flex-col items-center bg-sub">
           <LandingSectionCaption src={f4}></LandingSectionCaption>
-          <div className="w-full  p-3">
+          <div className="w-full p-3 grow flex items-center">
             <div className="mb-48 mt-10 box-border px-[5%] flex flex-row flex-nowrap gap-5 overflow-x-scroll">
               {REVIEWS.map((review, i) => (
                 <LandingReviewArticle
