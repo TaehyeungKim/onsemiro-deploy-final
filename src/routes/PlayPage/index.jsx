@@ -34,8 +34,8 @@ export default function PlayPage() {
   }
 
   return (
-    <div className="flex flex-col grow">
-      <header className="w-main-frame h-header-height flex flex-row items-center justify-between px-4 py-3 box-border border-b bg-white fixed top-0 z-10">
+    <div className="flex flex-col grow w-screen max-w-main-frame">
+      <header className="w-screen max-w-main-frame h-header-height flex flex-row items-center justify-between px-4 py-3 box-border border-b bg-white fixed top-0 z-10">
         <button className="w-8">
           <IconImage src={menu} />
         </button>
@@ -47,7 +47,7 @@ export default function PlayPage() {
         </button>
       </header>
       <main className="flex flex-col w-full mt-header-height relative grow bg-main-image bg-fixed bg-center bg-no-repeat">
-        <div className="flex flex-row gap-x-5 items-center justify-between fixed top-header-height w-main-frame py-6 px-10 z-10">
+        <div className="w-full flex flex-row gap-x-5 items-center justify-between top-header-height   py-6 px-10 z-10">
           <MainCustomButton className={"!w-40"} onClick={handleBackToMain}>
             ONSEMIRO로
             <br />
@@ -59,11 +59,11 @@ export default function PlayPage() {
             표시 확인
           </MainCustomButton>
         </div>
-        <div className="top-44 w-main-frame p-5 justify-between text-center fixed z-20 bg-main-image bg-fixed bg-center">
+        <div className="top-44 p-5 justify-between text-center z-20 bg-fixed bg-center w-full">
           <h3 className="text-2xl font-bold">TEST</h3>
           <h6 className="pt-2 text-md">(상시 업데이트 중)</h6>
         </div>
-        <div className="pt-56 pb-5 w-main-frame overflow-auto">
+        <div className="pt-56 pb-5 w-full overflow-auto">
           <section className="flex flex-col space-y-5">
             {PLAY_TESTS.map((test) => (
               <MainCustomButton

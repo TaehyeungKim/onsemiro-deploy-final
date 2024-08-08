@@ -112,7 +112,6 @@ export default function PlayLayout({ test, level, total, setter }) {
   };
 
   if (showResults) {
-    console.log(selectedAnswers);
     return (
       <div className="flex flex-col h-screen p-5">
         {stopAlertVisible && (
