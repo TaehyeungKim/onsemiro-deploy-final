@@ -1,4 +1,4 @@
-import IconImage from "../IconImage";
+import IconImage, { RoundedProfileImage } from "../IconImage";
 import { useEffect, useMemo } from "react";
 
 import ProfileWOPhoto from "assets/profile1.png";
@@ -44,14 +44,6 @@ export default function Letter({ info, index, close }) {
       <section className="px-5 w-full mb-2">
         <h4 className="text-sm mb-1">기본 정보</h4>
         <div className="rounded-lg border-slate-400 border-2 p-2 flex flex-col gap-y-2">
-          {/* <div className="flex flex-row">
-            {info.approval?.photo_approval_status ? (
-              <AuthLabel>본인 인증</AuthLabel>
-            ) : null}
-            {info.approval?.email_approval_status ? (
-              <AuthLabel>학교 인증</AuthLabel>
-            ) : null}
-          </div> */}
           <div className="flex flex-row">
             <AuthLabel>본인 인증</AuthLabel>
             <AuthLabel>학교 인증</AuthLabel>
@@ -62,22 +54,10 @@ export default function Letter({ info, index, close }) {
         </div>
       </section>
       <div className="px-5 w-full mt-3 relative">
-        {/* <div className="w-1/4 m-auto">
-          <IconImage
-            src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
-          />
-        </div> */}
-        <div
-          className="w-1/4 m-auto aspect-square bg-center bg-cover bg-no-repeat overflow-hidden rounded-full border-2"
-          style={
-            info?.photo && { backgroundImage: `url(${TARGET}/${info.photo}})` }
-          }
-        >
-          {/* <IconImage
-            src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
-          /> */}
-          {/* <IconImage src={test} /> */}
-        </div>
+        <RoundedProfileImage
+          className={"w-1/4"}
+          src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
+        />
         <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
           <div className="w-4 mr-2">
             <IconImage src={check}></IconImage>
@@ -87,17 +67,6 @@ export default function Letter({ info, index, close }) {
             검사 완료
           </p>
         </div>
-        {/* {info.std_test_approval_status ? (
-          <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
-            <div className="w-4 mr-2">
-              <IconImage src={check}></IconImage>
-            </div>
-            <p className="text-center text-white text-xs">
-              STD 3종 <br />
-              검사 완료
-            </p>
-          </div>
-        ) : null} */}
       </div>
       <section className={`px-5 w-full rounded-3xl block`}>
         <div className="flex-col items-center">

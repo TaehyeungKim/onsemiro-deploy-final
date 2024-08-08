@@ -178,7 +178,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
               다음 매칭을 기대해 주세요.
             </>
           );
-          setActionVisible(false);
         }
       });
     } else if (mode === "request" || mode === "detail") {
@@ -186,6 +185,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
         matching_type: copiedInfo[i].matching_type,
         counter_id: copiedInfo[i].counter_id,
       });
+
       if (deleteRes) {
         updateLetterMessage(
           copiedInfo,
@@ -201,8 +201,6 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
             다음 매칭을 기대해 주세요.
           </>
         );
-
-        setActionVisible(false);
       }
     }
   }, [mode, index]);
@@ -215,22 +213,27 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
     };
   }, []);
 
-  // useEffect(() => {
-  //   setLetterMessage(copiedInfo[index]?.message);
-  // }, [copiedInfo, index]);
-
   useEffect(() => {
     if (
       mode === "detail" &&
       [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(copiedInfo[index].code)
     ) {
+      console.log("hide action");
+      // console.log(copiedInfo[index], mode);
       setActionVisible(false);
     }
   }, [mode, info]);
 
+  useEffect(() => {
+    if (mode !== "detail")
+      copiedInfo[index].acted
+        ? setActionVisible(false)
+        : setActionVisible(true);
+  }, [copiedInfo, index]);
+
   return (
     <VisibleInfoContext.Provider value={copiedInfo[index]}>
-      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap h-letter-height w-letter-width flex flex-row bg-background rounded-xl relative pb-2 shadow-md">
+      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap min-h-letter-height h-[60%] w-letter-width flex flex-row bg-background rounded-xl relative pb-2 shadow-md">
         {copiedInfo.map((i, k) => (
           <Letter key={k} info={i} close={close} index={index}></Letter>
         ))}

@@ -1,4 +1,4 @@
-import IconImage from "components/IconImage";
+import IconImage, { RoundedProfileImage } from "components/IconImage";
 import closeIcon from "assets/icons/ph_x.png";
 import {
   CustomButtonWithCount,
@@ -176,6 +176,10 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                   }
                 }}
               >
+                <RoundedProfileImage
+                  src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
+                  className={"w-20"}
+                />
                 {/* <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
                   <IconImage
                     src={
