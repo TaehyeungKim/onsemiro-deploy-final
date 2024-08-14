@@ -1,25 +1,12 @@
-import IconImage from "components/IconImage";
-import closeIcon from "assets/icons/ph_x.png";
 import Letter from "components/Letter";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  createContext,
-} from "react";
+  detailPositiveCall,
+  recommendPositiveCall,
+  requestPositiveCall,
+} from "./utils";
 
-import {
-  requestMatching,
-  acceptMatching,
-  deleteRecommend,
-  deleteRequestForMe,
-  requestPhoto,
-  acceptPhoto,
-  requestKakaoId,
-  getPhotoData,
-  acceptMatchingAfterPhoto,
-} from "apis/api";
+import { deleteRecommend, deleteRequestForMe } from "apis/api";
 
 import { recommendDataState, requestDataState } from "state/state";
 import { useSetRecoilState } from "recoil";
@@ -29,98 +16,18 @@ import {
   getRecommendation,
 } from "components/HomeContent/utils";
 
-import { TARGET } from "apis/api";
 import { updateLetterMessage } from "./utils";
-
-export const VisibleInfoContext = createContext(null);
 
 function PositiveButton({ info, mode, afterAction }) {
   const positiveCall = useCallback(
-    async (data) => {
-      if (mode === "recommend") {
-        if (info.matching_type === 1)
-          return requestMatching(data).then((res) => {
-            if (res) {
-              afterAction(
-                <>
-                  매칭 요청을 보냈습니다.
-                  <br />
-                  상대방의 매칭 수락 여부가
-                  <br />
-                  24시간 내에 결정돼요.
-                </>,
-                false
-              );
-            }
-          });
-        else
-          return requestPhoto(data).then((res) => {
-            if (res) {
-              afterAction(
-                <>
-                  사진을 요청했어요! 사진 요청 결과는
-                  <br />
-                  매칭 현황 보기 - 사진 요청 결과에서
-                  <br />
-                  확인할 수 있어요.
-                </>,
-                false
-              );
-            }
-          });
-      } else if (mode === "request") {
-        if (info.matching_type === 1)
-          return acceptMatching(data).then(async (res) => {
-            if (res.status === 200 || res.status === 201) {
-              const { counter_id } = res.data;
-              const response = await requestKakaoId({ counter_id });
-              afterAction(
-                <>
-                  축하드립니다! 매칭에 성공하셨습니다.
-                  <br />
-                  {`상대방의 카톡 아이디는 ${response.data.kakao_id}입니다.`}
-                </>,
-                false
-              );
-            }
-          });
-        else
-          return acceptPhoto(data).then(async (res) => {
-            const photoResponse = await getPhotoData({ counter_id: info.id });
-
-            if (res) {
-              afterAction(
-                <>
-                  사진이 공개됐어요!
-                  <br />
-                  매칭 수락 여부를
-                  <br />
-                  24시간 내에 결정해주세요.
-                </>,
-                false,
-                photoResponse.photo_url
-              );
-            }
-          });
-      }
-      if (info.code === 2) {
-        return acceptMatchingAfterPhoto(data).then(async (res) => {
-          if (res.status === 200 || res.status === 201) {
-            const { counter_id } = res.data;
-            const response = await requestKakaoId({ counter_id: info.id });
-            afterAction(
-              <>
-                축하드립니다! 매칭에 성공하셨습니다.
-                <br />
-                {`상대방의 카톡 아이디는 ${response.data.kakao_id}입니다.`}
-              </>,
-              false
-            );
-          }
-        });
-      }
+    (data) => {
+      if (mode === "recommend")
+        recommendPositiveCall(data, info.matching_type, afterAction);
+      else if (mode === "request")
+        requestPositiveCall(data, info.matching_type, afterAction, info.id);
+      else detailPositiveCall(data, info.code, afterAction, info.id);
     },
-    [mode, info]
+    [mode, info, afterAction]
   );
 
   const buttonMessage = useMemo(() => {
@@ -136,11 +43,11 @@ function PositiveButton({ info, mode, afterAction }) {
   const buttonColor = useMemo(() => {
     if (info.matching_type === 2) return false;
     return true;
-  }, [mode, info]);
+  }, [info]);
 
   return (
     <button
-      onClick={() => positiveCall({ counter_id: info.id })}
+      onClick={() => positiveCall({ counter_id: info.id + 1 })}
       className={`${
         buttonColor ? "bg-main" : "bg-sub"
       } text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
@@ -150,8 +57,8 @@ function PositiveButton({ info, mode, afterAction }) {
   );
 }
 
-export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
-  const [index, setIndex] = useState(i);
+export default function LetterComponent({ info, close, mode }) {
+  const [index, setIndex] = useState(0);
 
   const [copiedInfo, setCopiedInfo] = useState([...info]);
 
@@ -182,8 +89,8 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
       });
     } else if (mode === "request" || mode === "detail") {
       const deleteRes = await deleteRequestForMe({
-        matching_type: copiedInfo[i].matching_type,
-        counter_id: copiedInfo[i].counter_id,
+        matching_type: copiedInfo[index].matching_type,
+        counter_id: copiedInfo[index].counter_id,
       });
 
       if (deleteRes) {
@@ -218,21 +125,19 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
       mode === "detail" &&
       [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(copiedInfo[index].code)
     ) {
-      console.log("hide action");
-      // console.log(copiedInfo[index], mode);
       setActionVisible(false);
     }
-  }, [mode, info]);
+  }, [mode, info, index]);
 
   useEffect(() => {
     if (mode !== "detail")
       copiedInfo[index].acted
         ? setActionVisible(false)
         : setActionVisible(true);
-  }, [copiedInfo, index]);
+  }, [copiedInfo, index, mode]);
 
   return (
-    <VisibleInfoContext.Provider value={copiedInfo[index]}>
+    <>
       <div className="overflow-y-scroll overflow-x-hidden flex-nowrap min-h-letter-height h-[60%] w-letter-width flex flex-row bg-background rounded-xl relative pb-2 shadow-md">
         {copiedInfo.map((i, k) => (
           <Letter key={k} info={i} close={close} index={index}></Letter>
@@ -244,13 +149,13 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
           <PositiveButton
             info={copiedInfo[index]}
             mode={mode}
-            afterAction={(message, visible, photo = null) => {
+            afterAction={(message, photo = null) => {
               const temp = { ...copiedInfo[index] };
               (() => {
                 temp.message = message;
               })();
 
-              setActionVisible(visible);
+              temp.acted = true;
               photo &&
                 (() => {
                   temp.photo = photo;
@@ -280,7 +185,7 @@ export default function LetterLayout({ info, close, renderType, mode, i = 0 }) {
           handler={setIndex}
         ></Indexation>
       ) : null}
-    </VisibleInfoContext.Provider>
+    </>
   );
 }
 

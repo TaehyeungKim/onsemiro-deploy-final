@@ -136,7 +136,6 @@ export default function Recommend() {
         <FloatingLetterOverlay
           info={recommendData}
           close={closeLetter}
-          renderType={recommendData[0]?.render_type}
           mode={"recommend"}
         ></FloatingLetterOverlay>
       ) : null}

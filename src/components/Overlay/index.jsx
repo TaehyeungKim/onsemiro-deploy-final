@@ -9,7 +9,7 @@ import styles from "./styles.module.scss";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
 import { AUTH_UNIV_LIST } from "assets/asset";
-import LetterLayout from "layouts/LetterLayout";
+import LetterComponent from "layouts/LetterLayout";
 import { getDetailedInfo, getMatchingList, getPhotoResults } from "apis/api";
 import { TARGET } from "apis/api";
 import {
@@ -354,7 +354,7 @@ export function SearchOverlay({ close, select, ...props }) {
 
 function FloatingLetterOverlayLayout({ close, children, ...props }) {
   return (
-    <FloatAndShrink Child={LetterLayout} close={close} {...props}>
+    <FloatAndShrink Child={LetterComponent} close={close} {...props}>
       {{ children }}
     </FloatAndShrink>
   );
