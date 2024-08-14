@@ -130,7 +130,7 @@ export const getPhotoData = async (data) => {
 
   if (response.status === 200) {
     return response.data;
-  }
+  } else throw new Error("Can't get photo");
 };
 
 export const requestKakaoId = async (data) => {
@@ -149,14 +149,15 @@ export const acceptMatching = async (data) => {
   const response = await instanceWithToken.put("/matching/type1/", data);
 
   if (response.status === 200 || response.status === 201) {
-    const kakaoResponse = await requestKakaoId({
-      counter_id: response.data.counter_id,
-    });
-    if (kakaoResponse.status === 200 || kakaoResponse.status === 201) {
-      return kakaoResponse;
-    } else {
-      return kakaoResponse;
-    }
+    // const kakaoResponse = await requestKakaoId({
+    //   counter_id: response.data.counter_id,
+    // });
+    // if (kakaoResponse.status === 200 || kakaoResponse.status === 201) {
+    //   return kakaoResponse;
+    // } else {
+    //   return kakaoResponse;
+    // }
+    return response;
   } else console.log(response);
 };
 
@@ -239,4 +240,5 @@ export const getActiveMode = async () => {
   }
 };
 
-export const TARGET = "http://43.201.130.12/";
+// export const TARGET = "http://43.201.130.12/";
+export const TARGET = "http://localhost:8000";

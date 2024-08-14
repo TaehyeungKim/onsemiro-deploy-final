@@ -31,23 +31,23 @@ function PositiveButton({ info, mode, afterAction }) {
   );
 
   const buttonMessage = useMemo(() => {
+    console.log(info);
     if (mode === "detail" && info.code === 2) return "매칭 수락";
 
-    if (info.matching_type === 1) {
-      return mode === "recommend" ? "매칭 요청" : "매칭 수락";
-    } else if (info.matching_type === 2) {
+    if (info.type === 2 && info.matching_status === "pending") {
       return mode === "recommend" ? "사진 요청" : "사진 공개";
     }
+    return mode === "recommend" ? "매칭 요청" : "매칭 수락";
   }, [mode, info]);
 
   const buttonColor = useMemo(() => {
-    if (info.matching_type === 2) return false;
+    if (info.type === 2 && info.matching_status === "pending") return false;
     return true;
   }, [info]);
 
   return (
     <button
-      onClick={() => positiveCall({ counter_id: info.id + 1 })}
+      onClick={() => positiveCall({ counter_id: info.id })}
       className={`${
         buttonColor ? "bg-main" : "bg-sub"
       } text-white w-44 p-2 rounded-xl shadow-lg text-lg`}
@@ -121,20 +121,17 @@ export default function LetterComponent({ info, close, mode }) {
   }, []);
 
   useEffect(() => {
-    if (
-      mode === "detail" &&
-      [1, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(copiedInfo[index].code)
-    ) {
-      setActionVisible(false);
+    if (mode === "detail") {
+      setActionVisible(copiedInfo[index].action);
+      console.log(copiedInfo[index].action);
     }
   }, [mode, info, index]);
 
   useEffect(() => {
-    if (mode !== "detail")
-      copiedInfo[index].acted
-        ? setActionVisible(false)
-        : setActionVisible(true);
-  }, [copiedInfo, index, mode]);
+    copiedInfo[index].acted || !copiedInfo[index].action
+      ? setActionVisible(false)
+      : setActionVisible(true);
+  }, [copiedInfo, index]);
 
   return (
     <>

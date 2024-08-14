@@ -44,8 +44,7 @@ export const recommendPositiveCall = async (data, type, action) => {
             상대방의 매칭 수락 여부가
             <br />
             24시간 내에 결정돼요.
-          </>,
-          false
+          </>
         );
       }
     });
@@ -59,8 +58,7 @@ export const recommendPositiveCall = async (data, type, action) => {
             매칭 현황 보기 - 사진 요청 결과에서
             <br />
             확인할 수 있어요.
-          </>,
-          false
+          </>
         );
       }
     });
@@ -69,7 +67,7 @@ export const recommendPositiveCall = async (data, type, action) => {
 export const requestPositiveCall = async (data, type, action, counter_id) => {
   if (type === 1)
     return acceptMatching(data).then(async (res) => {
-      if (res.status === 200 || res.status === 201) {
+      if (res) {
         const { counter_id } = res.data;
         const response = await requestKakaoId({ counter_id });
         action(
@@ -77,14 +75,14 @@ export const requestPositiveCall = async (data, type, action, counter_id) => {
             축하드립니다! 매칭에 성공하셨습니다.
             <br />
             {`상대방의 카톡 아이디는 ${response.data.kakao_id}입니다.`}
-          </>,
-          false
+          </>
         );
       }
     });
   else
     return acceptPhoto(data).then(async (res) => {
       const photoResponse = await getPhotoData({ counter_id });
+      console.log(photoResponse);
 
       if (res) {
         action(
@@ -95,7 +93,6 @@ export const requestPositiveCall = async (data, type, action, counter_id) => {
             <br />
             24시간 내에 결정해주세요.
           </>,
-          false,
           photoResponse.photo_url
         );
       }
@@ -103,20 +100,26 @@ export const requestPositiveCall = async (data, type, action, counter_id) => {
 };
 
 export const detailPositiveCall = async (data, code, action, counter_id) => {
-  if (code === 2) {
-    return acceptMatchingAfterPhoto(data).then(async (res) => {
-      if (res.status === 200 || res.status === 201) {
-        const { counter_id } = res.data;
-        const response = await requestKakaoId({ counter_id });
-        action(
+  return acceptMatchingAfterPhoto(data).then(async (res) => {
+    if (res.status === 200 || res.status === 201) {
+      if (res.data.message === "accept successful")
+        return action(
           <>
-            축하드립니다! 매칭에 성공하셨습니다.
+            매칭 요청을 보냈습니다.
             <br />
-            {`상대방의 카톡 아이디는 ${response.data.kakao_id}입니다.`}
-          </>,
-          false
+            상대방의 매칭 수락 여부가
+            <br />
+            24시간 내에 결정돼요.
+          </>
         );
-      }
-    });
-  } else return;
+      const response = await requestKakaoId({ counter_id });
+      action(
+        <>
+          축하드립니다! 매칭에 성공하셨습니다.
+          <br />
+          {`상대방의 카톡 아이디는 ${response.data.kakao_id}입니다.`}
+        </>
+      );
+    }
+  });
 };

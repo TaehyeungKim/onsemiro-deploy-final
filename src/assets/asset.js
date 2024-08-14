@@ -357,7 +357,13 @@ export const filterValidProfileKey = (info) =>
       key !== "matching_index" &&
       key !== "matcing_num" &&
       key !== "code" &&
-      key !== "kakao_id"
+      key !== "kakao_id" &&
+      key !== "active" &&
+      key !== "action" &&
+      key !== "acted" &&
+      key !== "type" &&
+      key !== "status" &&
+      key !== "flag"
   );
 
 export const keyMapWithKorean = {
@@ -1394,11 +1400,11 @@ export const REQUEST_MESSAGE_MAP = (type) => {
   );
 };
 
-export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
-  switch (code) {
-    case 1:
+export const MATCH_RESULT_RENDER_MAP = (type, status, flag, added = null) => {
+  if (type === 1) {
+    if (status === "pending") {
       return {
-        active: false,
+        action: false,
         message: (
           <>
             매칭 요청을 보냈습니다.
@@ -1409,108 +1415,9 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           </>
         ),
       };
-    case 2:
+    } else if (status === "fail") {
       return {
-        active: true,
-        message: (
-          <>
-            사진이 공개됐어요!
-            <br />
-            매칭 수락 여부를
-            <br />
-            24시간 내에 결정해주세요.
-          </>
-        ),
-      };
-    case 3:
-      return {
-        active: false,
-        message: (
-          <>
-            매칭을 수락했어요!
-            <br />
-            상대방의 매칭 수락 여부가
-            <br />
-            24시간 내에 결정돼요.
-          </>
-        ),
-      };
-    case 4:
-      return {
-        active: true,
-        message: (
-          <>
-            축하드립니다! 매칭에 성공하셨습니다.
-            <br />
-            {`상대방의 카톡 아이디는 ${added} 입니다.`}
-          </>
-        ),
-      };
-    case 5:
-      return {
-        active: false,
-        message: (
-          <>
-            축하드립니다! 매칭에 성공하셨습니다.
-            <br />
-            {`상대방의 카톡 아이디는 ${added} 입니다.`}
-          </>
-        ),
-      };
-    case 6:
-      return {
-        active: true,
-        message: (
-          <>
-            축하드립니다! 매칭에 성공하셨습니다.
-            <br />
-            {`상대방의 카톡 아이디는 ${added} 입니다.`}
-          </>
-        ),
-      };
-    case 7:
-      return {
-        active: false,
-        message: (
-          <>
-            축하드립니다! 매칭에 성공하셨습니다.
-            <br />
-            {`상대방의 카톡 아이디는 ${added} 입니다.`}
-          </>
-        ),
-      };
-    case 8:
-      return {
-        active: true,
-        message: (
-          <>
-            <>
-              사진이 공개됐어요!
-              <br />
-              매칭 수락 여부를
-              <br />
-              24시간 내에 결정해주세요.
-            </>
-          </>
-        ),
-      };
-    case 9:
-      return {
-        active: false,
-        message: (
-          <>
-            사진 요청을 보냈어요!
-            <br />
-            상대방이 수락한 요청은
-            <br />
-            24시간 내에 표시돼요.
-          </>
-        ),
-      };
-    case 10:
-    case 11:
-      return {
-        active: true,
+        action: false,
         message: (
           <>
             상호 의견이 달라 매칭에 실패하였습니다.
@@ -1523,10 +1430,231 @@ export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
           </>
         ),
       };
-    default:
-      return;
+    }
+    return {
+      action: false,
+      message: (
+        <>
+          축하드립니다! 매칭에 성공하셨습니다.
+          <br />
+          {`상대방의 카톡 아이디는 ${added} 입니다.`}
+        </>
+      ),
+    };
   }
+  if (status === "pending") {
+    if (!flag)
+      return {
+        action: false,
+        message: (
+          <>
+            사진 요청을 보냈어요!
+            <br />
+            상대방이 수락한 요청은
+            <br />
+            24시간 내에 표시돼요.
+          </>
+        ),
+      };
+  } else if (status === "photo") {
+    if (flag) {
+      return {
+        action: true,
+        message: (
+          <>
+            <>
+              사진이 공개됐어요!
+              <br />
+              매칭 수락 여부를
+              <br />
+              24시간 내에 결정해주세요.
+            </>
+          </>
+        ),
+      };
+    }
+    return {
+      action: false,
+      message: (
+        <>
+          매칭 요청을 보냈습니다.
+          <br />
+          상대방의 매칭 수락 여부가
+          <br />
+          24시간 내에 결정돼요.
+        </>
+      ),
+    };
+  }
+  if (!flag) {
+    return {
+      action: false,
+      message: (
+        <>
+          매칭 요청을 보냈습니다.
+          <br />
+          상대방의 매칭 수락 여부가
+          <br />
+          24시간 내에 결정돼요.
+        </>
+      ),
+    };
+  }
+  return {
+    action: true,
+    message: (
+      <>
+        사진이 공개됐어요! <br />
+        매칭 수락 여부를 <br />
+        24시간 내에 결정해주세요.
+      </>
+    ),
+  };
 };
+
+// export const MATCH_RESULT_RENDER_MAP = (code, added = null) => {
+//   switch (code) {
+//     case 1:
+//       return {
+//         active: false,
+//         action: false,
+//         message: (
+//           <>
+//             매칭 요청을 보냈습니다.
+//             <br />
+//             상대방의 매칭 수락 여부가
+//             <br />
+//             24시간 내에 결정돼요.
+//           </>
+//         ),
+//       };
+//     case 2:
+//       return {
+//         active: true,
+//         action: true,
+//         message: (
+//           <>
+//             사진이 공개됐어요!
+//             <br />
+//             매칭 수락 여부를
+//             <br />
+//             24시간 내에 결정해주세요.
+//           </>
+//         ),
+//       };
+//     case 3:
+//       return {
+//         active: false,
+//         action: false,
+//         message: (
+//           <>
+//             매칭을 수락했어요!
+//             <br />
+//             상대방의 매칭 수락 여부가
+//             <br />
+//             24시간 내에 결정돼요.
+//           </>
+//         ),
+//       };
+//     case 4:
+//       return {
+//         active: true,
+//         action: false,
+//         message: (
+//           <>
+//             축하드립니다! 매칭에 성공하셨습니다.
+//             <br />
+//             {`상대방의 카톡 아이디는 ${added} 입니다.`}
+//           </>
+//         ),
+//       };
+//     case 5:
+//       return {
+//         active: false,
+//         action: false,
+//         message: (
+//           <>
+//             축하드립니다! 매칭에 성공하셨습니다.
+//             <br />
+//             {`상대방의 카톡 아이디는 ${added} 입니다.`}
+//           </>
+//         ),
+//       };
+//     case 6:
+//       return {
+//         active: true,
+//         action: false,
+//         message: (
+//           <>
+//             축하드립니다! 매칭에 성공하셨습니다.
+//             <br />
+//             {`상대방의 카톡 아이디는 ${added} 입니다.`}
+//           </>
+//         ),
+//       };
+//     case 7:
+//       return {
+//         active: false,
+//         action: false,
+//         message: (
+//           <>
+//             축하드립니다! 매칭에 성공하셨습니다.
+//             <br />
+//             {`상대방의 카톡 아이디는 ${added} 입니다.`}
+//           </>
+//         ),
+//       };
+//     case 8:
+//       return {
+//         active: true,
+//         action: false,
+//         message: (
+//           <>
+//             <>
+//               사진이 공개됐어요!
+//               <br />
+//               매칭 수락 여부를
+//               <br />
+//               24시간 내에 결정해주세요.
+//             </>
+//           </>
+//         ),
+//       };
+//     case 9:
+//       return {
+//         active: false,
+//         action: false,
+//         message: (
+//           <>
+//             사진 요청을 보냈어요!
+//             <br />
+//             상대방이 수락한 요청은
+//             <br />
+//             24시간 내에 표시돼요.
+//           </>
+//         ),
+//       };
+//     case 10:
+//     case 11:
+//       return {
+//         active: true,
+//         action: false,
+//         message: (
+//           <>
+//             상호 의견이 달라 매칭에 실패하였습니다.
+//             <br />
+//             창을 닫으면
+//             <br />
+//             더 이상 프로필을 볼 수 없습니다.
+//             <br />
+//             다음 매칭을 기대해 주세요.
+//           </>
+//         ),
+//       };
+//     default:
+//       return;
+//   }
+// };
 
 export const TIME_SECTION_FOR_RECOMMENDATION = [8, 18, 22, 32];
 

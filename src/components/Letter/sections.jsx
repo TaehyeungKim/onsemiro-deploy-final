@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { filterValidProfileKey, keyMapWithKorean } from "assets/asset";
 import { soapProfileLineRender } from "layouts/LetterLayout/utils";
 import IconImage, { RoundedProfileImage } from "components/IconImage";
@@ -73,12 +73,13 @@ export function SelfIntroduction({ info }) {
 }
 
 export function ProfileImage({ info }) {
+  useEffect(() => {
+    console.log(info);
+  }, []);
+
   return (
     <section className="px-5 w-full mt-3 relative">
-      <RoundedProfileImage
-        className={"w-1/4"}
-        src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
-      />
+      <RoundedProfileImage className={"w-1/4"} counter_id={info.id} />
       <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
         <div className="w-4 mr-2">
           <IconImage src={check}></IconImage>

@@ -30,6 +30,7 @@ export const callRequestForMe = async (dataSetter) => {
             time: timeSection(new Date(d.created_at).getHours()).part,
             date: dayRender(d.created_at, ".", false),
             message: REQUEST_MESSAGE_MAP(d.matching_type),
+            action: true,
             counter_id: d.counter_id,
           };
       }),
@@ -49,6 +50,7 @@ export const callRequestForMe = async (dataSetter) => {
             date: dayRender(d.created_at, ".", false),
             message: REQUEST_MESSAGE_MAP(d.matching_type),
             counter_id: d.counter_id,
+            action: true,
           };
       }),
     ];
@@ -87,33 +89,40 @@ export const getRecommendation = async (dataSetter) => {
       ),
       time: recommended.data.time,
       date: recommended.data.date,
+      action: true,
     },
   ]);
 };
 
-export const soapDetailViewData = async (data, code, time) => {
-  console.log(data.user2_profile);
+export const soapDetailViewData = async (data, optional) => {
+  console.log(data, optional);
   let kakao = "";
   let photo = "";
-  if ([4, 5, 6, 7].includes(parseInt(code))) {
+
+  if (data.type === 1 && data.status === "success") {
     const res = await requestKakaoId({
-      counter_id: data.user2_profile.id,
+      counter_id: data.counter_id,
     });
     const { kakao_id } = res.data;
     kakao = kakao_id;
   }
-  // const { kakao_id, photo } = data;
+
+  // const message = kakao
+  //   ? MATCH_RESULT_RENDER_MAP(code, kakao)
+  //   : MATCH_RESULT_RENDER_MAP(code);
+
   const message = kakao
-    ? MATCH_RESULT_RENDER_MAP(code, kakao).message
-    : MATCH_RESULT_RENDER_MAP(code).message;
+    ? MATCH_RESULT_RENDER_MAP(data.type, data.status, data.flag, kakao)
+    : MATCH_RESULT_RENDER_MAP(data.type, data.status, data.flag);
 
   return {
-    ...data.user2_profile,
-    kakao_id: kakao,
+    ...data.profile,
+
     photo,
-    message,
-    ...time,
-    code,
+    type: data.type,
+    status: data.status,
+    ...message,
+    ...optional,
   };
 };
 
@@ -121,12 +130,13 @@ export const cleanMatchList = async (listGetter) => {
   const list = await listGetter();
 
   const { results } = list;
+  console.log(results);
 
   if (!results) return [];
 
   const l = results.map((e) => ({
     ...e,
-    ...MATCH_RESULT_RENDER_MAP(e.matching_index),
+    ...MATCH_RESULT_RENDER_MAP(e.type, e.status),
   }));
 
   const sorted = [...l]

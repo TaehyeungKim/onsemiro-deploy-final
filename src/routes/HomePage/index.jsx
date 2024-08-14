@@ -15,7 +15,7 @@ export default function HomePage() {
   return (
     <div className="w-full flex flex-col grow">
       <HomeHeader />
-      <main className="flex flex-col w-full mt-header-height relative grow bg-main-image bg-fixed bg-center bg-no-repeat">
+      <main className="flex flex-col w-full mt-header-height relative grow bg-main-image bg-fixed bg-center bg-no-repeat bg-cover">
         <div className="flex flex-row items-center justify-end fixed top-header-height  max-w-main-frame w-screen py-4 px-2 z-10">
           <ActiveMode />
         </div>

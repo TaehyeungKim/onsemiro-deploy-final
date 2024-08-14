@@ -157,66 +157,42 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
                 }`}
                 onClick={async () => {
                   const res = await getDetailedInfo({
-                    matching_num: info.matching_num,
-                    matching_index: info.matching_index,
+                    type: info.type,
+                    id: info.id,
                   });
 
                   if (res.status === 200) {
                     setDetailVisible(true);
-                    const data = await soapDetailViewData(
-                      res.data,
-                      info.matching_index,
-                      {
-                        date: info.matching_request_at,
-                        time: info.time,
-                        photo: info.photo,
-                      }
-                    );
+                    const data = await soapDetailViewData(res.data, {
+                      date: info.matching_request_at,
+                      time: info.time,
+                    });
                     setDetailInfo(data);
                   }
                 }}
               >
                 <RoundedProfileImage
-                  src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
+                  // src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
+                  counter_id={info.counter_id}
                   className={"w-20"}
                 />
-                {/* <div className="w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center">
-                  <IconImage
-                    src={
-                      info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto
-                    }
-                  />
-                </div> */}
-                <div
-                  className="bg-center bg-cover bg-no-repeat w-20 aspect-square rounded-full overflow-hidden flex items-center justify-center"
-                  style={
-                    info?.photo && {
-                      backgroundImage: `url(${TARGET}/${info.photo})`,
-                    }
-                  }
-                >
-                  {/* <IconImage
-                    src={
-                      info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto
-                    }
-                  /> */}
-                </div>
+
                 <div className="grow flex flex-col justify-between ml-4">
                   <span className="block font-bold">
-                    {info.user2_profile.nickname}
+                    {info.profile.nickname}
                   </span>
                   <span className="block">
-                    {info.user2_profile.age}세 {info.user2_profile.gender}
+                    {info.profile.age}세 {info.profile.gender}
                   </span>
                   <div className="flex w-full gap-1 text-xs">
                     <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
-                      #{info.user2_profile.univ}
+                      #{info.profile.univ}
                     </span>
                     <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
-                      #{info.user2_profile.location}
+                      #{info.profile.location}
                     </span>
                     <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
-                      #{info.user2_profile.mbti}
+                      #{info.profile.mbti}
                     </span>
                   </div>
                 </div>
