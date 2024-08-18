@@ -79,7 +79,7 @@ export function ProfileImage({ info }) {
 
   return (
     <section className="px-5 w-full mt-3 relative">
-      <RoundedProfileImage className={"w-1/4"} counter_id={info.id} />
+      <RoundedProfileImage className={"w-1/4"} photo_url={info.photo} />
       <div className="bg-sub rounded-xl flex absolute top-0 right-10 items-center w- px-3 py-1 box-border shadow-lg">
         <div className="w-4 mr-2">
           <IconImage src={check}></IconImage>

@@ -22,28 +22,47 @@ function PositiveButton({ info, mode, afterAction }) {
   const positiveCall = useCallback(
     (data) => {
       if (mode === "recommend")
-        recommendPositiveCall(data, info.matching_type, afterAction);
+        recommendPositiveCall(data, info.type, afterAction);
       else if (mode === "request")
-        requestPositiveCall(data, info.matching_type, afterAction, info.id);
-      else detailPositiveCall(data, info.code, afterAction, info.id);
+        requestPositiveCall(data, info.type, afterAction, info.id);
+      else detailPositiveCall(data, afterAction, info.id);
     },
     [mode, info, afterAction]
   );
 
   const buttonMessage = useMemo(() => {
-    console.log(info);
-    if (mode === "detail" && info.code === 2) return "매칭 수락";
+    console.log("button", info);
 
-    if (info.type === 2 && info.matching_status === "pending") {
-      return mode === "recommend" ? "사진 요청" : "사진 공개";
+    switch (mode) {
+      case "detail":
+        if (info.type === 2) {
+          if (info.status === "photo" || info.status === "final")
+            return "매칭 수락";
+          return "사진 공개";
+        }
+
+      case "recommend":
+        if (info.type === 2) return "사진 요청";
+        return "매칭 요청";
+      default: //mode ==== "request"
+        if (info.type === 2) return "사진 공개";
+        return "매칭 수락";
     }
-    return mode === "recommend" ? "매칭 요청" : "매칭 수락";
   }, [mode, info]);
 
   const buttonColor = useMemo(() => {
-    if (info.type === 2 && info.matching_status === "pending") return false;
-    return true;
-  }, [info]);
+    switch (mode) {
+      case "detail":
+        if (info.type === 2) {
+          if (info.status === "photo" || info.status === "final") return true;
+        }
+        return true;
+      case "recommend":
+      case "request":
+        if (info.type === 2) return false;
+        return true;
+    }
+  }, [info, mode]);
 
   return (
     <button
@@ -123,7 +142,6 @@ export default function LetterComponent({ info, close, mode }) {
   useEffect(() => {
     if (mode === "detail") {
       setActionVisible(copiedInfo[index].action);
-      console.log(copiedInfo[index].action);
     }
   }, [mode, info, index]);
 
@@ -134,8 +152,8 @@ export default function LetterComponent({ info, close, mode }) {
   }, [copiedInfo, index]);
 
   return (
-    <>
-      <div className="overflow-y-scroll overflow-x-hidden flex-nowrap min-h-letter-height h-[60%] w-letter-width flex flex-row bg-background rounded-xl relative pb-2 shadow-md">
+    <div className="relative min-h-letter-height  max-h-letter-max-height  flex flex-col">
+      <div className="overflow-y-scroll grow overflow-x-hidden flex-nowrap  w-letter-width flex flex-row bg-background rounded-xl relative pb-2 shadow-md">
         {copiedInfo.map((i, k) => (
           <Letter key={k} info={i} close={close} index={index}></Letter>
         ))}
@@ -182,7 +200,7 @@ export default function LetterComponent({ info, close, mode }) {
           handler={setIndex}
         ></Indexation>
       ) : null}
-    </>
+    </div>
   );
 }
 

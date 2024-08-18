@@ -75,6 +75,7 @@ const submitPhoto = async (photo) => {
 
 export const getRecommend = async () => {
   const response = await instanceWithToken.get("/account/recommend/");
+  console.log(response);
 
   if (response.status === 200 || response.status === 201) {
     return response;

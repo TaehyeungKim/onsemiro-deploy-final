@@ -2,7 +2,6 @@ import {
   getRequestForMe,
   getRecommend,
   getRestrictedProfile,
-  getMatchingList,
   requestKakaoId,
   getPhotoData,
 } from "apis/api";
@@ -24,12 +23,12 @@ export const callRequestForMe = async (dataSetter) => {
         if (d.matching_id)
           return {
             ...d.simpleProfile,
-            matching_type: d.matching_type,
+            type: d.type,
             matching_id: d.matching_id,
-            // created_at: d.created_at,
+
             time: timeSection(new Date(d.created_at).getHours()).part,
             date: dayRender(d.created_at, ".", false),
-            message: REQUEST_MESSAGE_MAP(d.matching_type),
+            message: REQUEST_MESSAGE_MAP(d.type),
             action: true,
             counter_id: d.counter_id,
           };
@@ -43,12 +42,11 @@ export const callRequestForMe = async (dataSetter) => {
         if (d.matching_id)
           return {
             ...d.simpleProfile,
-            matching_type: d.matching_type,
+            type: d.type,
             matching_id: d.matching_id,
-            // created_at: d.created_at,
             time: timeSection(new Date(d.created_at).getHours()).part,
             date: dayRender(d.created_at, ".", false),
-            message: REQUEST_MESSAGE_MAP(d.matching_type),
+            message: REQUEST_MESSAGE_MAP(d.type),
             counter_id: d.counter_id,
             action: true,
           };
@@ -82,10 +80,10 @@ export const getRecommendation = async (dataSetter) => {
     {
       ...profile.data,
       render_type: recommended.data.message_type,
-      matching_type: recommended.data.matching_type,
+      type: recommended.data.type,
       message: RECOMMEND_MESSAGE_MAP(
         recommended.data.message_type,
-        recommended.data.matching_type
+        recommended.data.type
       ),
       time: recommended.data.time,
       date: recommended.data.date,
@@ -95,21 +93,15 @@ export const getRecommendation = async (dataSetter) => {
 };
 
 export const soapDetailViewData = async (data, optional) => {
-  console.log(data, optional);
-  let kakao = "";
-  let photo = "";
+  let kakao = undefined;
 
-  if (data.type === 1 && data.status === "success") {
+  if (data.status === "success") {
     const res = await requestKakaoId({
       counter_id: data.counter_id,
     });
     const { kakao_id } = res.data;
     kakao = kakao_id;
   }
-
-  // const message = kakao
-  //   ? MATCH_RESULT_RENDER_MAP(code, kakao)
-  //   : MATCH_RESULT_RENDER_MAP(code);
 
   const message = kakao
     ? MATCH_RESULT_RENDER_MAP(data.type, data.status, data.flag, kakao)
@@ -118,7 +110,6 @@ export const soapDetailViewData = async (data, optional) => {
   return {
     ...data.profile,
 
-    photo,
     type: data.type,
     status: data.status,
     ...message,
@@ -130,7 +121,6 @@ export const cleanMatchList = async (listGetter) => {
   const list = await listGetter();
 
   const { results } = list;
-  console.log(results);
 
   if (!results) return [];
 
@@ -144,9 +134,10 @@ export const cleanMatchList = async (listGetter) => {
       (a, b) =>
         new Date(b.matching_request_at) - new Date(a.matching_request_at)
     )
-    .map((result) => {
+    .map((result, index) => {
       if (result) {
         return {
+          key: index,
           ...result,
           matching_request_at: dayRender(result.matching_request_at ?? null),
           time: timeSection(new Date(result.matching_request_at).getHours())
@@ -178,11 +169,18 @@ export const cleanMatchList = async (listGetter) => {
     tempData.push(sorted[i]);
   }
   const lastObj = { day, data: tempData };
-  // obj.day = sorted[sorted.length - 1].matching_request_at;
+
   cleanedList.push(lastObj);
 
-  console.log(cleanedList, "cleanedlist");
   return cleanedList;
+};
+
+export const getPhotoUrlForListElement = async (e) => {
+  if (e.type === 2 && e.status !== "pending") {
+    const res = await getPhotoData({ counter_id: e.counter_id });
+    return res.photo_url;
+  }
+  return undefined;
 };
 
 export const dayRender = (when, splitter, year = true) => {

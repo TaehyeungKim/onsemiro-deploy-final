@@ -8,17 +8,19 @@ import {
 import styles from "./styles.module.scss";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CustomTextInput } from "components/CustomInputs";
-import { AUTH_UNIV_LIST } from "assets/asset";
+import { AUTH_UNIV_LIST } from "assets/const";
 import LetterComponent from "layouts/LetterLayout";
 import { getDetailedInfo, getMatchingList, getPhotoResults } from "apis/api";
-import { TARGET } from "apis/api";
+
 import {
+  getPhotoUrlForListElement,
   cleanMatchList,
   soapDetailViewData,
 } from "components/HomeContent/utils";
-import ProfileWOPhoto from "assets/profile1.png";
+
 import { matchDataState, photoDataState } from "state/state";
 import { useRecoilState } from "recoil";
+import { MatchListArticle } from "./sub";
 
 // import { createFuzzyMatcher } from "utils/match";
 
@@ -150,53 +152,12 @@ export function ResultListOverlay({ close, dataByDay = [] }) {
           </header>
           <div className="flex flex-col gap-4">
             {d.data.map((info, p) => (
-              <article
+              <MatchListArticle
                 key={p}
-                className={`flex flex-row w-full box-border rounded-lg border-main border-2 p-2 cursor-pointer ${
-                  info.active ? "bg-main bg-opacity-30" : ""
-                }`}
-                onClick={async () => {
-                  const res = await getDetailedInfo({
-                    type: info.type,
-                    id: info.id,
-                  });
-
-                  if (res.status === 200) {
-                    setDetailVisible(true);
-                    const data = await soapDetailViewData(res.data, {
-                      date: info.matching_request_at,
-                      time: info.time,
-                    });
-                    setDetailInfo(data);
-                  }
-                }}
-              >
-                <RoundedProfileImage
-                  // src={info.photo ? `${TARGET}/${info.photo}` : ProfileWOPhoto}
-                  counter_id={info.counter_id}
-                  className={"w-20"}
-                />
-
-                <div className="grow flex flex-col justify-between ml-4">
-                  <span className="block font-bold">
-                    {info.profile.nickname}
-                  </span>
-                  <span className="block">
-                    {info.profile.age}세 {info.profile.gender}
-                  </span>
-                  <div className="flex w-full gap-1 text-xs">
-                    <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
-                      #{info.profile.univ}
-                    </span>
-                    <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
-                      #{info.profile.location}
-                    </span>
-                    <span className="bg-main text-white block grow rounded-xl text-center shadow-md py-1">
-                      #{info.profile.mbti}
-                    </span>
-                  </div>
-                </div>
-              </article>
+                info={info}
+                detailOpener={setDetailVisible}
+                detailDataSetter={setDetailInfo}
+              />
             ))}
           </div>
         </section>

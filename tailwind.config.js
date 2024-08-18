@@ -10,6 +10,7 @@ module.exports = {
 
         "letter-width": "calc(473px * 0.8)",
         "letter-height": "calc(473px * 0.8 * 1.7)",
+        "letter-max-height": "calc(100vh * 0.9)",
         "overflow-test": "200vh",
         "header-height": `${headerHeight}px`,
         "landing-height": `calc(100vh - ${headerHeight}px)`,
