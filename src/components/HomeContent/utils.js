@@ -30,7 +30,7 @@ export const callRequestForMe = async (dataSetter) => {
             date: dayRender(d.created_at, ".", false),
             message: REQUEST_MESSAGE_MAP(d.type),
             action: true,
-            counter_id: d.counter_id,
+            userId: d.userId,
           };
       }),
     ];
@@ -47,12 +47,11 @@ export const callRequestForMe = async (dataSetter) => {
             time: timeSection(new Date(d.created_at).getHours()).part,
             date: dayRender(d.created_at, ".", false),
             message: REQUEST_MESSAGE_MAP(d.type),
-            counter_id: d.counter_id,
+            userId: d.userId,
             action: true,
           };
       }),
     ];
-  // console.log(data, "cleaned data");
 
   dataSetter([...data.filter((d) => d !== undefined && d !== null)]);
 };
@@ -75,7 +74,7 @@ export const getRecommendation = async (dataSetter) => {
   const profile = await getRestrictedProfile({
     counter_id: recommended.data.recommended_user_id,
   });
-  // console.log(recommended.data, profile.data);
+
   dataSetter([
     {
       ...profile.data,
@@ -109,7 +108,7 @@ export const soapDetailViewData = async (data, optional) => {
 
   return {
     ...data.profile,
-
+    userId: data.counter_id,
     type: data.type,
     status: data.status,
     ...message,
@@ -148,9 +147,6 @@ export const cleanMatchList = async (listGetter) => {
 
   if (sorted.length === 0) return [];
 
-  // console.log(sorted, "sorted");
-  // clear
-
   let marker = 0;
   let day = sorted[0].matching_request_at;
 
@@ -177,7 +173,7 @@ export const cleanMatchList = async (listGetter) => {
 
 export const getPhotoUrlForListElement = async (e) => {
   if (e.type === 2 && e.status !== "pending") {
-    const res = await getPhotoData({ counter_id: e.counter_id });
+    const res = await getPhotoData({ counter_id: e.userId });
     return res.photo_url;
   }
   return undefined;

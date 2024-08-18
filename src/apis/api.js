@@ -75,7 +75,6 @@ const submitPhoto = async (photo) => {
 
 export const getRecommend = async () => {
   const response = await instanceWithToken.get("/account/recommend/");
-  console.log(response);
 
   if (response.status === 200 || response.status === 201) {
     return response;
@@ -150,14 +149,6 @@ export const acceptMatching = async (data) => {
   const response = await instanceWithToken.put("/matching/type1/", data);
 
   if (response.status === 200 || response.status === 201) {
-    // const kakaoResponse = await requestKakaoId({
-    //   counter_id: response.data.counter_id,
-    // });
-    // if (kakaoResponse.status === 200 || kakaoResponse.status === 201) {
-    //   return kakaoResponse;
-    // } else {
-    //   return kakaoResponse;
-    // }
     return response;
   } else console.log(response);
 };
@@ -209,7 +200,6 @@ export const acceptPhoto = async (data) => {
   if (response.status === 200) {
     return true;
   } else {
-    console.log(response);
     return false;
   }
 };

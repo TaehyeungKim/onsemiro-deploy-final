@@ -24,15 +24,13 @@ function PositiveButton({ info, mode, afterAction }) {
       if (mode === "recommend")
         recommendPositiveCall(data, info.type, afterAction);
       else if (mode === "request")
-        requestPositiveCall(data, info.type, afterAction, info.id);
-      else detailPositiveCall(data, afterAction, info.id);
+        requestPositiveCall(data, info.type, afterAction, info.userId);
+      else detailPositiveCall(data, afterAction, info.userId);
     },
     [mode, info, afterAction]
   );
 
   const buttonMessage = useMemo(() => {
-    console.log("button", info);
-
     switch (mode) {
       case "detail":
         if (info.type === 2) {
@@ -66,7 +64,7 @@ function PositiveButton({ info, mode, afterAction }) {
 
   return (
     <button
-      onClick={() => positiveCall({ counter_id: info.id })}
+      onClick={() => positiveCall({ counter_id: info.userId })}
       className={`${
         buttonColor ? "bg-main" : "bg-sub"
       } text-white w-44 p-2 rounded-xl shadow-lg text-lg`}

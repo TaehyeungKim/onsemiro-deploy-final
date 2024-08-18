@@ -3,8 +3,6 @@ import { filterValidProfileKey, keyMapWithKorean } from "assets/asset";
 import { soapProfileLineRender } from "layouts/LetterLayout/utils";
 import IconImage, { RoundedProfileImage } from "components/IconImage";
 import messageFrom from "assets/message/message.png";
-import { TARGET } from "apis/api";
-import ProfileWOPhoto from "assets/profile1.png";
 import check from "assets/icons/check.png";
 import check_black from "assets/icons/check_black.png";
 import { TIME_MAP } from "assets/asset";
@@ -73,10 +71,6 @@ export function SelfIntroduction({ info }) {
 }
 
 export function ProfileImage({ info }) {
-  useEffect(() => {
-    console.log(info);
-  }, []);
-
   return (
     <section className="px-5 w-full mt-3 relative">
       <RoundedProfileImage className={"w-1/4"} photo_url={info.photo} />

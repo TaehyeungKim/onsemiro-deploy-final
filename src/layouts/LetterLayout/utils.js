@@ -82,7 +82,6 @@ export const requestPositiveCall = async (data, type, action, counter_id) => {
   else
     return acceptPhoto(data).then(async (res) => {
       const photoResponse = await getPhotoData({ counter_id });
-      console.log(photoResponse);
 
       if (res) {
         action(
@@ -100,6 +99,7 @@ export const requestPositiveCall = async (data, type, action, counter_id) => {
 };
 
 export const detailPositiveCall = async (data, action, counter_id) => {
+  console.log(data);
   return acceptMatchingAfterPhoto(data).then(async (res) => {
     if (res.status === 200 || res.status === 201) {
       if (res.data.message === "accept successful")
